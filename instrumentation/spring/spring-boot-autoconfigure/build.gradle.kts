@@ -14,14 +14,12 @@ val springBootVersion = "2.7.4"
 
 dependencies {
   runtimeOnly("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
-  annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion")
   implementation("javax.validation:validation-api:2.0.1.Final")
 
-  compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:${OPENTELEMETRY_ALPHA_VERSION}")
-  runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations-support:${OPENTELEMETRY_ALPHA_VERSION}")
-  implementation("io.opentelemetry.instrumentation:opentelemetry-spring-webmvc-5.3:${OPENTELEMETRY_ALPHA_VERSION}")
+  compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations-support:${OPENTELEMETRY_ALPHA_VERSION}")
 
-  runtimeOnly("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+  compileOnly("org.springframework.boot:spring-boot-starter-aop:$springBootVersion")
+  compileOnly("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 }
 
 tasks.compileTestJava {
