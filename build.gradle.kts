@@ -1,6 +1,5 @@
-import java.time.Duration
-
 plugins {
+  id("java")
   id("idea")
 }
 

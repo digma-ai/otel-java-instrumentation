@@ -27,7 +27,7 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "otel-java-instrumentation"
+rootProject.name = "digma-otel-java-instrumentation"
 
 // agent projects
 
