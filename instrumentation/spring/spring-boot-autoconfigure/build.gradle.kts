@@ -1,8 +1,5 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
-
 plugins {
   id("java")
-//id("otel.library-instrumentation")
 }
 
 base.archivesName.set("digma-otel-spring-boot")
@@ -13,13 +10,13 @@ val OPENTELEMETRY_ALPHA_VERSION = "1.18.0-alpha"
 val springBootVersion = "2.7.4"
 
 dependencies {
+  implementation("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
+  implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
+
   runtimeOnly("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
-  implementation("javax.validation:validation-api:2.0.1.Final")
-
-  compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations-support:${OPENTELEMETRY_ALPHA_VERSION}")
-
   compileOnly("org.springframework.boot:spring-boot-starter-aop:$springBootVersion")
   compileOnly("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+  implementation("javax.validation:validation-api:2.0.1.Final")
 }
 
 tasks.compileTestJava {
