@@ -1,3 +1,16 @@
+target/*
+bin/*
+build/*
+**/build/
+.gradle/*
+.settings/*
+.classpath
+.project
+.factorypath
+.attach_pid*
+.idea
+*.iml
+
 # Compiled class file
 *.class
 
