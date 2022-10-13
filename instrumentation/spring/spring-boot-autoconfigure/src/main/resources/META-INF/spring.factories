@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.digma.otel.instrumentation.spring.autoconfigure.webmvc.WebMvcControllerAspectAutoConfiguration
