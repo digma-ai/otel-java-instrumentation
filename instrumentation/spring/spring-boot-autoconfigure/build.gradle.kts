@@ -3,7 +3,7 @@ plugins {
   id("maven-publish")
 }
 
-base.archivesName.set("digma-otel-spring-boot")
+base.archivesName.set("digma-otel-instr-spring-boot-${version}")
 group = "com.digma"
 
 val OPENTELEMETRY_VERSION = "1.18.0"
