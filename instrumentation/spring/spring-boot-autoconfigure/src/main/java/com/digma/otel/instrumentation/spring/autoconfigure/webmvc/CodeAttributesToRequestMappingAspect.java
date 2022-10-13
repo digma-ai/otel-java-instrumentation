@@ -16,54 +16,57 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.lang.reflect.Method;
 
 /**
- * @see RequestMapping - the basic annotation
- * @see GetMapping
- * @see PostMapping
- * @see DeleteMapping
- * @see PutMapping
- * @see PatchMapping
+ * CodeAttributesToRequestMappingAspect.
+ * Adds attributes of code.namespace and code.function to current span, while trapping the XxxMapping annotation.
+ *
+ * @see RequestMapping - basic annotation of the Controller level
+ * @see GetMapping     - trapped annotation
+ * @see PostMapping    - trapped annotation
+ * @see DeleteMapping  - trapped annotation
+ * @see PutMapping     - trapped annotation
+ * @see PatchMapping   - trapped annotation
+ * @see SemanticAttributes#CODE_NAMESPACE
+ * @see SemanticAttributes#CODE_FUNCTION
  */
 @Aspect
 class CodeAttributesToRequestMappingAspect {
 
-  @Around("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
-  public Object processRequestMapping(ProceedingJoinPoint pjp) throws Throwable {
-    Span currentSpan = Span.current();
-    //TODO: check that span exists (not invalid)
-    MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
-    Method method = methodSignature.getMethod();
+    protected Object processCommonMapping(ProceedingJoinPoint pjp) throws Throwable {
+        Span currentSpan = Span.current();
+        MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
+        Method method = methodSignature.getMethod();
 
-    Class<?> classOfMethod = method.getDeclaringClass();
+        Class<?> classOfMethod = method.getDeclaringClass();
 
-    currentSpan.setAttribute(SemanticAttributes.CODE_NAMESPACE, classOfMethod.getName());
-    currentSpan.setAttribute(SemanticAttributes.CODE_FUNCTION, method.getName());
+        currentSpan.setAttribute(SemanticAttributes.CODE_NAMESPACE, classOfMethod.getName());
+        currentSpan.setAttribute(SemanticAttributes.CODE_FUNCTION, method.getName());
 
-    return pjp.proceed();
-  }
+        return pjp.proceed();
+    }
 
-  @Around("@annotation(org.springframework.web.bind.annotation.GetMapping)")
-  public Object processGetMapping(ProceedingJoinPoint pjp) throws Throwable {
-    return processRequestMapping(pjp);
-  }
+    @Around("@annotation(org.springframework.web.bind.annotation.GetMapping)")
+    public Object processGetMapping(ProceedingJoinPoint pjp) throws Throwable {
+        return processCommonMapping(pjp);
+    }
 
-  @Around("@annotation(org.springframework.web.bind.annotation.PostMapping)")
-  public Object processPostMapping(ProceedingJoinPoint pjp) throws Throwable {
-    return processRequestMapping(pjp);
-  }
+    @Around("@annotation(org.springframework.web.bind.annotation.PostMapping)")
+    public Object processPostMapping(ProceedingJoinPoint pjp) throws Throwable {
+        return processCommonMapping(pjp);
+    }
 
-  @Around("@annotation(org.springframework.web.bind.annotation.DeleteMapping)")
-  public Object processDeleteMapping(ProceedingJoinPoint pjp) throws Throwable {
-    return processRequestMapping(pjp);
-  }
+    @Around("@annotation(org.springframework.web.bind.annotation.DeleteMapping)")
+    public Object processDeleteMapping(ProceedingJoinPoint pjp) throws Throwable {
+        return processCommonMapping(pjp);
+    }
 
-  @Around("@annotation(org.springframework.web.bind.annotation.PutMapping)")
-  public Object processPutMapping(ProceedingJoinPoint pjp) throws Throwable {
-    return processRequestMapping(pjp);
-  }
+    @Around("@annotation(org.springframework.web.bind.annotation.PutMapping)")
+    public Object processPutMapping(ProceedingJoinPoint pjp) throws Throwable {
+        return processCommonMapping(pjp);
+    }
 
-  @Around("@annotation(org.springframework.web.bind.annotation.PatchMapping)")
-  public Object processPatchMapping(ProceedingJoinPoint pjp) throws Throwable {
-    return processRequestMapping(pjp);
-  }
+    @Around("@annotation(org.springframework.web.bind.annotation.PatchMapping)")
+    public Object processPatchMapping(ProceedingJoinPoint pjp) throws Throwable {
+        return processCommonMapping(pjp);
+    }
 
 }
