@@ -18,6 +18,13 @@ dependencies {
   compileOnly("org.springframework.boot:spring-boot-starter-aop:$springBootVersion")
   compileOnly("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
   implementation("javax.validation:validation-api:2.0.1.Final")
+
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+}
+
+tasks.test {
+  useJUnitPlatform{}
 }
 
 tasks.compileTestJava {
@@ -32,7 +39,7 @@ tasks.withType<Test>().configureEach {
   // disable tests on openj9 18 because they often crash JIT compiler
   val testJavaVersion = gradle.startParameter.projectProperties["testJavaVersion"]?.let(JavaVersion::toVersion)
   val testOnOpenJ9 = gradle.startParameter.projectProperties["testJavaVM"]?.run { this == "openj9" }
-    ?: false
+          ?: false
   if (testOnOpenJ9 && testJavaVersion?.majorVersion == "18") {
     enabled = false
   }
