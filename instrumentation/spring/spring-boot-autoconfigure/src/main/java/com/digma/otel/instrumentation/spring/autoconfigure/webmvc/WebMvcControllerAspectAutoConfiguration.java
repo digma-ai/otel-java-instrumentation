@@ -9,22 +9,25 @@ import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-/** Configures {@link CodeAttributesToRequestMappingAspect} to trace bean methods annotated with {@link RequestMapping}. */
+/**
+ * Configures {@link CodeAttributesToRequestMappingAspect} to trace bean methods annotated with {@link Controller}.
+ *
+ * @see RequestMapping and its children (GetMapping, PostMapping etc)
+ */
 @Configuration
 @EnableConfigurationProperties(WebMvcProperties.class)
 @ConditionalOnProperty(prefix = "otel.springboot.web", name = "enabled", matchIfMissing = true)
 @ConditionalOnClass(Aspect.class)
 @ConditionalOnBean(OpenTelemetry.class)
-public class WebMvcRequestMappingAspectAutoConfiguration {
+public class WebMvcControllerAspectAutoConfiguration {
 
-  @Bean
-  @ConditionalOnClass(RequestMapping.class)
-  public CodeAttributesToRequestMappingAspect codeAttributesToRequestMappingAspect(
-      OpenTelemetry openTelemetry) {
-
-    return new CodeAttributesToRequestMappingAspect();
-  }
+    @Bean
+    @ConditionalOnClass(Controller.class)
+    public CodeAttributesToRequestMappingAspect codeAttributesToRequestMappingAspect(OpenTelemetry openTelemetry) {
+        return new CodeAttributesToRequestMappingAspect();
+    }
 
 }
