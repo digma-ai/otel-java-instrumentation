@@ -5,5 +5,8 @@ plugins {
 }
 
 description = "Digma OpenTelemetry instrumentations for Java"
-version = "0.0.2"
 group = "com.digma"
+
+allprojects {
+  version = "0.0.7"
+}
