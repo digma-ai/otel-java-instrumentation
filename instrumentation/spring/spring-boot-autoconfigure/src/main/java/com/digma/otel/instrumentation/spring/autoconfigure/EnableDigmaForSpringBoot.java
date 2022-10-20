@@ -1,7 +1,5 @@
 package com.digma.otel.instrumentation.spring.autoconfigure;
 
-
-import com.digma.otel.instrumentation.common.DigmaCommon;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,11 +16,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EnableDigmaForSpringBoot {
-    /**
-     * controls digma deployment environment. values for example: PRODUCTION, CI.
-     * 99 perecnt of time, better leave it empty, and let digma use the default evaluation (try environment variable named DEPLOYMENT_ENV, and if its empty it will take the local hostname)
-     *
-     * @see DigmaCommon#evaluateEnvironment
-     */
-    String environmentOverride() default "";
 }
