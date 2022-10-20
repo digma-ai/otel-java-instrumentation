@@ -27,9 +27,9 @@ public class DigmaResourceProvider implements ResourceProvider {
     }
 
     private String evaluateEnvironment() {
-        String cfgOverrideValue = digmaResourceProperties.getEnvironmentOverride();
-        if (StringUtils.hasText(cfgOverrideValue)) {
-            return cfgOverrideValue;
+        String cfgValue = digmaResourceProperties.getEnvironment();
+        if (StringUtils.hasText(cfgValue)) {
+            return cfgValue;
         }
         return DigmaCommon.evaluateEnvironment();
     }

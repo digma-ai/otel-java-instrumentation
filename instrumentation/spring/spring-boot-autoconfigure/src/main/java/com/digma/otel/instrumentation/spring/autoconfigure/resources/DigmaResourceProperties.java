@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "digma.otel.springboot.resource")
 public class DigmaResourceProperties {
     private boolean enabled = true;
-    private String environmentOverride;
+    private String environment;
 
     public boolean isEnabled() {
         return enabled;
@@ -15,11 +15,11 @@ public class DigmaResourceProperties {
         this.enabled = enabled;
     }
 
-    public String getEnvironmentOverride() {
-        return environmentOverride;
+    public String getEnvironment() {
+        return environment;
     }
 
-    public void setEnvironmentOverride(String environmentOverride) {
-        this.environmentOverride = environmentOverride;
+    public void setEnvironment(String environment) {
+        this.environment = environment;
     }
 }
