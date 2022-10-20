@@ -11,8 +11,11 @@ val OPENTELEMETRY_ALPHA_VERSION = "1.18.0-alpha"
 val springBootVersion = "2.7.4"
 
 dependencies {
+  implementation(project(":instrumentation:common"))
   implementation("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
-  implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
+  compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:${OPENTELEMETRY_VERSION}")
+  compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
+  compileOnly("io.opentelemetry.instrumentation:opentelemetry-spring-boot:${OPENTELEMETRY_ALPHA_VERSION}")
 
   runtimeOnly("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
   compileOnly("org.springframework.boot:spring-boot-starter-aop:$springBootVersion")
