@@ -8,5 +8,5 @@ description = "Digma OpenTelemetry instrumentations for Java"
 group = "com.digma"
 
 allprojects {
-  version = "0.0.8-SNAPSHOT"
+  version = "0.0.8"
 }
