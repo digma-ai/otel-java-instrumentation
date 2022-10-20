@@ -3,7 +3,6 @@ package com.digma.otel.instrumentation.spring.autoconfigure.resources;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
-import io.opentelemetry.instrumentation.spring.autoconfigure.resources.OtelResourceProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.ResourceProvider;
 import io.opentelemetry.sdk.resources.Resource;
@@ -17,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
 @Configuration
-@EnableConfigurationProperties(OtelResourceProperties.class)
+@EnableConfigurationProperties(DigmaResourceProperties.class)
 @AutoConfigureBefore(OpenTelemetryAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "digma.otel.springboot.resource", name = "enabled", matchIfMissing = true)
 public class DigmaResourceAutoConfiguration {
