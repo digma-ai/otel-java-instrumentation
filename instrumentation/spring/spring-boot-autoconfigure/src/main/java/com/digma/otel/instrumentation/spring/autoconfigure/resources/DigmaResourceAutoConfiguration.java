@@ -31,7 +31,7 @@ public class DigmaResourceAutoConfiguration {
      * this bean will get merged with {@link OpenTelemetryAutoConfiguration.OpenTelemetryBeanConfig#otelResource}
      */
     @Bean
-    public ResourceProvider diomaResourceProvider(DigmaResourceProperties properties) {
+    public ResourceProvider digmaResourceProvider(DigmaResourceProperties properties) {
         return new DigmaResourceProvider(properties);
     }
 
