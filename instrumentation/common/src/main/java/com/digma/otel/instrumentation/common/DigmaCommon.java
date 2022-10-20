@@ -11,6 +11,10 @@ public final class DigmaCommon {
         if (valueFromEnv != null) {
             return valueFromEnv;
         }
+        return getLocalHostnameAsEnv();
+    }
+
+    public static String getLocalHostnameAsEnv() {
         String localHostname = CommonUtils.getLocalHostname();
         return localHostname + "[local]";
     }
