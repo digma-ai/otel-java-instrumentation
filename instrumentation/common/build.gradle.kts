@@ -14,14 +14,6 @@ java {
     withSourcesJar()
 }
 
-//signing {
-//    setRequired({
-//        gradle.taskGraph.hasTask("publish")
-//    })
-//
-//    sign(configurations.archives.get())
-//}
-
 base.archivesName.set(vArtifactId)
 
 val OPENTELEMETRY_VERSION = "1.18.0"
@@ -48,4 +40,12 @@ publishing {
             from(components["java"])
         }
     }
+}
+
+signing {
+    setRequired({
+        gradle.taskGraph.hasTask("publish")
+    })
+
+    sign(publishing.publications[vArtifactId])
 }
