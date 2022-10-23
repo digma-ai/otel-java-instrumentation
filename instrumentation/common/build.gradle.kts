@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("maven-publish")
+    signing
 }
 
 java {
@@ -9,6 +10,13 @@ java {
     }
     withJavadocJar()
     withSourcesJar()
+}
+
+signing {
+    setRequired({
+        gradle.taskGraph.hasTask("publish")
+    })
+    sign(configurations.archives.get())
 }
 
 base.archivesName.set("digma-otel-instr-common")
