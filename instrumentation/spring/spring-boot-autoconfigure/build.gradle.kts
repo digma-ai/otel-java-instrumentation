@@ -10,7 +10,6 @@ java {
 }
 
 base.archivesName.set("digma-otel-instr-spring-boot")
-group = "com.digma"
 
 val OPENTELEMETRY_VERSION = "1.18.0"
 val OPENTELEMETRY_ALPHA_VERSION = "1.18.0-alpha"
