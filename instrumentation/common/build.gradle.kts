@@ -1,8 +1,10 @@
 plugins {
-    id("java")
-    id("maven-publish")
+    `java-library`
+    `maven-publish`
     signing
 }
+
+val vArtifactId = "digma-otel-instr-common"
 
 java {
     toolchain {
@@ -12,14 +14,15 @@ java {
     withSourcesJar()
 }
 
-signing {
-    setRequired({
-        gradle.taskGraph.hasTask("publish")
-    })
-    sign(configurations.archives.get())
-}
+//signing {
+//    setRequired({
+//        gradle.taskGraph.hasTask("publish")
+//    })
+//
+//    sign(configurations.archives.get())
+//}
 
-base.archivesName.set("digma-otel-instr-common")
+base.archivesName.set(vArtifactId)
 
 val OPENTELEMETRY_VERSION = "1.18.0"
 val OPENTELEMETRY_ALPHA_VERSION = "1.18.0-alpha"
@@ -35,4 +38,14 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform {}
+}
+
+publishing {
+    publications {
+        create<MavenPublication>(vArtifactId) {
+            artifactId = vArtifactId
+
+            from(components["java"])
+        }
+    }
 }
