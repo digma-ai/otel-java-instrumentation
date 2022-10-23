@@ -7,5 +7,5 @@ group = "com.digma"
 
 allprojects {
     group = "com.digma"
-    version = "0.0.10"
+    version = "0.0.11"
 }
