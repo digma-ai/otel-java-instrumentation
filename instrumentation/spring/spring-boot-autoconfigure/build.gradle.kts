@@ -7,6 +7,8 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
     }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 base.archivesName.set("digma-otel-instr-spring-boot")
