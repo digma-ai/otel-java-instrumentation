@@ -72,6 +72,28 @@ publishing {
             from(components["java"])
         }
     }
+    repositories {
+        maven {
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            mavenContent {
+                releasesOnly()
+            }
+            credentials {
+                username = System.getenv("EV_ossrhUsername")
+                password = System.getenv("EV_ossrhPassword")
+            }
+        }
+        maven {
+            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            mavenContent {
+                snapshotsOnly()
+            }
+            credentials {
+                username = System.getenv("EV_ossrhUsername")
+                password = System.getenv("EV_ossrhPassword")
+            }
+        }
+    }
 }
 
 signing {
