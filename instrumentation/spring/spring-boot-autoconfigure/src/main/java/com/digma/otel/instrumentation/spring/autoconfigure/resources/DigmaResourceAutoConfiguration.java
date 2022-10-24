@@ -19,7 +19,11 @@ import org.springframework.context.annotation.Configuration;
 public class DigmaResourceAutoConfiguration {
 
     /**
+     * digmaResourceProvider.
      * this bean will get merged with {@link OpenTelemetryAutoConfiguration.OpenTelemetryBeanConfig#otelResource}
+     *
+     * @param properties - DigmaResourceProperties
+     * @return ResourceProvider which combines into {@link OpenTelemetryAutoConfiguration.OpenTelemetryBeanConfig#otelResource}
      */
     @Bean
     public ResourceProvider digmaResourceProvider(DigmaResourceProperties properties) {
