@@ -15,6 +15,7 @@ java {
 }
 
 base.archivesName.set(vArtifactId)
+project.description = "Digma, Auto-configures OpenTelemetry instrumentation for SpringBoot"
 
 val OPENTELEMETRY_VERSION = "1.18.0"
 val OPENTELEMETRY_ALPHA_VERSION = "1.18.0-alpha"
@@ -72,6 +73,10 @@ publishing {
             from(components["java"])
 
             pom {
+                name.set(vArtifactId)
+                description.set(project.description)
+                url.set("https://github.com/digma-ai/otel-java-instrumentation")
+
                 licenses {
                     license {
                         name.set("MIT License")

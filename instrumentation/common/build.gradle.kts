@@ -5,6 +5,7 @@ plugins {
 }
 
 val vArtifactId = "digma-otel-instr-common"
+project.description = "Digma, OpenTelemetry instrumentation - common library"
 
 java {
     toolchain {
@@ -40,6 +41,10 @@ publishing {
             from(components["java"])
 
             pom {
+                name.set(vArtifactId)
+                description.set(project.description)
+                url.set("https://github.com/digma-ai/otel-java-instrumentation")
+
                 licenses {
                     license {
                         name.set("MIT License")
