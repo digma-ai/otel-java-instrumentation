@@ -70,23 +70,41 @@ publishing {
             artifactId = vArtifactId
 
             from(components["java"])
+
+            pom {
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("http://www.opensource.org/licenses/mit-license.php")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("asher")
+                        name.set("Arik Sher")
+                        email.set("asher@digma.ai")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/digma-ai/otel-java-instrumentation.git")
+                    developerConnection.set("scm:git:ssh://github.com:digma-ai/otel-java-instrumentation.git")
+                    url.set("https://github.com/digma-ai/otel-java-instrumentation")
+                }
+            }
         }
     }
     repositories {
         maven {
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            mavenContent {
-                releasesOnly()
-            }
-            credentials {
-                username = System.getenv("EV_ossrhUsername")
-                password = System.getenv("EV_ossrhPassword")
-            }
-        }
-        maven {
-            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-            mavenContent {
-                snapshotsOnly()
+            if (version.toString().endsWith("SNAPSHOT")) {
+                url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                mavenContent {
+                    snapshotsOnly()
+                }
+            } else {
+                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                mavenContent {
+                    releasesOnly()
+                }
             }
             credentials {
                 username = System.getenv("EV_ossrhUsername")
