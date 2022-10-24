@@ -80,9 +80,10 @@ publishing {
                 }
                 developers {
                     developer {
-                        id.set("asher")
                         name.set("Arik Sher")
                         email.set("asher@digma.ai")
+                        organization.set("digma.ai")
+                        organizationUrl.set("http://digma.ai/")
                     }
                 }
                 scm {
