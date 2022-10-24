@@ -1,16 +1,20 @@
 plugins {
-    id("java")
-    id("maven-publish")
+    `java-library`
+    `maven-publish`
+    signing
 }
+
+val vArtifactId = "digma-otel-instr-common"
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
     }
+    withJavadocJar()
+    withSourcesJar()
 }
 
-base.archivesName.set("digma-otel-instr-common")
-group = "com.digma"
+base.archivesName.set(vArtifactId)
 
 val OPENTELEMETRY_VERSION = "1.18.0"
 val OPENTELEMETRY_ALPHA_VERSION = "1.18.0-alpha"
@@ -26,4 +30,44 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform {}
+}
+
+publishing {
+    publications {
+        create<MavenPublication>(vArtifactId) {
+            artifactId = vArtifactId
+
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            mavenContent {
+                releasesOnly()
+            }
+            credentials {
+                username = System.getenv("EV_ossrhUsername")
+                password = System.getenv("EV_ossrhPassword")
+            }
+        }
+        maven {
+            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            mavenContent {
+                snapshotsOnly()
+            }
+            credentials {
+                username = System.getenv("EV_ossrhUsername")
+                password = System.getenv("EV_ossrhPassword")
+            }
+        }
+    }
+}
+
+signing {
+    setRequired({
+        gradle.taskGraph.hasTask("publish")
+    })
+
+    sign(publishing.publications[vArtifactId])
 }

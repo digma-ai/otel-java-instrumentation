@@ -1,12 +1,10 @@
 plugins {
-    id("java")
     id("idea")
-    id("maven-publish")
 }
 
 description = "Digma OpenTelemetry instrumentations for Java"
-group = "com.digma"
 
 allprojects {
-    version = "0.0.10"
+    group = "io.github.digma-ai"
+    version = "0.0.15-SNAPSHOT"
 }
