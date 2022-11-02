@@ -17,9 +17,10 @@ java {
 base.archivesName.set(vArtifactId)
 project.description = "Digma, Auto-configures OpenTelemetry instrumentation for SpringBoot"
 
-val OPENTELEMETRY_VERSION = "1.18.0"
-val OPENTELEMETRY_ALPHA_VERSION = "1.18.0-alpha"
-val springBootVersion = "2.7.4"
+val OPENTELEMETRY_VERSION = "1.19.0"
+val OPENTELEMETRY_ALPHA_VERSION = "1.19.2-alpha"
+val springBootVersion = "2.7.5"
+val junitJupiterVersion = "5.9.1"
 
 dependencies {
     implementation(project(":instrumentation:common"))
@@ -33,8 +34,8 @@ dependencies {
     compileOnly("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation("javax.validation:validation-api:2.0.1.Final")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-aop:$springBootVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
