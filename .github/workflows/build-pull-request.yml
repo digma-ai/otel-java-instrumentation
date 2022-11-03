@@ -29,26 +29,3 @@ jobs:
         run: |
           ./gradlew clean
           ./gradlew build
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: libs
-          path: ./build/libs/*
-          retention-days: 5
-
-      - name: Upload Artifact - Lib
-        uses: actions/upload-artifact@v3
-        with:
-          name: libs
-          path: ./build/libs/*
-          retention-days: 5
-
-      - name: Upload Artifact - various reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: various-reports
-          path: |
-            ./build/test-results/*
-            ./build/reports/*
-          retention-days: 5
