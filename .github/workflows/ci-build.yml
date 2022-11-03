@@ -1,4 +1,4 @@
-name: Build pull request
+name: Build main and pull requests
 
 on:
   push:
