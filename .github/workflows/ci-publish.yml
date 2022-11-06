@@ -36,6 +36,7 @@ jobs:
         run: |
           ./scripts/update_version.sh ${{ steps.tag.outputs.tag }}
           cat version.gradle.kts
+          echo "GITHUB_REF_NAME = $GITHUB_REF_NAME"
           git branch --show-current
           git status
 
