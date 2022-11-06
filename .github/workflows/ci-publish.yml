@@ -38,8 +38,9 @@ jobs:
           cat version.gradle.kts
 
       - name: Commit version file
-        uses: actions/checkout@v3
         run: |
+          curr_branch = `git branch --show-current`
+          git checkout $curr_branch
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add version.gradle.kts
