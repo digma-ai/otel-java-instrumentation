@@ -36,10 +36,12 @@ jobs:
         run: |
           ./scripts/update_version.sh ${{ steps.tag.outputs.tag }}
           cat version.gradle.kts
+          git branch --show-current
+          git status
 
       - name: Commit version file
         run: |
-          curr_branch = `git branch --show-current`
+          curr_branch="`git branch --show-current`"
           git checkout $curr_branch
           git config user.name github-actions
           git config user.email github-actions@github.com
