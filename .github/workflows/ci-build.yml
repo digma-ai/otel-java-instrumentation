@@ -22,11 +22,11 @@ jobs:
 
       - name: display env vars
         run: |
-          echo dollar {2github.workspace}2 = ${{ github.workspace }}
-          echo dollar GITHUB_WORKSPACE     = $GITHUB_WORKSPACE
-          echo dollar {GITHUB_WORKSPACE}   = ${GITHUB_WORKSPACE}
-          echo dollar {2GITHUB_WORKSPACE2} = ${{GITHUB_WORKSPACE}}
-          echo dollar GITHUB_ENV           = $GITHUB_ENV
+          echo "dollar {2github.workspace = ${{ github.workspace }} "
+          echo "dollar GITHUB_WORKSPACE   = $GITHUB_WORKSPACE "
+          echo "dollar {1GITHUB_WORKSPACE = ${GITHUB_WORKSPACE} "
+          echo "dollar {2GITHUB_WORKSPACE = ${{GITHUB_WORKSPACE}} "
+          echo "dollar GITHUB_ENV         = $GITHUB_ENV "
 
       - name: Set up JDK 11
         uses: actions/setup-java@v3
