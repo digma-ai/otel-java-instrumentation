@@ -23,9 +23,11 @@ jobs:
 
       - name: Echo vars
         run: |
-          echo "GITHUB_REF   = ${GITHUB_REF}"
-          echo "GITHUB_REF## = ${GITHUB_REF##*/}"
+          echo "GITHUB_REF     =  ${GITHUB_REF}"
+          echo "GITHUB_REF##   = ${GITHUB_REF##*/}"
           echo "extract_branch = ${{ steps.extract_branch.outputs.branch }}"
+          echo "GITHUB_BASE_REF   = ${GITHUB_BASE_REF}"
+          echo "GITHUB_TARGET_REF = ${GITHUB_TARGET_REF}"
 
       - name: GIT Checkout
         uses: actions/checkout@v3
