@@ -35,11 +35,13 @@ jobs:
       - name: Gradle clean
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: clean
-          arguments: --parallel
+          arguments: |
+            --parallel
+            clean
 
       - name: Gradle build
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: build
-          arguments: --parallel
+          arguments: |
+            --parallel
+            build
