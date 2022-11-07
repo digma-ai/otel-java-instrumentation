@@ -36,11 +36,14 @@ jobs:
         run: |
           ./scripts/update_version.sh ${{ steps.tag.outputs.tag }}
 
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
       - name: Publish with Gradle
         env:
           EV_ossrhUsername: asher-digma
           EV_ossrhPassword: ${{ secrets.DIGMA_ASHER_OSSRH_PASSWORD }}
         run: |
           ./gradlew clean
-          ./gradlew publish -Psigning.secretKeyRingFile=xtra/security/secr-key-ring-file-gpg.bin -Psigning.password=${{ secrets.DIGMA_GPG_SIGNING_PASSWORD }} -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
+          ./gradlew publish -Psigning.secretKeyRingFile=`pwd`/xtra/security/secr-key-ring-file-gpg.bin -Psigning.password=${{ secrets.DIGMA_GPG_SIGNING_PASSWORD }} -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
 
