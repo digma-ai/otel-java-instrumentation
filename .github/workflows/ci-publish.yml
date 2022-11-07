@@ -25,6 +25,12 @@ jobs:
           java-version: '11'
           distribution: temurin
 
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
       - name: Get tag
         id: tag
         uses: dawidd6/action-get-tag@v1
@@ -35,9 +41,6 @@ jobs:
       - name: update version in version.gradle.kts
         run: |
           ./scripts/update_version.sh ${{ steps.tag.outputs.tag }}
-
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
 
       # make sure that "gradlew publish" runs in NO parallel mode, since it might create multiple repositories on the OSS server
 
