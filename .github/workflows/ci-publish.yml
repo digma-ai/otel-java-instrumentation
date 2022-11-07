@@ -42,5 +42,5 @@ jobs:
           EV_ossrhPassword: ${{ secrets.DIGMA_OSSRH_PASSWORD }}
         run: |
           ./gradlew clean
-          ./gradlew publish --parallel -Psigning.secretKeyRingFile=xtra/security/secr-key-ring-file-gpg.bin -Psigning.password=${{ secrets.DIGMA_GPG_SIGNING_PASSWORD }} -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
+          ./gradlew publish -Psigning.secretKeyRingFile=xtra/security/secr-key-ring-file-gpg.bin -Psigning.password=${{ secrets.DIGMA_GPG_SIGNING_PASSWORD }} -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
 
