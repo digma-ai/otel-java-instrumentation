@@ -39,7 +39,7 @@ jobs:
       - name: Publish with Gradle
         env:
           EV_ossrhUsername: asher-digma
-          EV_ossrhPassword: ${{ secrets.DIGMA_OSSRH_PASSWORD }}
+          EV_ossrhPassword: ${{ secrets.DIGMA_ASHER_OSSRH_PASSWORD }}
         run: |
           ./gradlew clean
           ./gradlew publish -Psigning.secretKeyRingFile=xtra/security/secr-key-ring-file-gpg.bin -Psigning.password=${{ secrets.DIGMA_GPG_SIGNING_PASSWORD }} -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
