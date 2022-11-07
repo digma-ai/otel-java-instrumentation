@@ -26,13 +26,18 @@ jobs:
           java-version: '11'
           distribution: temurin
 
+      # using wrapper version (supposed to be 7.5.1)
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: wrapper
 
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1.0.5
+      - name: Gradle clean
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments:  --parallel  clean
 
-      - name: Build with Gradle
-        run: |
-          ./gradlew clean
-          ./gradlew build
+      - name: Gradle build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments:  --parallel  build
