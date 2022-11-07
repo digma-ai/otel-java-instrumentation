@@ -2,9 +2,6 @@ plugins {
     id("idea")
 }
 
-description = "Digma OpenTelemetry instrumentations for Java"
+apply(from = "version.gradle.kts")
 
-allprojects {
-    group = "io.github.digma-ai"
-    version = "0.2.1-SNAPSHOT"
-}
+description = "Digma OpenTelemetry instrumentations for Java"
