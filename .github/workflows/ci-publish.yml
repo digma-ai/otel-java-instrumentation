@@ -16,6 +16,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Echo vars
+        run: |
+          echo "GITHUB_REF   = ${GITHUB_REF}"
+          echo "GITHUB_REF## = ${GITHUB_REF##*/}"
+          echo "extract_branch = ${{ steps.extract_branch.outputs.branch }}"
+
       - name: GIT Checkout
         uses: actions/checkout@v3
 
