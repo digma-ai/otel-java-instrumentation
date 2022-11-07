@@ -28,11 +28,18 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+        with:
+        #                 wrapper = 7.5.1
+          gradle-version: wrapper
 
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1.0.5
+      - name: Gradle clean
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: clean
+          arguments: --parallel
 
-      - name: Build with Gradle
-        run: |
-          ./gradlew clean
-          ./gradlew build
+      - name: Gradle build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+          arguments: --parallel
