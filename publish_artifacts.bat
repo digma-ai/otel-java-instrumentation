@@ -9,7 +9,8 @@ rem ----------------------------------------------------------------------------
 
 set scriptDir=%~dp0
 
-gradlew publish --parallel ^
+rem make sure that publish runs in NO parallel mode, since it might create multiple repositories on the OSS server
+gradlew publish --no-parallel ^
  -Psigning.secretKeyRingFile=%scriptDir%/xtra/security/secr-key-ring-file-gpg.bin ^
  -Psigning.password=%EV_signing_password% ^
  -Psigning.keyId=%EV_signing_keyId%

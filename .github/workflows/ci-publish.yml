@@ -39,11 +39,12 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
+      # make sure that "gradlew publish" runs in NO parallel mode, since it might create multiple repositories on the OSS server
+
       - name: Publish with Gradle
         env:
           EV_ossrhUsername: asher-digma
           EV_ossrhPassword: ${{ secrets.DIGMA_ASHER_OSSRH_PASSWORD }}
         run: |
-          ./gradlew clean
-          ./gradlew publish -Psigning.secretKeyRingFile=`pwd`/xtra/security/secr-key-ring-file-gpg.bin -Psigning.password=${{ secrets.DIGMA_GPG_SIGNING_PASSWORD }} -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
-
+          ./gradlew clean   --parallel
+          ./gradlew publish --no-parallel -Psigning.secretKeyRingFile=`pwd`/xtra/security/secr-key-ring-file-gpg.bin -Psigning.password=${{ secrets.DIGMA_GPG_SIGNING_PASSWORD }} -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
