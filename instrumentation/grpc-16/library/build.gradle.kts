@@ -26,6 +26,8 @@ dependencies {
     implementation(project(":instrumentation:common"))
     implementation("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
     compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:${OPENTELEMETRY_VERSION}")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:${OPENTELEMETRY_VERSION}")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:${OPENTELEMETRY_ALPHA_VERSION}")
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
     compileOnly("io.grpc:grpc-core:$grpcVersion")
 
