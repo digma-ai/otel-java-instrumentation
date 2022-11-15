@@ -38,7 +38,6 @@ rootProject.name = "digma-otel-java-instrumentation"
 //include(":instrumentation:spring:spring-webmvc-5.3:library")
 include(":instrumentation:common")
 include(":instrumentation:spring:spring-boot-autoconfigure")
-include(":instrumentation:grpc-16:javaagent")
 include(":instrumentation:grpc-16:library")
 //include(":instrumentation:spring:starters:spring-boot-starter")
 
