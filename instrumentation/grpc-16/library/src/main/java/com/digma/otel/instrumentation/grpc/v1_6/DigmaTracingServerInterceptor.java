@@ -40,6 +40,14 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
     private final ConcurrentMap<String, ClassAndMethod> mapMethodFullName2ServiceImpl =
             new ConcurrentHashMap<>(32);
 
+    private DigmaTracingServerInterceptor() {
+        super();
+    }
+
+    public static DigmaTracingServerInterceptor create() {
+        return new DigmaTracingServerInterceptor();
+    }
+
     @Override
     public <REQUEST, RESPONSE> ServerCall.Listener<REQUEST> interceptCall(
             ServerCall<REQUEST, RESPONSE> call,
