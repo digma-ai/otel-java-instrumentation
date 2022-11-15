@@ -6,7 +6,6 @@ import io.grpc.MethodDescriptor;
 import io.grpc.ServerCall;
 import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
-import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod;
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
@@ -17,14 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
 
-import static io.opentelemetry.api.common.AttributeKey.stringKey;
-
 public final class DigmaTracingServerInterceptor implements ServerInterceptor {
 
     private static final Logger logger = Logger.getLogger(DigmaTracingServerInterceptor.class.getName());
 
-    private static final AttributeKey<String> CODE_FULL_METHOD_NAME = stringKey("code.full.method.name");
-    private static final Class<UnparseableClass> UNKNOWN_CLASS = UnparseableClass.class;
     private static final String UNKNOWN_METHOD_NAME = "<UnparseableMethodName>";
 
     /**
@@ -65,7 +60,6 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
         }
 
         Span currentSpan = Span.current();
-        currentSpan.setAttribute(CODE_FULL_METHOD_NAME, fullMethodName);
         currentSpan.setAttribute(SemanticAttributes.CODE_NAMESPACE, classAndMethod.declaringClass().getName());
         currentSpan.setAttribute(SemanticAttributes.CODE_FUNCTION, classAndMethod.methodName());
 
@@ -95,11 +89,19 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
         return javaMethodName;
     }
 
+    /**
+     * extractClassOfServiceImpl.
+     * first makes sure its one of the holder classes.
+     * second, makes sure that "method" field references MethodHandles,
+     * which is private class of generated Service class,
+     * for example: {@link io.grpc.health.v1.HealthGrpc.MethodHandlers}.
+     */
     private static <REQUEST, RESPONSE> Class<?> extractClassOfServiceImpl(ServerCallHandler<REQUEST, RESPONSE> next) {
         Class<? extends ServerCallHandler> classOfNext = next.getClass();
         String classNameOfNext = classOfNext.getName();
         if (!ClassesWhichHoldTheActualImpl.contains(classNameOfNext)) {
-            return UNKNOWN_CLASS;
+            logger.severe(String.format("Cannot parse service impl class since holder class '%s' is not one of the expected ones. maybe this interceptor is not the last one?", classNameOfNext));
+            return DigmaUnparseableClassSinceHolderNotExpected.class;
         }
 
         Field fieldOfMethod = declaredField(classOfNext, "method", true);
@@ -108,8 +110,10 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
         Class<?> classOfMh = potentialMethodHandlers.getClass();
         String classNameOfMh = classOfMh.getName();
 
+        // MethodHandlers are
         if (!classNameOfMh.endsWith("MethodHandlers")) {
-            return UNKNOWN_CLASS;
+            logger.severe(String.format("Cannot parse service impl class since potential class '%s' is none standard MethodHandlers", classNameOfMh));
+            return DigmaUnparseableClassSinceNoneStandardMethodHandlers.class;
         }
 
         // taking the serviceImpl
@@ -151,7 +155,10 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
     }
 
     // used when could not parse the class
-    static class UnparseableClass {
+    static class DigmaUnparseableClassSinceNoneStandardMethodHandlers {
+    }
+
+    static class DigmaUnparseableClassSinceHolderNotExpected {
     }
 
 }
