@@ -1,5 +1,6 @@
 package com.digma.otel.instrumentation.grpc.v1_6;
 
+import com.google.common.annotations.VisibleForTesting;
 import io.grpc.Metadata;
 import io.grpc.MethodDescriptor;
 import io.grpc.ServerCall;
@@ -69,12 +70,21 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
      * @param fullMethodName , value for example: helloworld.Greeter/SayHello
      * @return java method name (first letter is lower case). value for example: sayHello
      */
-    private static String extractJavaMethodName(String fullMethodName) {
+    @VisibleForTesting
+    public static String extractJavaMethodName(String fullMethodName) {
         int indexOfSlash = fullMethodName.lastIndexOf('/');
         if (indexOfSlash < 0) {
             return UNKNOWN_METHOD_NAME; // think of throwing some exception
         }
-        return fullMethodName.substring(indexOfSlash + 1);
+        String methodPart = fullMethodName.substring(indexOfSlash + 1);
+        char firstCharAsLower = Character.toLowerCase(methodPart.charAt(0));
+        String javaMethodName;
+        if (methodPart.length() > 1) {
+            javaMethodName = firstCharAsLower + methodPart.substring(1);
+        } else {
+            javaMethodName = String.valueOf(firstCharAsLower);
+        }
+        return javaMethodName;
     }
 
     private static <REQUEST, RESPONSE> Class<?> extractClassOfServiceImpl(ServerCallHandler<REQUEST, RESPONSE> next) {
