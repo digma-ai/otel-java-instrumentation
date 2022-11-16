@@ -48,11 +48,11 @@ The instrumentation library provides the implementation of `ServerInterceptor` t
 
 ```java
 // For server-side, attatch the Digma interceptor to your service, to be affective **after** otel's original one:
-ServerServiceDefinition configureServerInterceptor(Opentelemetry opentelemetry,ServerServiceDefinition serviceDefinition){
-        GrpcTelemetry grpcTelemetry=GrpcTelemetry.create(opentelemetry);
-        return ServiceInterceptors.intercept(serviceDefinition,
-        DigmaTracingServerInterceptor.create(), // acts second
-        grpcTelemetry.newServerInterceptor()    // acts first
-        );
-        }
+ServerServiceDefinition configureServerInterceptor(Opentelemetry opentelemetry,ServerServiceDefinition serviceDefinition) {
+  GrpcTelemetry grpcTelemetry=GrpcTelemetry.create(opentelemetry);
+  return ServiceInterceptors.intercept(serviceDefinition,
+    DigmaTracingServerInterceptor.create(), // acts second
+    grpcTelemetry.newServerInterceptor()    // acts first
+    );
+}
 ```
