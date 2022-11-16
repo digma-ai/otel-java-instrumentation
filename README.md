@@ -16,4 +16,6 @@ existing [OpenTelemetry Java Instrumentation](https://github.com/open-telemetry/
 
 ## Digma instrumentations
 
-Spring Boot [see more details](instrumentation/spring/spring-boot-autoconfigure/README.md)
+Spring Boot - [go to docs](instrumentation/spring/spring-boot-autoconfigure/README.md)
+
+gRPC - [go to docs](instrumentation/grpc-16/README.md)
