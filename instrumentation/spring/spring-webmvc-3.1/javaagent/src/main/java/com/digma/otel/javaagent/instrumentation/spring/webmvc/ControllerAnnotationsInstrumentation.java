@@ -1,11 +1,7 @@
-/*
- * Copyright The OpenTelemetry Authors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 package com.digma.otel.javaagent.instrumentation.spring.webmvc;
 
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.instrumentation.api.instrumenter.LocalRootSpan;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
@@ -58,11 +54,11 @@ public class ControllerAnnotationsInstrumentation implements TypeInstrumentation
                 @Advice.Origin String methodFqn) {
 
             Class<?> classOfTarget = target.getClass();
-            System.out.println("CONTR-ADVICE-4:entered, targetClass=" + classOfTarget.getName() + ", methodName=" + method.getName());
-            Span currentSpan = Span.current();
+            // taking local root span (servlet of tomcat or jetty) and set the code attributes on it
+            Span localRootSpan = LocalRootSpan.current();
 
-            currentSpan.setAttribute(SemanticAttributes.CODE_NAMESPACE, classOfTarget.getName());
-            currentSpan.setAttribute(SemanticAttributes.CODE_FUNCTION, method.getName());
+            localRootSpan.setAttribute(SemanticAttributes.CODE_NAMESPACE, classOfTarget.getName());
+            localRootSpan.setAttribute(SemanticAttributes.CODE_FUNCTION, method.getName());
         }
 
         @Advice.OnMethodExit(
