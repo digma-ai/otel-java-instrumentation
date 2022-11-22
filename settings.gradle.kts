@@ -13,6 +13,7 @@ pluginManagement {
 
   repositories {
     mavenCentral()
+    gradlePluginPortal()
   }
 }
 
@@ -40,6 +41,7 @@ include(":instrumentation:common")
 include(":instrumentation:spring:spring-boot-autoconfigure")
 include(":instrumentation:spring:spring-webmvc-3.1:javaagent")
 include(":instrumentation:grpc-16:library")
+include(":agent-extension")
 //include(":instrumentation:spring:starters:spring-boot-starter")
 
 // benchmark
