@@ -67,7 +67,8 @@ dependencies {
     Only dependencies added to `implementation` configuration will be picked up by Shadow plugin
     and added to the resulting jar for our extension's distribution.
      */
-    implementation 'io.github.digma-ai:digma-otel-instr-common:0.2.16'
+    implementation project(':instrumentation:common') // <==> io.github.digma-ai:digma-otel-instr-common
+
 
     //All dependencies below are only for tests
     testImplementation("org.testcontainers:testcontainers:1.17.5")
