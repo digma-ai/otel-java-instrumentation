@@ -13,6 +13,8 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
+base.archivesName.set('digma-agent-extension')
+
 ext {
     versions = [
             // these lines are managed by .github/scripts/update-sdk-version.sh
