@@ -13,6 +13,7 @@ pluginManagement {
 
   repositories {
     mavenCentral()
+    gradlePluginPortal()
   }
 }
 
@@ -39,6 +40,7 @@ rootProject.name = "digma-otel-java-instrumentation"
 include(":instrumentation:common")
 include(":instrumentation:spring:spring-boot-autoconfigure")
 include(":instrumentation:grpc-16:library")
+include(":agent-extension")
 //include(":instrumentation:spring:starters:spring-boot-starter")
 
 // benchmark
