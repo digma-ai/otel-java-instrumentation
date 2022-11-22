@@ -1,4 +1,4 @@
-package com.digma.otel.javaagent.instrumentation.spring.webmvc;
+package com.digma.otel.javaagent.extension.instrumentation;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.api.instrumenter.LocalRootSpan;
