@@ -1,5 +1,6 @@
 plugins {
     id "java"
+    id "maven-publish"
 
     /*
     Instrumentation agent extension mechanism expects a single jar containing everything required
@@ -13,7 +14,10 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
-base.archivesName.set('digma-agent-extension')
+def vArtifactId = "digma-otel-agent-extension"
+project.description = "Digma OpenTelemetry agent extension"
+
+base.archivesName.set(vArtifactId)
 
 ext {
     versions = [
@@ -123,4 +127,17 @@ tasks {
     }
 
     assemble.dependsOn(shadowJar)
+}
+
+publishing {
+    publications {
+        DigmaOtelAgentExtension(MavenPublication) {
+            artifactId = vArtifactId
+
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
 }
