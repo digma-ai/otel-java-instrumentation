@@ -1,5 +1,6 @@
 plugins {
     id "java"
+    id "maven-publish"
 
     /*
     Instrumentation agent extension mechanism expects a single jar containing everything required
@@ -123,4 +124,15 @@ tasks {
     }
 
     assemble.dependsOn(shadowJar)
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
 }
