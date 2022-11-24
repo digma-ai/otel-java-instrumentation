@@ -24,15 +24,16 @@ val junitJupiterVersion = "5.9.1"
 
 dependencies {
     implementation(project(":instrumentation:common"))
-    implementation("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
-    compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:${OPENTELEMETRY_VERSION}")
-    compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
-    compileOnly("io.opentelemetry.instrumentation:opentelemetry-spring-boot:${OPENTELEMETRY_ALPHA_VERSION}")
+
+    api("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
+    api("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:${OPENTELEMETRY_VERSION}")
+    api("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
+    api("io.opentelemetry.instrumentation:opentelemetry-spring-boot:${OPENTELEMETRY_ALPHA_VERSION}")
 
     runtimeOnly("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
-    compileOnly("org.springframework.boot:spring-boot-starter-aop:$springBootVersion")
-    compileOnly("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-    implementation("javax.validation:validation-api:2.0.1.Final")
+    api("org.springframework.boot:spring-boot-starter-aop:$springBootVersion")
+    api("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    api("javax.validation:validation-api:2.0.1.Final")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")

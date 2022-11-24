@@ -22,9 +22,8 @@ val OPENTELEMETRY_ALPHA_VERSION = "1.19.2-alpha"
 val junitJupiterVersion = "5.9.1"
 
 dependencies {
-    implementation("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
-    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
-    implementation("javax.validation:validation-api:2.0.1.Final")
+    api("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
+    api("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
