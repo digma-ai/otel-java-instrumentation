@@ -1,4 +1,4 @@
-package com.digma.otel.javaagent.extension.instrumentation;
+package com.digma.otel.javaagent.extension.instrumentation.spring.webmvc;
 
 import com.google.auto.service.AutoService;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;

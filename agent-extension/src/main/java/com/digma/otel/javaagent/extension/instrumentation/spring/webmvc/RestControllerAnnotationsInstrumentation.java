@@ -1,4 +1,4 @@
-package com.digma.otel.javaagent.extension.instrumentation;
+package com.digma.otel.javaagent.extension.instrumentation.spring.webmvc;
 
 import com.digma.otel.javaagent.extension.instrumentation.common.DigmaServerAdvice;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
