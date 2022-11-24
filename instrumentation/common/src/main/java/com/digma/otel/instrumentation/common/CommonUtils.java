@@ -21,6 +21,9 @@ public final class CommonUtils {
      * <p>More specifically, this method returns {@code true} if the
      * {@code String} is not {@code null}, its length is greater than 0,
      * and it contains at least one non-whitespace character.
+     *
+     * @param str - input
+     * @return {@code true} if the {@code String} is not {@code null}, its
      */
     public static boolean hasText(CharSequence str) {
         return (str != null && containsText(str));
