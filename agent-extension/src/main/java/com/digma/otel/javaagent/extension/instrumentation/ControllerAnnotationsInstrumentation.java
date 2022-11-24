@@ -12,6 +12,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 import java.lang.reflect.Method;
 
 import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasClassesNamed;
+import static net.bytebuddy.matcher.ElementMatchers.inheritsAnnotation;
 import static net.bytebuddy.matcher.ElementMatchers.isAnnotatedWith;
 import static net.bytebuddy.matcher.ElementMatchers.isMethod;
 import static net.bytebuddy.matcher.ElementMatchers.named;
@@ -23,35 +24,40 @@ public class ControllerAnnotationsInstrumentation implements TypeInstrumentation
         return hasClassesNamed("org.springframework.stereotype.Controller");
     }
 
+    /**
+     * typeMatcher.
+     * inheritsAnnotation("Controller") should catch and support "org.springframework.web.bind.annotation.RestController" as well
+     */
     @Override
     public ElementMatcher<TypeDescription> typeMatcher() {
-        return isAnnotatedWith(named("org.springframework.stereotype.Controller"));
+        return isAnnotatedWith(named("org.springframework.stereotype.Controller"))
+            .or(inheritsAnnotation(named("org.springframework.stereotype.Controller")));
     }
 
     @Override
     public void transform(TypeTransformer transformer) {
         transformer.applyAdviceToMethod(
-                isMethod().and(
-                        isAnnotatedWith(namedOneOf(
-                                "org.springframework.web.bind.annotation.GetMapping",
-                                "org.springframework.web.bind.annotation.PostMapping",
-                                "org.springframework.web.bind.annotation.DeleteMapping",
-                                "org.springframework.web.bind.annotation.PutMapping",
-                                "org.springframework.web.bind.annotation.PatchMapping"
-                        ))),
-                ControllerAnnotationsInstrumentation.class.getName() + "$ControllerAnnotationsAdvice");
+            isMethod().and(
+                isAnnotatedWith(namedOneOf(
+                    "org.springframework.web.bind.annotation.GetMapping",
+                    "org.springframework.web.bind.annotation.PostMapping",
+                    "org.springframework.web.bind.annotation.DeleteMapping",
+                    "org.springframework.web.bind.annotation.PutMapping",
+                    "org.springframework.web.bind.annotation.PatchMapping"
+                ))),
+            ControllerAnnotationsInstrumentation.class.getName() + "$ControllerAnnotationsAdvice");
     }
 
     @SuppressWarnings("unused")
     public static class ControllerAnnotationsAdvice {
 
         @Advice.OnMethodEnter(
-                // suppress = Throwable.class
+            // suppress = Throwable.class
         )
         public static void methodEnter(
-                @Advice.This Object target,
-                @Advice.Origin Method method,
-                @Advice.Origin String methodFqn) {
+            @Advice.This Object target,
+            @Advice.Origin Method method,
+            @Advice.Origin String methodFqn) {
 
             Class<?> classOfTarget = target.getClass();
             // taking local root span (servlet of tomcat or jetty) and set the code attributes on it
@@ -62,7 +68,7 @@ public class ControllerAnnotationsInstrumentation implements TypeInstrumentation
         }
 
         @Advice.OnMethodExit(
-                // suppress = Throwable.class
+            // suppress = Throwable.class
         )
         public static void methodExit() {
         }
