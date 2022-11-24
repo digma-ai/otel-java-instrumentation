@@ -14,19 +14,15 @@ import static net.bytebuddy.matcher.ElementMatchers.named;
 import static net.bytebuddy.matcher.ElementMatchers.namedOneOf;
 
 public class ControllerAnnotationsInstrumentation implements TypeInstrumentation {
+
     @Override
     public ElementMatcher<ClassLoader> classLoaderOptimization() {
         return hasClassesNamed("org.springframework.stereotype.Controller");
     }
 
-    /**
-     * typeMatcher.
-     * inheritsAnnotation("Controller") should catch and support "org.springframework.web.bind.annotation.RestController" as well
-     */
     @Override
     public ElementMatcher<TypeDescription> typeMatcher() {
-        return isAnnotatedWith(named("org.springframework.stereotype.Controller"))
-            .or(inheritsAnnotation(named("org.springframework.stereotype.Controller")));
+        return inheritsAnnotation(named("org.springframework.stereotype.Controller"));
     }
 
     @Override
