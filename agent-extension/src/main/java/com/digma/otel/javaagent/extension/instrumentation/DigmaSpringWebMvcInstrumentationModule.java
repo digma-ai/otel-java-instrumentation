@@ -16,7 +16,7 @@ public class DigmaSpringWebMvcInstrumentationModule extends InstrumentationModul
 
     @Override
     public int order() {
-        return 111; // should come after original instrumentations
+        return 111; // should be triggered after original instrumentations
     }
 
     @Override

@@ -17,6 +17,11 @@ public class DigmaJaxrsInstrumentationModule extends InstrumentationModule {
         super("digma-jaxrs-2.0");
     }
 
+    @Override
+    public int order() {
+        return 111; // should be triggered after original instrumentations
+    }
+
     // require jax-rs 2
     @Override
     public ElementMatcher.Junction<ClassLoader> classLoaderMatcher() {
