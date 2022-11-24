@@ -7,6 +7,8 @@ import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 @AutoService(InstrumentationModule.class)
 public class DigmaSpringWebMvcInstrumentationModule extends InstrumentationModule {
 
@@ -21,6 +23,9 @@ public class DigmaSpringWebMvcInstrumentationModule extends InstrumentationModul
 
     @Override
     public List<TypeInstrumentation> typeInstrumentations() {
-        return Collections.singletonList(new ControllerAnnotationsInstrumentation());
+        return Collections.unmodifiableList(asList(
+            new ControllerAnnotationsInstrumentation(),
+            new RestControllerAnnotationsInstrumentation()
+        ));
     }
 }
