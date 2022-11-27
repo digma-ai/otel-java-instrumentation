@@ -40,6 +40,11 @@ java -javaagent:path/to/opentelemetry-javaagent.jar \
 The extension supports overriding default values through environment variables or SystemProperties.
 here are the available config entries:
 
+| Description                                                                                                                    | Environment Variable  | System Property       | default value        |
+|--------------------------------------------------------------------------------------------------------------------------------|-----------------------|-----------------------|----------------------|
+| Allows defining environment name. <br>values for example: PROD, CI                                                             | DEPLOYMENT_ENV        | DEPLOYMENT_ENV        | <my-hostname>[local] |
+| Package prefixes of you application/service. value is comma separated. <br>value for example: com.mycomp.myservice,aaa.bbb.ccc | CODE_PACKAGE_PREFIXES | CODE_PACKAGE_PREFIXES | <empty>              |
+
 ## Origins
 
 This OpenTelemetry agent-extension is based on
