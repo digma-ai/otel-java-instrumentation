@@ -13,6 +13,9 @@ plugins {
     See https://imperceptiblethoughts.com/shadow/ for more details about Shadow plugin.
      */
     id "com.github.johnrengelman.shadow" version "7.1.2"
+
+    id "io.opentelemetry.instrumentation.muzzle-generation" version "1.20.1-alpha"
+    id "io.opentelemetry.instrumentation.muzzle-check" version "1.20.1-alpha"
 }
 
 def vArtifactId = "digma-otel-agent-extension"
@@ -27,8 +30,8 @@ ext {
             opentelemetryAlpha         : "1.20.1-alpha",
 
             // these lines are managed by .github/scripts/update-version.sh
-            opentelemetryJavaagent     : "1.20.0",
-            opentelemetryJavaagentAlpha: "1.20.0-alpha",
+            opentelemetryJavaagent     : "1.20.1",
+            opentelemetryJavaagentAlpha: "1.20.1-alpha",
 
             junit                      : "5.9.1",
 
@@ -100,6 +103,12 @@ dependencies {
     //Various libraries to test their instrumentations
     testImplementation("org.springframework:spring-context:${versions.springFramework}")
     testImplementation("org.springframework:spring-web:${versions.springFramework}")
+
+    //TODO remove when start using io.opentelemetry.instrumentation.javaagent-instrumentation plugin
+    add("codegen", "io.opentelemetry.javaagent:opentelemetry-javaagent-tooling:${versions.opentelemetryJavaagentAlpha}")
+    add("muzzleBootstrap", "io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations-support:${versions.opentelemetryJavaagentAlpha}")
+    add("muzzleTooling", "io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api:${versions.opentelemetryJavaagentAlpha}")
+    add("muzzleTooling", "io.opentelemetry.javaagent:opentelemetry-javaagent-tooling:${versions.opentelemetryJavaagentAlpha}")
 }
 
 task extendedAgent(type: Jar) {
