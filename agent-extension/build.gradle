@@ -21,6 +21,19 @@ plugins {
 def vArtifactId = "digma-otel-agent-extension"
 project.description = "Digma OpenTelemetry agent extension"
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+    withJavadocJar()
+    withSourcesJar()
+}
+
+shadowJar {
+    // classifier = null <==> skips the file extension of "-all"
+    classifier = null
+}
+
 base.archivesName.set(vArtifactId)
 
 ext {
