@@ -139,6 +139,21 @@ tasks {
     assemble.dependsOn(shadowJar)
 }
 
+jar {
+    manifest {
+        attributes(
+                'Implementation-Title': "Agent extension for OpenTelemetry by Digma",
+                'Implementation-Vendor': "Digma",
+                'Implementation-Version': version,
+                'Built-By': System.properties['user.name'],
+                'Build-Timestamp': java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC).format(java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME),
+                'Created-By': "Gradle ${gradle.gradleVersion}",
+                'Build-Jdk': "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+                'Build-OS': "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}"
+        )
+    }
+}
+
 publishing {
     publications {
         DigmaOtelAgentExtension(MavenPublication) {
