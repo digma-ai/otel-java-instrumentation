@@ -34,7 +34,7 @@ class SpringBootIntegrationTest extends IntegrationTest {
         stopTarget();
     }
 
-    //  @Test
+    @Test
     public void extensionsAreLoadedFromFolder() throws IOException, InterruptedException {
         startTarget("/");
 
@@ -43,7 +43,7 @@ class SpringBootIntegrationTest extends IntegrationTest {
         stopTarget();
     }
 
-    //  @Test
+    @Test
     public void extensionsAreLoadedFromJavaagent() throws IOException, InterruptedException {
         startTargetWithExtendedAgent();
 
