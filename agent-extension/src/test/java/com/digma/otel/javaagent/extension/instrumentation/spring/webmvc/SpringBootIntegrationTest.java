@@ -4,7 +4,6 @@ import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
 import io.opentelemetry.proto.trace.v1.Span;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -12,7 +11,8 @@ import java.util.Collection;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
-import static com.digma.otel.javaagent.extension.instrumentation.spring.webmvc.TracesLogic.findRootSpan;
+import static com.digma.otel.javaagent.extension.instrumentation.common.tests.AssertionUtil.assertThatAttribute;
+import static com.digma.otel.javaagent.extension.instrumentation.common.tests.TracesLogic.findRootSpan;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SpringBootIntegrationTest extends IntegrationTest {
@@ -69,13 +69,6 @@ class SpringBootIntegrationTest extends IntegrationTest {
 
         final Span rootSpan = findRootSpan(traces);
         assertThat(rootSpan.getName()).as("root span name").isEqualTo("/greeting");
-
-        Assertions.assertEquals(1, countSpansByName(traces, "/greeting"));
-        Assertions.assertEquals(0, countSpansByName(traces, "WebController.greeting"));
-        Assertions.assertEquals(1, countSpansByName(traces, "WebController.withSpan"));
-        Assertions.assertEquals(2, countSpansByAttributeValue(traces, "custom", "demo"));
-        Assertions.assertNotEquals(
-            0, countResourcesByValue(traces, "telemetry.auto.version", currentAgentVersion));
-        Assertions.assertNotEquals(0, countResourcesByValue(traces, "custom.resource", "demo"));
+        assertThatAttribute(rootSpan, "http.route").isEqualTo("/greeting");
     }
 }

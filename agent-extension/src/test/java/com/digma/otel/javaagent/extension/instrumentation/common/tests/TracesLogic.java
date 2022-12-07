@@ -1,11 +1,14 @@
-package com.digma.otel.javaagent.extension.instrumentation.spring.webmvc;
+package com.digma.otel.javaagent.extension.instrumentation.common.tests;
 
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
+import io.opentelemetry.proto.common.v1.KeyValue;
 import io.opentelemetry.proto.trace.v1.Span;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,4 +37,16 @@ public final class TracesLogic {
         }
         return spans.iterator().next();
     }
+
+    @Nullable
+    public static String attributeValue(Span span, String attributeName) {
+        Optional<KeyValue> attributeOpt = span.getAttributesList().stream()
+            .filter(kv -> kv.getKey().equals(attributeName))
+            .findFirst();
+        if (attributeOpt.isPresent()) {
+            return attributeOpt.get().getValue().getStringValue();
+        }
+        return null;
+    }
+
 }
