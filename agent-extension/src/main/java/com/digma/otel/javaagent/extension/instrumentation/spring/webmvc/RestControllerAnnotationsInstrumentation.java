@@ -30,6 +30,7 @@ public class RestControllerAnnotationsInstrumentation implements TypeInstrumenta
         transformer.applyAdviceToMethod(
             isMethod().and(
                 isAnnotatedWith(namedOneOf(
+                    "org.springframework.web.bind.annotation.RequestMapping",
                     "org.springframework.web.bind.annotation.GetMapping",
                     "org.springframework.web.bind.annotation.PostMapping",
                     "org.springframework.web.bind.annotation.DeleteMapping",
