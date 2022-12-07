@@ -15,8 +15,17 @@ import static com.digma.otel.javaagent.extension.instrumentation.common.tests.Tr
 import static com.digma.otel.javaagent.extension.instrumentation.common.tests.TracesLogic.findRootSpan;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-class SpringBootIntegrationTest extends IntegrationTest {
+/**
+ * SpringWebMvcIntegrationTest.
+ * tests that attributes 'code.function' and 'code.namespace' were added to root span based on the Spring WebMVC Controllers.
+ * <p>
+ * Based the tests on:
+ *
+ * @see <a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/examples/extension/src/test/java/com/example/javaagent/smoketest">Example tests for JavaAgent Extension</a>
+ * also relying on docker images as created via OTEL smoke tests:
+ * @see <a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/smoke-tests/images">OTEL smoke test images</a>
+ */
+class SpringWebMvcIntegrationTest extends IntegrationTest {
 
     @Override
     protected String getTargetImage(int jdk) {
