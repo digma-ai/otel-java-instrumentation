@@ -15,6 +15,7 @@ import static com.digma.otel.javaagent.extension.instrumentation.common.tests.Tr
 import static com.digma.otel.javaagent.extension.instrumentation.common.tests.TracesLogic.findRootSpan;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 class SpringBootIntegrationTest extends IntegrationTest {
 
     @Override
@@ -72,5 +73,8 @@ class SpringBootIntegrationTest extends IntegrationTest {
 
         // actual extension checks
         String currentExtensionVersion = TestingUtils.readVersion(extensionPath);
+
+        assertThatAttribute(rootSpan, "code.namespace").isEqualTo("io.opentelemetry.smoketest.springboot.controller.WebController");
+        assertThatAttribute(rootSpan, "code.function").isEqualTo("greeting");
     }
 }
