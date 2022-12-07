@@ -49,4 +49,16 @@ public final class TracesLogic {
         return null;
     }
 
+    public static int countResourcesByValue(Collection<ExportTraceServiceRequest> traces, String resourceName, String value) {
+        return (int)
+            traces.stream()
+                .flatMap(it -> it.getResourceSpansList().stream())
+                .flatMap(it -> it.getResource().getAttributesList().stream())
+                .filter(
+                    kv ->
+                        kv.getKey().equals(resourceName)
+                            && kv.getValue().getStringValue().equals(value))
+                .count();
+    }
+
 }

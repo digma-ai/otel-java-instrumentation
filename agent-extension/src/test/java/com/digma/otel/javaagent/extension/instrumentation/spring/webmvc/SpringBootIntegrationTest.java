@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import static com.digma.otel.javaagent.extension.instrumentation.common.tests.AssertionUtil.assertThatAttribute;
+import static com.digma.otel.javaagent.extension.instrumentation.common.tests.TracesLogic.countResourcesByValue;
 import static com.digma.otel.javaagent.extension.instrumentation.common.tests.TracesLogic.findRootSpan;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -55,15 +56,21 @@ class SpringBootIntegrationTest extends IntegrationTest {
         Request request = new Request.Builder().url(url).get().build();
 
         String currentAgentVersion = TestingUtils.readVersion(agentPath);
-        String currentExtensionVersion = TestingUtils.readVersion(extensionPath);
 
+        // sanity checks
         Response response = client.newCall(request).execute();
         assertThat(response.body().string()).as("response body").isEqualTo("Hi!");
 
         Collection<ExportTraceServiceRequest> traces = waitForTraces();
+        assertThat(countResourcesByValue(traces, "telemetry.auto.version", currentAgentVersion))
+            .as("resource attribute telemetry.auto.version")
+            .isGreaterThan(0);
 
         final Span rootSpan = findRootSpan(traces);
         assertThat(rootSpan.getName()).as("root span name").isEqualTo("/greeting");
         assertThatAttribute(rootSpan, "http.route").isEqualTo("/greeting");
+
+        // actual extension checks
+        String currentExtensionVersion = TestingUtils.readVersion(extensionPath);
     }
 }
