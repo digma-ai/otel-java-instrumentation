@@ -25,12 +25,12 @@ val grpcVersion = "1.6.0"
 dependencies {
     implementation(project(":instrumentation:common"))
 
-    api("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
-    api("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:${OPENTELEMETRY_VERSION}")
-    api("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:${OPENTELEMETRY_VERSION}")
-    api("io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:${OPENTELEMETRY_ALPHA_VERSION}")
-    api("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
-    api("io.grpc:grpc-core:$grpcVersion")
+    runtimeOnly("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
+    runtimeOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:${OPENTELEMETRY_VERSION}")
+    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:${OPENTELEMETRY_VERSION}")
+    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
+    compileOnly("io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:${OPENTELEMETRY_ALPHA_VERSION}")
+    compileOnly("io.grpc:grpc-core:$grpcVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
