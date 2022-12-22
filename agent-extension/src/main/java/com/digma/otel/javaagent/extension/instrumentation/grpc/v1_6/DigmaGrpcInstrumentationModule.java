@@ -4,9 +4,8 @@ import com.google.auto.service.AutoService;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 
+import java.util.Collections;
 import java.util.List;
-
-import static java.util.Arrays.asList;
 
 /**
  * DigmaGrpcInstrumentationModule.
@@ -19,8 +18,20 @@ public class DigmaGrpcInstrumentationModule extends InstrumentationModule {
     }
 
     @Override
+    public int order() {
+        return -50; // should be called BEFORE the OTEL GrpcInstrumentationModule
+    }
+
+    @Override
+    public boolean isHelperClass(String className) {
+        // in order to pass the muzzle check
+        // need to define the interceptor as helper class - it will be injected to application class path
+        return className.startsWith("com.digma.otel.instrumentation.grpc.v1_6.DigmaTracingServerInterceptor");
+    }
+
+    @Override
     public List<TypeInstrumentation> typeInstrumentations() {
-        return asList(new DigmaGrpcServerBuilderInstrumentation());
+        return Collections.singletonList(new DigmaGrpcServerBuilderInstrumentation());
     }
 
 }
