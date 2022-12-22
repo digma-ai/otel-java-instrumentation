@@ -16,6 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
 
+import static java.util.Arrays.asList;
+
 public final class DigmaTracingServerInterceptor implements ServerInterceptor {
 
     private static final Logger logger = Logger.getLogger(DigmaTracingServerInterceptor.class.getName());
@@ -27,13 +29,13 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
      * there are 2 private classes (named UnaryServerCallHandler and UnaryServerCallHandler)
      * under {@link io.grpc.stub.ServerCalls} which are expected to hold the GRPC MethodHandlers.
      */
-    private static final List<String> ClassesWhichHoldTheActualImpl = List.of(
-            "io.grpc.stub.ServerCalls$UnaryServerCallHandler",
-            "io.grpc.stub.ServerCalls$StreamingServerCallHandler"
+    private static final List<String> ClassesWhichHoldTheActualImpl = asList(
+        "io.grpc.stub.ServerCalls$UnaryServerCallHandler",
+        "io.grpc.stub.ServerCalls$StreamingServerCallHandler"
     );
 
     private final ConcurrentMap<String, ClassAndMethod> mapMethodFullName2ServiceImpl =
-            new ConcurrentHashMap<>(32);
+        new ConcurrentHashMap<>(32);
 
     private DigmaTracingServerInterceptor() {
         super();
@@ -45,9 +47,10 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
 
     @Override
     public <REQUEST, RESPONSE> ServerCall.Listener<REQUEST> interceptCall(
-            ServerCall<REQUEST, RESPONSE> call,
-            Metadata headers,
-            ServerCallHandler<REQUEST, RESPONSE> next) {
+        ServerCall<REQUEST, RESPONSE> call,
+        Metadata headers,
+        ServerCallHandler<REQUEST, RESPONSE> next
+    ) {
 
         MethodDescriptor<REQUEST, RESPONSE> methodDescriptor = call.getMethodDescriptor();
         String fullMethodName = methodDescriptor.getFullMethodName();
@@ -99,6 +102,7 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
     private static <REQUEST, RESPONSE> Class<?> extractClassOfServiceImpl(ServerCallHandler<REQUEST, RESPONSE> next) {
         Class<? extends ServerCallHandler> classOfNext = next.getClass();
         String classNameOfNext = classOfNext.getName();
+        logger.info("extractClassOfServiceImpl entered, classNameOfNext=" + classNameOfNext);
         if (!ClassesWhichHoldTheActualImpl.contains(classNameOfNext)) {
             logger.severe(String.format("Cannot parse service impl class since holder class '%s' is not one of the expected ones. maybe this interceptor is not the last one?", classNameOfNext));
             return DigmaUnparseableClassSinceHolderNotExpected.class;
