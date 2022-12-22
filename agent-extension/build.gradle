@@ -96,6 +96,7 @@ dependencies {
     and added to the resulting jar for our extension's distribution.
      */
     implementation project(':instrumentation:common') // <==> io.github.digma-ai:digma-otel-instr-common
+    implementation project(':instrumentation:grpc-16:library') // <==> io.github.digma-ai:digma-otel-instr-grpc
 
 
     //All dependencies below are only for tests
