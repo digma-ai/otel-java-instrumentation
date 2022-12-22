@@ -17,8 +17,8 @@ java {
 base.archivesName.set(vArtifactId)
 project.description = "Digma, Auto-configures OpenTelemetry instrumentation for SpringBoot"
 
-val OPENTELEMETRY_VERSION = "1.19.0"
-val OPENTELEMETRY_ALPHA_VERSION = "1.19.2-alpha"
+val OPENTELEMETRY_VERSION = "1.21.0"
+val OPENTELEMETRY_ALPHA_VERSION = "1.21.0-alpha"
 val springBootVersion = "2.7.5"
 val junitJupiterVersion = "5.9.1"
 

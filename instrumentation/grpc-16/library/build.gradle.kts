@@ -17,8 +17,8 @@ java {
 
 base.archivesName.set(vArtifactId)
 
-val OPENTELEMETRY_VERSION = "1.19.0"
-val OPENTELEMETRY_ALPHA_VERSION = "1.19.2-alpha"
+val OPENTELEMETRY_VERSION = "1.21.0"
+val OPENTELEMETRY_ALPHA_VERSION = "1.21.0-alpha"
 val junitJupiterVersion = "5.9.1"
 val grpcVersion = "1.6.0"
 

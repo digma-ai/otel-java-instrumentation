@@ -22,7 +22,7 @@ set    CODE_PACKAGE_PREFIXES=org.springframework.samples.petclinic
 export CODE_PACKAGE_PREFIXES=org.springframework.samples.petclinic 
 
 java \
- -javaagent:_lib/opentelemetry-javaagent-1.19.2.jar \
+ -javaagent:_lib/opentelemetry-javaagent-1.21.0.jar \
  -Dotel.javaagent.configuration-file=_lib/opentelemetry-javaagent.properties \
  -Dotel.javaagent.extensions=_lib/digma-agent-extension-0.4.4-SNAPSHOT-all.jar \
  -jar build/libs/spring-petclinic-2.7.5-alpha.jar
