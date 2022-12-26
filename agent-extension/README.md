@@ -35,7 +35,9 @@ java -javaagent:path/to/opentelemetry-javaagent.jar \
   it includes SpringBoot applications which use those common annotations.
 - JAX-RS 2.0
 - GRPC 1.6 - see [GRPC Library](../instrumentation/grpc-16/library/README.md)
-  Limitation: currently (as of 0.5.30), if you have your own server side interceptors, Digma interceptor won't work
+  <br>
+  <b>Known issue</b>: currently (as of 0.5.30), if you have your own server side interceptors, Digma interceptor won't
+  work
   correctly. (see issue #19).
 
 ### Configuring the environment

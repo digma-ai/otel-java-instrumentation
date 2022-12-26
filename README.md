@@ -1,6 +1,6 @@
 ---
 
-RELEASE 0.0.8
+RELEASE 0.5.30
 
 ---
 
