@@ -56,3 +56,8 @@ ServerServiceDefinition configureServerInterceptor(Opentelemetry opentelemetry,S
     );
 }
 ```
+
+### Known issues
+
+Issue [#19](https://github.com/digma-ai/otel-java-instrumentation/issues/19) - Potential Bug/GRPC Interceptor is not
+tolerant for customer interceptors
