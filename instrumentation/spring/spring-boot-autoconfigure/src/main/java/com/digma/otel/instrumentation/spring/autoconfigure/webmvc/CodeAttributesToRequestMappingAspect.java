@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
  * CodeAttributesToRequestMappingAspect.
  * Adds attributes of code.namespace and code.function to current span, while trapping the XxxMapping annotation.
  *
- * @see RequestMapping - basic annotation of the Controller level
+ * @see RequestMapping - trapped annotation
  * @see GetMapping     - trapped annotation
  * @see PostMapping    - trapped annotation
  * @see DeleteMapping  - trapped annotation
@@ -66,6 +66,11 @@ class CodeAttributesToRequestMappingAspect {
 
     @Around("@annotation(org.springframework.web.bind.annotation.PatchMapping)")
     public Object processPatchMapping(ProceedingJoinPoint pjp) throws Throwable {
+        return processCommonMapping(pjp);
+    }
+
+    @Around("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
+    public Object processRequestMapping(ProceedingJoinPoint pjp) throws Throwable {
         return processCommonMapping(pjp);
     }
 
