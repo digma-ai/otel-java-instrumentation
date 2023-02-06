@@ -50,6 +50,7 @@ ext {
 
             // various instrumentations
             springFramework            : "5.3.24",
+            springKafka                : "2.7.1",
             grpc                       : "1.6.0",
     ]
 
@@ -119,6 +120,7 @@ dependencies {
     //Various libraries to test their instrumentations
     testImplementation("org.springframework:spring-context:${versions.springFramework}")
     testImplementation("org.springframework:spring-web:${versions.springFramework}")
+    testImplementation("org.springframework.kafka:spring-kafka:${versions.springKafka}")
 
     //TODO remove when start using io.opentelemetry.instrumentation.javaagent-instrumentation plugin
     add("codegen", "io.opentelemetry.javaagent:opentelemetry-javaagent-tooling:${versions.opentelemetryJavaagentAlpha}")
