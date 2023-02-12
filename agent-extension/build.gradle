@@ -97,6 +97,7 @@ dependencies {
     Only dependencies added to `implementation` configuration will be picked up by Shadow plugin
     and added to the resulting jar for our extension's distribution.
      */
+    implementation project(':extension-version')
     implementation project(':instrumentation:common') // <==> io.github.digma-ai:digma-otel-instr-common
     compileOnly("io.grpc:grpc-core:${versions.grpc}")
     implementation project(':instrumentation:grpc-16:library') // <==> io.github.digma-ai:digma-otel-instr-grpc
