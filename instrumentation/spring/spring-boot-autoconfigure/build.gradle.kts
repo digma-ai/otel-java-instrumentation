@@ -45,6 +45,10 @@ dependencies {
     }
 }
 
+tasks.compileJava {
+    options.release.set(8)
+}
+
 tasks.test {
     useJUnitPlatform {}
 }
