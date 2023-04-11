@@ -41,6 +41,10 @@ dependencies {
     testImplementation("io.grpc:grpc-stub:$grpcVersion")
 }
 
+tasks.compileJava {
+    options.release.set(8)
+}
+
 tasks.test {
     useJUnitPlatform {}
 }

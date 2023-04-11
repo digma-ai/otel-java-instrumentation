@@ -29,6 +29,10 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 }
 
+tasks.compileJava {
+    options.release.set(8)
+}
+
 tasks.test {
     useJUnitPlatform {}
 }

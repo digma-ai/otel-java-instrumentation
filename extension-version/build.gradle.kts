@@ -18,6 +18,7 @@ tasks.register<Copy>("generateJavaWithVersion") {
     expand("version_val" to version)
 }
 
-tasks.named("compileJava").configure {
+tasks.compileJava {
+    options.release.set(8)
     dependsOn("generateJavaWithVersion")
 }
