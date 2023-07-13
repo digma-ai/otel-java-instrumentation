@@ -35,6 +35,9 @@ rootProject.name = "digma-otel-java-instrumentation"
 // misc
 //include(":dependencyManagement")
 
+// libs
+include(":libs:spring-boot-micrometer-tracing-autoconf")
+
 // instrumentations
 include(":instrumentation:common")
 include(":instrumentation:spring:spring-boot-autoconfigure")
