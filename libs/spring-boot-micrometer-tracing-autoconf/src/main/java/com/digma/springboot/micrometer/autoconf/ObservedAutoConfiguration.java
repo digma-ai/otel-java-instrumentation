@@ -8,6 +8,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * ObservedAutoConfiguration.
+ * provides the aspect for annotation io.micrometer.observation.annotation.Observed
+ */
 @AutoConfiguration(after = {ObservationAutoConfiguration.class})
 @ConditionalOnClass(ObservedAspect.class)
 public class ObservedAutoConfiguration {
