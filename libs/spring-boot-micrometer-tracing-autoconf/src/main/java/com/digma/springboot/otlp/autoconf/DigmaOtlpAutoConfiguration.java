@@ -22,7 +22,7 @@ public class DigmaOtlpAutoConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "management.otlp.tracing", name = "endpoint")
     @ConditionalOnEnabledTracing
-    OtlpGrpcSpanExporter otlpGrpcSpanExporter(@Value("management.otlp.tracing.endpoint") String otlpEndpoint) {
+    OtlpGrpcSpanExporter otlpGrpcSpanExporter(@Value("${management.otlp.tracing.endpoint}") String otlpEndpoint) {
         OtlpGrpcSpanExporter bean = OtlpGrpcSpanExporter.builder()
                 .setEndpoint(otlpEndpoint)
                 .build();
