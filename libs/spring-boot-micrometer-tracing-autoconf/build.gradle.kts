@@ -19,12 +19,14 @@ base.archivesName.set(vArtifactId)
 
 val springBootVersion = "3.0.2"
 val micrometerTracingVersion = "1.1.1"
+val otelVersion = "1.26.0"
 val junitJupiterVersion = "5.9.2"
 
 dependencies {
     compileOnly("io.micrometer:micrometer-tracing:${micrometerTracingVersion}")
     compileOnly("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
     compileOnly("org.springframework.boot:spring-boot-actuator-autoconfigure:${springBootVersion}")
+    compileOnly("io.opentelemetry:opentelemetry-exporter-otlp:${otelVersion}")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")

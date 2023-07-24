@@ -1,1 +1,2 @@
 com.digma.springboot.micrometer.autoconf.ObservedAutoConfiguration
+com.digma.springboot.otlp.autoconf.DigmaOtlpAutoConfiguration
