@@ -10,6 +10,10 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * OpenTelemetry ( otel ) AutoConfiguration for OtlpGrpcSpanExporter
+ *
+ * seen this class works for spring boot versions:
+ *  3.0.2
+ *  3.1.1
  */
 @AutoConfiguration
 @ConditionalOnClass(OtlpGrpcSpanExporter.class)
