@@ -1,5 +1,6 @@
 package com.digma.otel.instrumentation.grpc.v1_6;
 
+import com.digma.otel.instrumentation.common.DigmaSemanticAttributes;
 import com.google.common.annotations.VisibleForTesting;
 import io.grpc.Metadata;
 import io.grpc.MethodDescriptor;
@@ -8,7 +9,6 @@ import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -63,8 +63,8 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
         }
 
         Span currentSpan = Span.current();
-        currentSpan.setAttribute(SemanticAttributes.CODE_NAMESPACE, classAndMethod.declaringClass().getName());
-        currentSpan.setAttribute(SemanticAttributes.CODE_FUNCTION, classAndMethod.methodName());
+        currentSpan.setAttribute(DigmaSemanticAttributes.CODE_NAMESPACE, classAndMethod.declaringClass().getName());
+        currentSpan.setAttribute(DigmaSemanticAttributes.CODE_FUNCTION, classAndMethod.methodName());
 
         return next.startCall(call, headers);
     }
