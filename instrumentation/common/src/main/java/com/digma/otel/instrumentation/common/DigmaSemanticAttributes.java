@@ -11,7 +11,4 @@ public final class DigmaSemanticAttributes {
     public static final AttributeKey<String> DIGMA_AGENT_VERSION = stringKey("digma.agent.version");
     public static final AttributeKey<String> DIGMA_ENVIRONMENT = stringKey(DigmaSemanticConventions.DIGMA_ENVIRONMENT);
     public static final AttributeKey<String> DIGMA_CODE_PACKAGE_PREFIXES = stringKey(DigmaSemanticConventions.DIGMA_CODE_PACKAGE_PREFIXES);
-    public static final AttributeKey<String> CODE_FUNCTION = stringKey("code.function");
-    public static final AttributeKey<String> CODE_NAMESPACE = stringKey("code.namespace");
-
 }
