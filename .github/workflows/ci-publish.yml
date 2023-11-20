@@ -66,3 +66,12 @@ jobs:
             -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
 
       # artifacts are now published into OSSRH , you can browse https://s01.oss.sonatype.org/#stagingRepositories and search for Staging Repositories
+      - name: Copy and Rename digma-otel-agent-extension
+        run: |
+            cp build/libs/digma-otel-agent-extension-${{ steps.tag.outputs.tag }}.jar build/libs/digma-otel-agent-extension.jar
+
+      - name: Publish digma-otel-agent-extension
+        uses: actions/upload-artifact@v3
+        with:
+          name: digma-otel-agent-extension
+          path: build/libs/digma-otel-agent-extension.jar
