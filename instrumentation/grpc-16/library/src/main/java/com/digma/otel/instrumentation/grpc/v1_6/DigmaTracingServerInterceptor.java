@@ -8,7 +8,6 @@ import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static java.util.Arrays.asList;
 
 public final class DigmaTracingServerInterceptor implements ServerInterceptor {
@@ -63,8 +63,9 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
         }
 
         Span currentSpan = Span.current();
-        currentSpan.setAttribute(SemanticAttributes.CODE_NAMESPACE, classAndMethod.declaringClass().getName());
-        currentSpan.setAttribute(SemanticAttributes.CODE_FUNCTION, classAndMethod.methodName());
+
+        currentSpan.setAttribute(stringKey("code.namespace"), classAndMethod.declaringClass().getName());
+        currentSpan.setAttribute(stringKey("code.function"), classAndMethod.methodName());
 
         return next.startCall(call, headers);
     }

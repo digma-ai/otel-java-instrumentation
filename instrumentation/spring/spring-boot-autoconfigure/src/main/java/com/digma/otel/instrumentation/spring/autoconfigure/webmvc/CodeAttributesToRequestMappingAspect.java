@@ -1,7 +1,6 @@
 package com.digma.otel.instrumentation.spring.autoconfigure.webmvc;
 
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.reflect.Method;
+
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
 /**
  * CodeAttributesToRequestMappingAspect.
@@ -38,8 +39,8 @@ class CodeAttributesToRequestMappingAspect {
 
         Class<?> classOfMethod = method.getDeclaringClass();
 
-        currentSpan.setAttribute(SemanticAttributes.CODE_NAMESPACE, classOfMethod.getName());
-        currentSpan.setAttribute(SemanticAttributes.CODE_FUNCTION, method.getName());
+        currentSpan.setAttribute(stringKey("code.namespace"), classOfMethod.getName());
+        currentSpan.setAttribute(stringKey("code.function"), method.getName());
 
         return pjp.proceed();
     }
