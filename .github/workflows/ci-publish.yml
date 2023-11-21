@@ -71,7 +71,7 @@ jobs:
             cp ./agent-extension/build/libs/digma-otel-agent-extension-${{ steps.tag.outputs.tag }}.jar ./agent-extension/build/libs/digma-otel-agent-extension.jar
 
       - name: Update release
-        uses: johnwbyrd/update-release@v1
+        uses: johnwbyrd/update-release@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: ./agent-extension/build/libs/digma-otel-agent-extension.jar
