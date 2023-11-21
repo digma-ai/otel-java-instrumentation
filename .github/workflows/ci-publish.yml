@@ -70,8 +70,8 @@ jobs:
         run: |
             cp ./agent-extension/build/libs/digma-otel-agent-extension-${{ steps.tag.outputs.tag }}.jar ./agent-extension/build/libs/digma-otel-agent-extension.jar
 
-      - name: Publish digma-otel-agent-extension
-        uses: actions/upload-artifact@v3
+      - name: Update release
+        uses: johnwbyrd/update-release@v1
         with:
-          name: digma-otel-agent-extension
-          path: ./agent-extension/build/libs/digma-otel-agent-extension.jar
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: ./agent-extension/build/libs/digma-otel-agent-extension.jar
