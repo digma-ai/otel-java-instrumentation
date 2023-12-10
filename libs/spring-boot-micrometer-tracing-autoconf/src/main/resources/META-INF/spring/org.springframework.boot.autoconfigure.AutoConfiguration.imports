@@ -1,3 +1,4 @@
 com.digma.springboot.micrometer.autoconf.ObservedAutoConfiguration
 com.digma.springboot.otlp.autoconf.DigmaOtlpAutoConfiguration
+com.digma.springboot.otlp.autoconf.DigmaOtelSpringBootVersion3dot0AutoConfiguration
 com.digma.springboot.otlp.autoconf.DigmaOtelSpringBootVersion3dot1AutoConfiguration
