@@ -35,6 +35,7 @@ dependencies {
     compileOnly("io.micrometer:micrometer-tracing:${micrometerTracingVersion}")
     compileOnly("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
     compileOnly("org.springframework.boot:spring-boot-actuator-autoconfigure:${springBootVersion}")
+    compileOnly("io.opentelemetry:opentelemetry-sdk:${otelVersion}")
     compileOnly("io.opentelemetry:opentelemetry-exporter-otlp:${otelVersion}")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
