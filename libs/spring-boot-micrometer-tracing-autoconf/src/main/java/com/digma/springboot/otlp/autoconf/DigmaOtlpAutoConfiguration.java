@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
  * seen this class works for spring boot versions:
  *  3.0.2
  *  3.1.1
+ *  3.2.0
  */
 @AutoConfiguration
 @ConditionalOnClass(OtlpGrpcSpanExporter.class)
