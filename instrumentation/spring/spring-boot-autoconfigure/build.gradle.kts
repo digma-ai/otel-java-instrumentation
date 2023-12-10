@@ -20,7 +20,7 @@ project.description = "Digma, Auto-configures OpenTelemetry instrumentation for 
 val OPENTELEMETRY_VERSION = "1.21.0"
 val OPENTELEMETRY_ALPHA_VERSION = "1.21.0-alpha"
 val springBootVersion = "2.7.5"
-val junitJupiterVersion = "5.9.1"
+val junitJupiterVersion = "5.10.1"
 
 dependencies {
     implementation(project(":instrumentation:common"))
