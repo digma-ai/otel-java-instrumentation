@@ -18,7 +18,7 @@ import org.springframework.core.env.Environment;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static com.digma.springboot.otlp.autoconf.DigmaOtelSpringBootVersion3dot1AutoConfiguration.openTelemetryResourceAsInSpring3dot2;
+import static com.digma.springboot.otlp.autoconf.DigmaOtelSpringBootCommon.openTelemetryResourceAsInSpring3dot2;
 
 /**
  * support spring boot 3.0

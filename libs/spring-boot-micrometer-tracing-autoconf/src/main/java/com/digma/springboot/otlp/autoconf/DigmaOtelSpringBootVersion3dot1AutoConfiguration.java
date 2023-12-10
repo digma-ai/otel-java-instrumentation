@@ -1,10 +1,6 @@
 package com.digma.springboot.otlp.autoconf;
 
-import io.opentelemetry.api.common.AttributeKey;
-import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.sdk.resources.ResourceBuilder;
 import io.opentelemetry.sdk.trace.SdkTracerProviderBuilder;
 import org.springframework.boot.actuate.autoconfigure.tracing.SdkTracerProviderBuilderCustomizer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -14,6 +10,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
+import static com.digma.springboot.otlp.autoconf.DigmaOtelSpringBootCommon.openTelemetryResourceAsInSpring3dot2;
+
 /**
  * inspired by class org.springframework.boot.actuate.autoconfigure.opentelemetry.OpenTelemetryAutoConfiguration since version 3.2.0
  *
@@ -21,17 +19,12 @@ import org.springframework.core.env.Environment;
  * https://github.com/spring-projects/spring-boot/blob/3.2.x/spring-boot-project/spring-boot-actuator-autoconfigure/src/main/java/org/springframework/boot/actuate/autoconfigure/opentelemetry/OpenTelemetryAutoConfiguration.java
  */
 @AutoConfiguration
-@ConditionalOnClass(OpenTelemetrySdk.class)
+@ConditionalOnClass(name = {
+        "org.springframework.boot.actuate.autoconfigure.tracing.SdkTracerProviderBuilderCustomizer",
+        "io.opentelemetry.sdk.OpenTelemetrySdk"
+})
 @EnableConfigurationProperties(DigmaOpenTelemetryProperties.class)
 public class DigmaOtelSpringBootVersion3dot1AutoConfiguration {
-
-    /**
-     * Default value for application name if {@code spring.application.name} is not set.
-     */
-    protected static final String DEFAULT_APPLICATION_NAME = "application";
-
-    protected static final AttributeKey<String> ATTRIBUTE_KEY_SERVICE_NAME = AttributeKey.stringKey("service.name");
-
 
     /**
      *
@@ -60,17 +53,4 @@ public class DigmaOtelSpringBootVersion3dot1AutoConfiguration {
         }
     }
 
-    // same code as in DigmaOtelSpringBootVersion3dot1AutoConfiguration
-    protected static Resource openTelemetryResourceAsInSpring3dot2(Environment environment, DigmaOpenTelemetryProperties properties) {
-        String applicationName = environment.getProperty("spring.application.name", DEFAULT_APPLICATION_NAME);
-        return Resource.getDefault()
-                .merge(Resource.create(Attributes.of(ATTRIBUTE_KEY_SERVICE_NAME, applicationName)))
-                .merge(toResource(properties));
-    }
-
-    protected static Resource toResource(DigmaOpenTelemetryProperties properties) {
-        ResourceBuilder builder = Resource.builder();
-        properties.getResourceAttributes().forEach(builder::put);
-        return builder.build();
-    }
 }
