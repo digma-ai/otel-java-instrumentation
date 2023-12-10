@@ -17,10 +17,19 @@ java {
 
 base.archivesName.set(vArtifactId)
 
-val springBootVersion = "3.0.2"
-val micrometerTracingVersion = "1.1.1"
-val otelVersion = "1.26.0"
-val junitJupiterVersion = "5.9.2"
+// spring boot + opentelemetry metrics
+//  |-------------+--------------+
+//  | spring boot | OTEL version |
+//  |-------------+--------------+
+//  |  3.0.x      |  1.19.0      |
+//  |  3.1.x      |  1.25.0      |
+//  |  3.2.x      |  1.31.0      |
+//  |-------------+--------------+
+
+val springBootVersion = "3.1.6"
+val micrometerTracingVersion = "1.1.7"
+val otelVersion = "1.25.0"
+val junitJupiterVersion = "5.9.3"
 
 dependencies {
     compileOnly("io.micrometer:micrometer-tracing:${micrometerTracingVersion}")
