@@ -16,6 +16,9 @@ import org.springframework.core.env.Environment;
 
 /**
  * inspired by class org.springframework.boot.actuate.autoconfigure.opentelemetry.OpenTelemetryAutoConfiguration since version 3.2.0
+ *
+ * https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-actuator-autoconfigure/src/main/java/org/springframework/boot/actuate/autoconfigure/opentelemetry/OpenTelemetryAutoConfiguration.java
+ * https://github.com/spring-projects/spring-boot/blob/3.2.x/spring-boot-project/spring-boot-actuator-autoconfigure/src/main/java/org/springframework/boot/actuate/autoconfigure/opentelemetry/OpenTelemetryAutoConfiguration.java
  */
 @AutoConfiguration
 @ConditionalOnClass(OpenTelemetrySdk.class)
