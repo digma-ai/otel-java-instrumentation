@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClas
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 
 import java.util.Objects;
@@ -44,6 +45,7 @@ public class DigmaOtelSpringBootVersion3dot0AutoConfiguration {
          * see https://github.com/spring-projects/spring-boot/blob/3.1.x/spring-boot-project/spring-boot-actuator-autoconfigure/src/main/java/org/springframework/boot/actuate/autoconfigure/tracing/OpenTelemetryAutoConfiguration.java#L102
          */
         @Bean
+        @Primary // making it primary since 3.0 also provides such, so make sure that wiring will work with this one
         SdkTracerProvider sb3dot0OtelSdkTracerProvider(Environment environment, ObjectProvider<SpanProcessor> spanProcessors, Sampler sampler, DigmaOpenTelemetryProperties properties) {
             Resource springResource = openTelemetryResourceAsInSpring3dot2(environment, properties);
             SdkTracerProviderBuilder builder = SdkTracerProvider.builder().setSampler(sampler).setResource(Resource.getDefault().merge(springResource));
