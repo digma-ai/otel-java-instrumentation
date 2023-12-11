@@ -9,6 +9,8 @@ import java.util.Map;
  * exact file content as in org.springframework.boot.actuate.autoconfigure.opentelemetry.OpenTelemetryProperties (since sb 3.2.0)
  *
  * see org.springframework.boot.actuate.autoconfigure.opentelemetry.OpenTelemetryProperties
+ * see https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-actuator-autoconfigure/src/main/java/org/springframework/boot/actuate/autoconfigure/opentelemetry/OpenTelemetryProperties.java
+ * see https://github.com/spring-projects/spring-boot/blob/3.2.x/spring-boot-project/spring-boot-actuator-autoconfigure/src/main/java/org/springframework/boot/actuate/autoconfigure/opentelemetry/OpenTelemetryProperties.java
  *
  * care about property (and system property) entries:
  * management.opentelemetry.resource-attributes.key1=value1
