@@ -1,5 +1,5 @@
 // keep the name theVersion and the val definition since script update_version.sh maintains it
-val theVersion = "0.7.7"
+val theVersion = "0.8.3-SNAPSHOT"
 
 allprojects {
     group = "io.github.digma-ai"
