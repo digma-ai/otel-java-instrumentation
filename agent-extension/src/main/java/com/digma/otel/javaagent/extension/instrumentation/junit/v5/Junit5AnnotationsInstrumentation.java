@@ -1,6 +1,5 @@
 package com.digma.otel.javaagent.extension.instrumentation.junit.v5;
 
-import com.digma.otel.javaagent.extension.instrumentation.common.DigmaServerAdvice;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
 import net.bytebuddy.description.type.TypeDescription;
@@ -33,6 +32,6 @@ public class Junit5AnnotationsInstrumentation implements TypeInstrumentation {
                                 isAnnotatedWith(namedOneOf(
                                         "org.junit.jupiter.api.Test"
                                 ))),
-                DigmaServerAdvice.class.getName());
+                JunitTestAdvice.class.getName());
     }
 }
