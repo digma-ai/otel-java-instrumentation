@@ -32,4 +32,9 @@ public class DigmaJunit5InstrumentationModule extends InstrumentationModule {
     public List<TypeInstrumentation> typeInstrumentations() {
         return Collections.singletonList(new Junit5AnnotationsInstrumentation());
     }
+
+    @Override
+    public boolean isHelperClass(String className) {
+        return className.startsWith("com.digma.otel.javaagent.extension.instrumentation.junit");
+    }
 }
