@@ -1,4 +1,4 @@
-package com.digma.otel.javaagent.extension.instrumentation.junit.v5;
+package com.digma.otel.javaagent.extension.instrumentation.junit;
 
 import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesGetter;
 

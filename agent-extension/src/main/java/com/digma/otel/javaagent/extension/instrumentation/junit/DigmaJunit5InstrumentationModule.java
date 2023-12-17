@@ -1,4 +1,4 @@
-package com.digma.otel.javaagent.extension.instrumentation.junit.v5;
+package com.digma.otel.javaagent.extension.instrumentation.junit;
 
 import com.google.auto.service.AutoService;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;

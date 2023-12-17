@@ -1,4 +1,4 @@
-package com.digma.otel.javaagent.extension.instrumentation.junit.v5;
+package com.digma.otel.javaagent.extension.instrumentation.junit;
 
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
@@ -8,7 +8,7 @@ import net.bytebuddy.asm.Advice;
 
 import java.lang.reflect.Method;
 
-import static com.digma.otel.javaagent.extension.instrumentation.junit.v5.JunitSingletons.instrumenter;
+import static com.digma.otel.javaagent.extension.instrumentation.junit.JunitSingletons.instrumenter;
 
 /**
  * took idea from OTEL implementation of WithSpan.
