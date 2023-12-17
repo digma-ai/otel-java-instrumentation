@@ -36,6 +36,8 @@ public class DigmaJunitInstrumentationModule extends InstrumentationModule {
 
     @Override
     public boolean isHelperClass(String className) {
-        return className.startsWith("com.digma.otel.javaagent.extension.instrumentation.junit");
+        return className.startsWith("com.digma.otel.javaagent.extension.instrumentation.junit") // catch all classes in this package
+                || className.startsWith("com.digma.otel.instrumentation.common") // catch semantic conventions
+                ;
     }
 }
