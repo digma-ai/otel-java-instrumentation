@@ -17,12 +17,10 @@ public final class JunitSingletons {
     private static final Instrumenter<Method, Object> INSTRUMENTER = createInstrumenter();
 
     public static Instrumenter<Method, Object> instrumenter() {
-        System.out.println("DBG: JunitSingletons.get.instrumenter");
         return INSTRUMENTER;
     }
 
     private static Instrumenter<Method, Object> createInstrumenter() {
-        System.out.println("DBG: JunitSingletons.createInstrumenter");
         return Instrumenter.builder(
                         GlobalOpenTelemetry.get(),
                         INSTRUMENTATION_NAME,
