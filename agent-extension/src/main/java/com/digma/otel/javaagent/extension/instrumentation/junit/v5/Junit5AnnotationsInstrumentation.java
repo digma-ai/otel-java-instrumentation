@@ -9,19 +9,23 @@ import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.
 import static net.bytebuddy.matcher.ElementMatchers.declaresMethod;
 import static net.bytebuddy.matcher.ElementMatchers.isAnnotatedWith;
 import static net.bytebuddy.matcher.ElementMatchers.isMethod;
-import static net.bytebuddy.matcher.ElementMatchers.named;
 import static net.bytebuddy.matcher.ElementMatchers.namedOneOf;
 
 public class Junit5AnnotationsInstrumentation implements TypeInstrumentation {
 
     @Override
     public ElementMatcher<ClassLoader> classLoaderOptimization() {
-        return hasClassesNamed("org.junit.jupiter.api.Test");
+        return hasClassesNamed("org.junit.jupiter.api.Test") // junit 5
+                .or(hasClassesNamed("org.junit.Test") // junit 4 and below
+                );
     }
 
     @Override
     public ElementMatcher<TypeDescription> typeMatcher() {
-        return declaresMethod(isAnnotatedWith(named("org.junit.jupiter.api.Test")));
+        return declaresMethod(isAnnotatedWith(namedOneOf(
+                "org.junit.jupiter.api.Test", // junit 5
+                "org.junit.Test" // junit 4 and below
+        )));
     }
 
     @Override
@@ -30,7 +34,8 @@ public class Junit5AnnotationsInstrumentation implements TypeInstrumentation {
                 isMethod()
                         .and(
                                 isAnnotatedWith(namedOneOf(
-                                        "org.junit.jupiter.api.Test"
+                                        "org.junit.jupiter.api.Test", // junit 5
+                                        "org.junit.Test" // junit 4 and below
                                 ))),
                 JunitTestAdvice.class.getName());
     }

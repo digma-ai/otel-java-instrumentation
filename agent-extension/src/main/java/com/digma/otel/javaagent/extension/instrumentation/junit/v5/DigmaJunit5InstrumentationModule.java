@@ -25,7 +25,9 @@ public class DigmaJunit5InstrumentationModule extends InstrumentationModule {
     // require junit 5
     @Override
     public ElementMatcher.Junction<ClassLoader> classLoaderMatcher() {
-        return hasClassesNamed("org.junit.jupiter.api.Test");
+        return hasClassesNamed("org.junit.jupiter.api.Test") // junit 5
+                .or(hasClassesNamed("org.junit.Test") // junit 4 and below
+                );
     }
 
     @Override
