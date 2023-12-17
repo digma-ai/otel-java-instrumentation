@@ -11,10 +11,10 @@ import java.util.List;
 import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasClassesNamed;
 
 @AutoService(InstrumentationModule.class)
-public class DigmaJunit5InstrumentationModule extends InstrumentationModule {
+public class DigmaJunitInstrumentationModule extends InstrumentationModule {
 
-    public DigmaJunit5InstrumentationModule() {
-        super("digma-junit-5.0");
+    public DigmaJunitInstrumentationModule() {
+        super("digma-junit");
     }
 
     @Override
@@ -22,7 +22,6 @@ public class DigmaJunit5InstrumentationModule extends InstrumentationModule {
         return 111; // should be triggered after original instrumentations
     }
 
-    // require junit 5
     @Override
     public ElementMatcher.Junction<ClassLoader> classLoaderMatcher() {
         return hasClassesNamed("org.junit.jupiter.api.Test") // junit 5
@@ -32,7 +31,7 @@ public class DigmaJunit5InstrumentationModule extends InstrumentationModule {
 
     @Override
     public List<TypeInstrumentation> typeInstrumentations() {
-        return Collections.singletonList(new Junit5AnnotationsInstrumentation());
+        return Collections.singletonList(new JunitAnnotationsInstrumentation());
     }
 
     @Override
