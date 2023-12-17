@@ -1,7 +1,9 @@
 package com.digma.otel.javaagent.extension.instrumentation.junit;
 
+import com.digma.otel.instrumentation.common.DigmaSemanticAttributes;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.instrumentation.api.instrumenter.AttributesExtractor;
 import io.opentelemetry.instrumentation.api.instrumenter.Instrumenter;
 import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesExtractor;
 import io.opentelemetry.instrumentation.api.instrumenter.util.SpanNames;
@@ -20,12 +22,17 @@ public final class JunitSingletons {
         return INSTRUMENTER;
     }
 
+    private static AttributesExtractor<Method, Object> createAttributesExtractorOfTest() {
+        return AttributesExtractor.constant(DigmaSemanticAttributes.IS_TEST, Boolean.TRUE);
+    }
+
     private static Instrumenter<Method, Object> createInstrumenter() {
         return Instrumenter.builder(
                         GlobalOpenTelemetry.get(),
                         INSTRUMENTATION_NAME,
                         JunitSingletons::spanNameFromMethod)
                 .addAttributesExtractor(CodeAttributesExtractor.create(MethodCodeAttributesGetter.INSTANCE))
+                .addAttributesExtractor(createAttributesExtractorOfTest())
                 .buildInstrumenter(JunitSingletons::spanKindFromMethod);
     }
 
