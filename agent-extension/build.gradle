@@ -52,6 +52,7 @@ ext {
             springFramework            : "5.3.24",
             springKafka                : "2.7.1",
             grpc                       : "1.6.0",
+            ktor                       : "2.3.7",
     ]
 
     deps = [
@@ -77,6 +78,8 @@ dependencies {
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:${versions.opentelemetryJavaagent}")
     compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api:${versions.opentelemetryJavaagentAlpha}")
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${versions.opentelemetryAlpha}")
+    compileOnly("io.ktor:ktor-server-core-jvm:${versions.ktor}")
+    compileOnly("io.ktor:ktor-utils-jvm:${versions.ktor}")
 
     //Provides @AutoService annotation that makes registration of our SPI implementations much easier
     compileOnly deps.autoservice
