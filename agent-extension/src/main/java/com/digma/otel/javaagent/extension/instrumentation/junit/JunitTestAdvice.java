@@ -1,5 +1,8 @@
 package com.digma.otel.javaagent.extension.instrumentation.junit;
 
+import com.digma.otel.instrumentation.common.DigmaSemanticAttributes;
+import com.digma.otel.instrumentation.common.DigmaSemanticConventions;
+import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.api.instrumenter.Instrumenter;
@@ -47,12 +50,25 @@ public class JunitTestAdvice {
             @Advice.Local("otelScope") Scope scope,
             @Advice.Thrown Throwable throwable) {
 
+        String testingResultValue = DigmaSemanticConventions.TestingResultValues.SUCCESS;
+        Throwable throwableToRecord = null;
+        if (throwable != null) {
+            System.out.println("throwable.getClass()=" +throwable.getClass().getName());
+            if (throwable.getClass().isAssignableFrom(AssertionError.class)) {
+                testingResultValue = DigmaSemanticConventions.TestingResultValues.FAIL;
+            } else {
+                testingResultValue = DigmaSemanticConventions.TestingResultValues.ERROR;
+                throwableToRecord = throwable;
+            }
+        }
+        Span.current().setAttribute(DigmaSemanticAttributes.TESTING_RESULT, testingResultValue);
+
         if (scope == null) {
             return;
         }
         scope.close();
 
-        instrumenter().end(context, method, null, throwable);
+        instrumenter().end(context, method, null, throwableToRecord);
     }
 
 }
