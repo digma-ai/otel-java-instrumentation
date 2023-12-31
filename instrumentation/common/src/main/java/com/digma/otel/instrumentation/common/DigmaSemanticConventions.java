@@ -8,4 +8,5 @@ public final class DigmaSemanticConventions {
     // code.package.prefixes - value of it can be comma separated
     public static final String DIGMA_CODE_PACKAGE_PREFIXES = "code.package.prefixes";
     public static final String IS_TEST = "is.test";
+    public static final String TESTING_FRAMEWORK = "testing.framework";
 }

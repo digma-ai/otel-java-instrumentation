@@ -26,6 +26,10 @@ public final class JunitSingletons {
         return AttributesExtractor.constant(DigmaSemanticAttributes.IS_TEST, Boolean.TRUE);
     }
 
+    private static AttributesExtractor<Method, Object> createAttributesExtractorOfJunitFramework() {
+        return AttributesExtractor.constant(DigmaSemanticAttributes.TESTING_FRAMEWORK, "junit");
+    }
+
     private static Instrumenter<Method, Object> createInstrumenter() {
         return Instrumenter.builder(
                         GlobalOpenTelemetry.get(),
@@ -33,6 +37,7 @@ public final class JunitSingletons {
                         JunitSingletons::spanNameFromMethod)
                 .addAttributesExtractor(CodeAttributesExtractor.create(MethodCodeAttributesGetter.INSTANCE))
                 .addAttributesExtractor(createAttributesExtractorOfTest())
+                .addAttributesExtractor(createAttributesExtractorOfJunitFramework())
                 .buildInstrumenter(JunitSingletons::spanKindFromMethod);
     }
 
