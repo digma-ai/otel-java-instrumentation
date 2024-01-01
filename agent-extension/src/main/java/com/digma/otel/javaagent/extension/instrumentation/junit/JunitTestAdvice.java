@@ -52,7 +52,7 @@ public class JunitTestAdvice {
 
         String testingResultValue = DigmaSemanticConventions.TestingResultValues.SUCCESS;
         if (throwable != null) {
-//            System.out.println("z043 throwable.getClass()=" +throwable.getClass().getName());
+//            System.out.println("DBG: throwable.getClass()=" +throwable.getClass().getName());
             if (AssertionError.class.isAssignableFrom(throwable.getClass())) {
                 testingResultValue = DigmaSemanticConventions.TestingResultValues.FAIL;
             } else {
