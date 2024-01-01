@@ -51,14 +51,12 @@ public class JunitTestAdvice {
             @Advice.Thrown Throwable throwable) {
 
         String testingResultValue = DigmaSemanticConventions.TestingResultValues.SUCCESS;
-        Throwable throwableToRecord = null;
         if (throwable != null) {
-            System.out.println("throwable.getClass()=" +throwable.getClass().getName());
-            if (throwable.getClass().isAssignableFrom(AssertionError.class)) {
+//            System.out.println("z043 throwable.getClass()=" +throwable.getClass().getName());
+            if (AssertionError.class.isAssignableFrom(throwable.getClass())) {
                 testingResultValue = DigmaSemanticConventions.TestingResultValues.FAIL;
             } else {
                 testingResultValue = DigmaSemanticConventions.TestingResultValues.ERROR;
-                throwableToRecord = throwable;
             }
         }
         Span.current().setAttribute(DigmaSemanticAttributes.TESTING_RESULT, testingResultValue);
@@ -68,7 +66,7 @@ public class JunitTestAdvice {
         }
         scope.close();
 
-        instrumenter().end(context, method, null, throwableToRecord);
+        instrumenter().end(context, method, null, throwable);
     }
 
 }
