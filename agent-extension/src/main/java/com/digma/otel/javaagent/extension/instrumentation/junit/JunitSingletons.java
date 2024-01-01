@@ -22,10 +22,6 @@ public final class JunitSingletons {
         return INSTRUMENTER;
     }
 
-    private static AttributesExtractor<Method, Object> createAttributesExtractorOfTest() {
-        return AttributesExtractor.constant(DigmaSemanticAttributes.IS_TEST, Boolean.TRUE);
-    }
-
     private static AttributesExtractor<Method, Object> createAttributesExtractorOfJunitFramework() {
         return AttributesExtractor.constant(DigmaSemanticAttributes.TESTING_FRAMEWORK, "junit");
     }
@@ -36,7 +32,6 @@ public final class JunitSingletons {
                         INSTRUMENTATION_NAME,
                         JunitSingletons::spanNameFromMethod)
                 .addAttributesExtractor(CodeAttributesExtractor.create(MethodCodeAttributesGetter.INSTANCE))
-                .addAttributesExtractor(createAttributesExtractorOfTest())
                 .addAttributesExtractor(createAttributesExtractorOfJunitFramework())
                 .buildInstrumenter(JunitSingletons::spanKindFromMethod);
     }
