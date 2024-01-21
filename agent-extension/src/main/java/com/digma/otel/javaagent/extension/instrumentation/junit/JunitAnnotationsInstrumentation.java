@@ -6,10 +6,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasClassesNamed;
-import static net.bytebuddy.matcher.ElementMatchers.declaresMethod;
-import static net.bytebuddy.matcher.ElementMatchers.isAnnotatedWith;
-import static net.bytebuddy.matcher.ElementMatchers.isMethod;
-import static net.bytebuddy.matcher.ElementMatchers.namedOneOf;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
 public class JunitAnnotationsInstrumentation implements TypeInstrumentation {
 
@@ -25,7 +22,8 @@ public class JunitAnnotationsInstrumentation implements TypeInstrumentation {
         return declaresMethod(isAnnotatedWith(namedOneOf(
                 "org.junit.jupiter.api.Test", // junit 5
                 "org.junit.Test" // junit 4 and below
-        )));
+        )))
+                .and(not(isAnnotatedWith(namedOneOf("org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest"))));
     }
 
     @Override
