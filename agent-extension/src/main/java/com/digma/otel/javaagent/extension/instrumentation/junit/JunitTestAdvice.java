@@ -31,8 +31,7 @@ public class JunitTestAdvice {
         // Every usage of @Advice.Origin Method is replaced with a call to Class.getMethod, copy it
         // to local variable so that there would be only one call to Class.getMethod.
         method = originMethod;
-
-//        System.out.println("DBG: JunitTestAdvice.OnMethodEnter methodFqn=" + methodFqn);
+        //System.out.println("DBG: JunitTestAdvice.OnMethodEnter methodFqn=" + methodFqn);
 
         Instrumenter<Method, Object> instrumenter = instrumenter();
         Context current = Java8BytecodeBridge.currentContext();
@@ -52,7 +51,7 @@ public class JunitTestAdvice {
 
         String testingResultValue = DigmaSemanticConventions.TestingResultValues.SUCCESS;
         if (throwable != null) {
-//            System.out.println("DBG: throwable.getClass()=" +throwable.getClass().getName());
+            //System.out.println("DBG: throwable.getClass()=" +throwable.getClass().getName());
             if (AssertionError.class.isAssignableFrom(throwable.getClass())) {
                 testingResultValue = DigmaSemanticConventions.TestingResultValues.FAIL;
             } else {

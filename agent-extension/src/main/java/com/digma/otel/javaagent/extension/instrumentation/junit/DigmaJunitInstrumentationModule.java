@@ -1,10 +1,15 @@
 package com.digma.otel.javaagent.extension.instrumentation.junit;
 
 import com.google.auto.service.AutoService;
+import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesExtractor;
+import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesGetter;
+import io.opentelemetry.instrumentation.api.instrumenter.util.SpanNames;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
+import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import net.bytebuddy.matcher.ElementMatcher;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,5 +44,17 @@ public class DigmaJunitInstrumentationModule extends InstrumentationModule {
         return className.startsWith("com.digma.otel.javaagent.extension.instrumentation.junit") // catch all classes in this package
                 || className.startsWith("com.digma.otel.instrumentation.common") // catch semantic conventions
                 ;
+    }
+
+    @Override
+    public List<String> getAdditionalHelperClassNames() {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add(CodeAttributesGetter.class.getName());
+        list.add(CodeAttributesExtractor.class.getName());
+        list.add(SemanticAttributes.class.getName());
+
+        list.add(SpanNames.class.getName());
+
+        return list;
     }
 }
