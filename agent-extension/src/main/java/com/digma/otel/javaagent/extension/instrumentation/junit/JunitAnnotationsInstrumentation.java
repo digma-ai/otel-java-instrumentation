@@ -22,8 +22,8 @@ public class JunitAnnotationsInstrumentation implements TypeInstrumentation {
         return declaresMethod(isAnnotatedWith(namedOneOf(
                 "org.junit.jupiter.api.Test", // junit 5
                 "org.junit.Test" // junit 4 and below
-        )))
-                .and(not(isAnnotatedWith(namedOneOf("org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest"))));
+        )));
+                //.and(not(isAnnotatedWith(namedOneOf("org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest"))));
     }
 
     @Override
