@@ -19,7 +19,7 @@ public class DigmaServerAdvice {
         @Advice.Origin Method method,
         @Advice.Origin String methodFqn) {
 
-        System.out.println("DBG: DigmaServerAdvice.methodEnter " + method.getName());
+        //System.out.println("DBG: DigmaServerAdvice.methodEnter " + method.getName());
 
         Class<?> classOfTarget = target.getClass();
         // taking local root span (servlet of tomcat or jetty) and set the code attributes on it
@@ -28,13 +28,14 @@ public class DigmaServerAdvice {
 
         HttpRouteState routeStateNew = HttpRouteState.fromContextOrNull(Context.current());
         Method[] methods = routeStateNew.getClass().getMethods();
+
         for (int i=0; i< methods.length;i++){
-            System.out.println("DBG:" + methods[i].getName());
+            //System.out.println("DBG:" + methods[i].getName());
 
             if (methods[i].getName().startsWith("getSpan")){
                 try {
                     Span routeSpan = (Span) methods[i].invoke(routeStateNew);
-                    System.out.println("DBG: Got span");
+                    //System.out.println("DBG: Got span");
 
                     routeSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
                     routeSpan.setAttribute(stringKey("code.function"), Context.current().toString());
@@ -43,6 +44,8 @@ public class DigmaServerAdvice {
                 catch (Exception e){
 
                 }
+                break;
+
             }
         }
 //        if (routeStateNew!=null){

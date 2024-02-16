@@ -63,7 +63,7 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
         }
 
         Span currentSpan = Span.current();
-        System.out.println("DBG: ServerCall.Listener");
+        //System.out.println("DBG: ServerCall.Listener");
 
         currentSpan.setAttribute(stringKey("code.namespace"), classAndMethod.declaringClass().getName());
         currentSpan.setAttribute(stringKey("code.function"), classAndMethod.methodName());
