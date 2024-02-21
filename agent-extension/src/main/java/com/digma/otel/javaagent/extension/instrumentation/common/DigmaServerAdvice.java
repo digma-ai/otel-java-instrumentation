@@ -29,10 +29,15 @@ public class DigmaServerAdvice {
         Span routeSpan =null;
 
         if (routeStateNew!=null){
-            routeSpan =routeStateNew.getSpan();
-            if (routeSpan!=null){
-                routeSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
-                routeSpan.setAttribute(stringKey("code.function"), Context.current().toString());
+            try {
+                routeSpan = routeStateNew.getSpan();
+                if (routeSpan != null) {
+                    routeSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+                    routeSpan.setAttribute(stringKey("code.function"), method.getName());
+                }
+            }
+            catch (Exception e){
+                //do nothing
             }
         }
 
