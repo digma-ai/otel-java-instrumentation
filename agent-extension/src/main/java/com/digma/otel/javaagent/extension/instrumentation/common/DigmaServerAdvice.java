@@ -29,15 +29,30 @@ public class DigmaServerAdvice {
         Span routeSpan =null;
 
         if (routeStateNew!=null){
+
             try {
                 routeSpan = routeStateNew.getSpan();
                 if (routeSpan != null) {
+
                     routeSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
                     routeSpan.setAttribute(stringKey("code.function"), method.getName());
                 }
             }
-            catch (Exception e){
+            catch (Error e){
+
                 //do nothing
+            }
+        }
+
+        //Fallback to previous behavior
+        else {
+
+            Span rootSpan = LocalRootSpan.current();
+            if (rootSpan != null) {
+               // System.out.println("DBG: setting local root span ");
+
+                rootSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+                rootSpan.setAttribute(stringKey("code.function"), method.getName());
             }
         }
 
@@ -47,13 +62,6 @@ public class DigmaServerAdvice {
             span.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
             span.setAttribute(stringKey("code.function"), method.getName());
         }
-
-//        Span rootSpan = LocalRootSpan.current();
-//        if (rootSpan!=null){
-//            rootSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
-//            rootSpan.setAttribute(stringKey("code.function"), method.getName());
-//        }
-
 
 
     }
