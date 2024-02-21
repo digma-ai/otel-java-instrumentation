@@ -28,4 +28,11 @@ public class DigmaSpringWebMvcInstrumentationModule extends InstrumentationModul
             new RestControllerAnnotationsInstrumentation()
         ));
     }
+
+    @Override
+    public boolean isHelperClass(String className) {
+        return className.startsWith("com.digma.otel.javaagent.extension.instrumentation.spring.webmvc") // catch all classes in this package
+                || className.startsWith("com.digma.otel.instrumentation.common") // catch semantic conventions
+                || className.startsWith("com.digma.otel.javaagent.extension.instrumentation.common");
+    }
 }
