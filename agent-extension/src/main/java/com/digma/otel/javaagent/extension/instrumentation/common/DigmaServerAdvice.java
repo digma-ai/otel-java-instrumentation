@@ -58,13 +58,9 @@ public class DigmaServerAdvice {
 
         Span span = Span.fromContextOrNull(Context.current());
         if (span!=null){
-
-            if (routeSpan==null || routeSpan!=span){
-                //System.out.println("DBG: setting current span ");
-
-                span.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
-                span.setAttribute(stringKey("code.function"), method.getName());
-            }
+            
+            span.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+            span.setAttribute(stringKey("code.function"), method.getName());
         }
 
 
