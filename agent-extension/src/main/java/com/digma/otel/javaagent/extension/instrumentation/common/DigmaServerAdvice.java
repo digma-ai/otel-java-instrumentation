@@ -23,56 +23,33 @@ public class DigmaServerAdvice {
 
         Class<?> classOfTarget = target.getClass();
         // taking local root span (servlet of tomcat or jetty) and set the code attributes on it
-        Span span = Span.fromContextOrNull(Context.current());
-        Span rootSpan = LocalRootSpan.current();
 
+        //Find http route span and set it
         HttpRouteState routeStateNew = HttpRouteState.fromContextOrNull(Context.current());
-        Method[] methods = routeStateNew.getClass().getMethods();
+        Span routeSpan =null;
 
-        for (int i=0; i< methods.length;i++){
-            //System.out.println("DBG:" + methods[i].getName());
-
-            if (methods[i].getName().startsWith("getSpan")){
-                try {
-                    Span routeSpan = (Span) methods[i].invoke(routeStateNew);
-                    //System.out.println("DBG: Got span");
-
-                    routeSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
-                    routeSpan.setAttribute(stringKey("code.function"), Context.current().toString());
-
-                }
-                catch (Exception e){
-
-                }
-                break;
-
+        if (routeStateNew!=null){
+            routeSpan =routeStateNew.getSpan();
+            if (routeSpan!=null){
+                routeSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+                routeSpan.setAttribute(stringKey("code.function"), Context.current().toString());
             }
         }
-//        if (routeStateNew!=null){
-//            System.out.println("DBG: Got route state");
-//
-//            Span routeSpan = routeStateNew.getSpan();
-//            if (span!=null){
-//                System.out.println("DBG: Got route state span");
-//
-//                routeSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
-//                routeSpan.setAttribute(stringKey("code.function"), Context.current().toString());
-//
-//            }
-//        }else{
-//            System.out.println("Can't find http context " + Context.current().toString());
-//
-//        }
 
+        Span span = Span.fromContextOrNull(Context.current());
         if (span!=null){
-            span.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
-            span.setAttribute(stringKey("code.function"), method.getName());
+
+            if (routeSpan!=null && routeSpan!=span){
+                span.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+                span.setAttribute(stringKey("code.function"), method.getName());
+            }
         }
 
-        if (rootSpan!=null){
-            rootSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
-            rootSpan.setAttribute(stringKey("code.function"), method.getName());
-        }
+//        Span rootSpan = LocalRootSpan.current();
+//        if (rootSpan!=null){
+//            rootSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+//            rootSpan.setAttribute(stringKey("code.function"), method.getName());
+//        }
 
 
 
