@@ -1,21 +1,15 @@
 package com.digma.otel.javaagent.extension.instrumentation.spring.kafka.v2_7;
 
 import com.digma.otel.javaagent.extension.instrumentation.common.DigmaCurrentSpanAdvice;
-import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
+import com.digma.otel.javaagent.extension.instrumentation.common.DigmaTypeInstrumentation;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
-import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.extendsClass;
-import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasClassesNamed;
-import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasSuperMethod;
-import static net.bytebuddy.matcher.ElementMatchers.declaresMethod;
-import static net.bytebuddy.matcher.ElementMatchers.isAnnotatedWith;
-import static net.bytebuddy.matcher.ElementMatchers.isMethod;
-import static net.bytebuddy.matcher.ElementMatchers.named;
-import static net.bytebuddy.matcher.ElementMatchers.namedOneOf;
+import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.*;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
-public class KafkaListenerAnnotationsInstrumentation implements TypeInstrumentation {
+public class KafkaListenerAnnotationsInstrumentation extends DigmaTypeInstrumentation {
 
     @Override
     public ElementMatcher<ClassLoader> classLoaderOptimization() {
@@ -23,7 +17,7 @@ public class KafkaListenerAnnotationsInstrumentation implements TypeInstrumentat
     }
 
     @Override
-    public ElementMatcher<TypeDescription> typeMatcher() {
+    public ElementMatcher<TypeDescription> digmaTypeMatcher() {
         return declaresMethod(isAnnotatedWith(named("org.springframework.kafka.annotation.KafkaListener")))
             .or(
                 extendsClass(

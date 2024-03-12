@@ -12,17 +12,30 @@ import static io.opentelemetry.api.common.AttributeKey.stringKey;
  */
 public class DigmaCurrentSpanAdvice {
 
+    //Note when declaring static variables here like a logger the advice doesn't run, strange bytebuddy issue
+
     @Advice.OnMethodEnter(suppress = Throwable.class)
     public static void methodEnter(
         @Advice.This Object target,
         @Advice.Origin Method method,
         @Advice.Origin String methodFqn) {
 
-        Class<?> classOfTarget = target.getClass();
+//        if (target == null) {
+//            System.err.println("DBG: DigmaCurrentSpanAdvice.methodEnter (target is null) " + method.getName() + "methodFqn="+methodFqn);
+//        }else{
+//            System.err.println("DBG: DigmaCurrentSpanAdvice.methodEnter " + target.getClass().getName() + "." + method.getName() + "methodFqn="+methodFqn);
+//        }
+
+        String targetClassName = "";
+        if (target != null) {
+            targetClassName = target.getClass().getName();
+        }else{
+            targetClassName = method.getDeclaringClass().getName();
+        }
 
         Span currentSpan = Span.current();
 
-        currentSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+        currentSpan.setAttribute(stringKey("code.namespace"), targetClassName);
         currentSpan.setAttribute(stringKey("code.function"), method.getName());
     }
 
