@@ -29,6 +29,8 @@ public class DigmaServerAdvice {
         String targetClassName = "";
         if (target != null) {
             targetClassName = target.getClass().getName();
+        }else{
+            targetClassName = method.getDeclaringClass().getName();
         }
         // taking local root span (servlet of tomcat or jetty) and set the code attributes on it
 

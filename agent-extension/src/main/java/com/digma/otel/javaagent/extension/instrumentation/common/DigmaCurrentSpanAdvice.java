@@ -29,6 +29,8 @@ public class DigmaCurrentSpanAdvice {
         String targetClassName = "";
         if (target != null) {
             targetClassName = target.getClass().getName();
+        }else{
+            targetClassName = method.getDeclaringClass().getName();
         }
 
         Span currentSpan = Span.current();
