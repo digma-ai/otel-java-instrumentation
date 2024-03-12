@@ -1,6 +1,6 @@
 package com.digma.otel.javaagent.extension.instrumentation.junit;
 
-import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
+import com.digma.otel.javaagent.extension.instrumentation.common.DigmaTypeInstrumentation;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -8,7 +8,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasClassesNamed;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
-public class JunitAnnotationsInstrumentation implements TypeInstrumentation {
+public class JunitAnnotationsInstrumentation extends DigmaTypeInstrumentation {
 
     @Override
     public ElementMatcher<ClassLoader> classLoaderOptimization() {
@@ -18,7 +18,7 @@ public class JunitAnnotationsInstrumentation implements TypeInstrumentation {
     }
 
     @Override
-    public ElementMatcher<TypeDescription> typeMatcher() {
+    public ElementMatcher<TypeDescription> digmaTypeMatcher() {
         return declaresMethod(isAnnotatedWith(namedOneOf(
                 "org.junit.jupiter.api.Test", // junit 5
                 "org.junit.Test" // junit 4 and below

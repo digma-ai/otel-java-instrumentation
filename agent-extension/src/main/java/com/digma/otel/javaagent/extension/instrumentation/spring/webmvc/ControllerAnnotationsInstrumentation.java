@@ -1,19 +1,15 @@
 package com.digma.otel.javaagent.extension.instrumentation.spring.webmvc;
 
 import com.digma.otel.javaagent.extension.instrumentation.common.DigmaServerAdvice;
-import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
+import com.digma.otel.javaagent.extension.instrumentation.common.DigmaTypeInstrumentation;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasClassesNamed;
-import static net.bytebuddy.matcher.ElementMatchers.inheritsAnnotation;
-import static net.bytebuddy.matcher.ElementMatchers.isAnnotatedWith;
-import static net.bytebuddy.matcher.ElementMatchers.isMethod;
-import static net.bytebuddy.matcher.ElementMatchers.named;
-import static net.bytebuddy.matcher.ElementMatchers.namedOneOf;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
-public class ControllerAnnotationsInstrumentation implements TypeInstrumentation {
+public class ControllerAnnotationsInstrumentation extends DigmaTypeInstrumentation {
 
     @Override
     public ElementMatcher<ClassLoader> classLoaderOptimization() {
@@ -21,7 +17,7 @@ public class ControllerAnnotationsInstrumentation implements TypeInstrumentation
     }
 
     @Override
-    public ElementMatcher<TypeDescription> typeMatcher() {
+    public ElementMatcher<TypeDescription> digmaTypeMatcher() {
         return inheritsAnnotation(named("org.springframework.stereotype.Controller"));
     }
 

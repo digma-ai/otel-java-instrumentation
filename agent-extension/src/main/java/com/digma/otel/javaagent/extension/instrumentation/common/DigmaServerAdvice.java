@@ -12,33 +12,40 @@ import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
 public class DigmaServerAdvice {
 
+    //Note when declaring static variables here like a logger the advice doesn't run, strange bytebuddy issue
 
     @Advice.OnMethodEnter(suppress = Throwable.class)
     public static void methodEnter(
-        @Advice.This Object target,
-        @Advice.Origin Method method,
-        @Advice.Origin String methodFqn) {
+            @Advice.This Object target,
+            @Advice.Origin Method method,
+            @Advice.Origin String methodFqn) {
 
-        //System.out.println("DBG: DigmaServerAdvice.methodEnter " + method.getName());
+//        if (target == null) {
+//            System.err.println("DBG: DigmaServerAdvice.methodEnter (target is null) " + method.getName() + "methodFqn=" + methodFqn);
+//        } else {
+//            System.err.println("DBG: DigmaServerAdvice.methodEnter " + target.getClass().getName() + "." + method.getName() + "methodFqn=" + methodFqn);
+//        }
 
-        Class<?> classOfTarget = target.getClass();
+        String targetClassName = "";
+        if (target != null) {
+            targetClassName = target.getClass().getName();
+        }
         // taking local root span (servlet of tomcat or jetty) and set the code attributes on it
 
         //Find http route span and set it
         HttpRouteState routeStateNew = HttpRouteState.fromContextOrNull(Context.current());
-        Span routeSpan =null;
+        Span routeSpan = null;
 
-        if (routeStateNew!=null){
+        if (routeStateNew != null) {
 
             try {
                 routeSpan = routeStateNew.getSpan();
                 if (routeSpan != null) {
 
-                    routeSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+                    routeSpan.setAttribute(stringKey("code.namespace"), targetClassName);
                     routeSpan.setAttribute(stringKey("code.function"), method.getName());
                 }
-            }
-            catch (Error e){
+            } catch (Error e) {
 
                 //do nothing
             }
@@ -49,17 +56,17 @@ public class DigmaServerAdvice {
 
             Span rootSpan = LocalRootSpan.current();
             if (rootSpan != null) {
-               // System.out.println("DBG: setting local root span ");
+                // System.out.println("DBG: setting local root span ");
 
-                rootSpan.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+                rootSpan.setAttribute(stringKey("code.namespace"), targetClassName);
                 rootSpan.setAttribute(stringKey("code.function"), method.getName());
             }
         }
 
         Span span = Span.fromContextOrNull(Context.current());
-        if (span!=null){
-            
-            span.setAttribute(stringKey("code.namespace"), classOfTarget.getName());
+        if (span != null) {
+
+            span.setAttribute(stringKey("code.namespace"), targetClassName);
             span.setAttribute(stringKey("code.function"), method.getName());
         }
 
