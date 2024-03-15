@@ -32,12 +32,13 @@ jobs:
         with:
           gradle-version: wrapper
 
-      - name: Gradle clean
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments:  --parallel  clean
-
       - name: Gradle build
         uses: gradle/gradle-build-action@v2
         with:
-          arguments:  --parallel  build
+          arguments: clean build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./agent-extension/build/libs/digma-otel-agent-extension*.jar
+          retention-days: 5

@@ -19,7 +19,7 @@ base.archivesName.set(vArtifactId)
 
 val OPENTELEMETRY_VERSION = "1.21.0"
 val OPENTELEMETRY_ALPHA_VERSION = "1.21.0-alpha"
-val junitJupiterVersion = "5.9.1"
+val junitJupiterVersion = "5.10.2"
 
 dependencies {
     api("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
