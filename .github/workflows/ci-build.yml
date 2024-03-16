@@ -41,5 +41,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: digma-otel-agent-extension-0.8.5
-          path: ./agent-extension/build/libs/digma-otel-agent-extension-0.8.5.jar
+          path: ./agent-extension/build/libs/digma-otel-agent-extension*.jar
           retention-days: 5
