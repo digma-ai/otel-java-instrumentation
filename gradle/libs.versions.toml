@@ -1,0 +1,24 @@
+[versions]
+opentelemetrySdk = "1.36.0"
+opentelemetryJavaagent = "2.2.0"
+opentelemetryJavaagentAlpha = "2.2.0-alpha"
+junit = "5.10.2"
+logback = "1.5.3"
+
+
+# plugins
+
+
+[libraries]
+otelInstBom = { group = "io.opentelemetry.instrumentation", name = "opentelemetry-instrumentation-bom", version.ref = "opentelemetryJavaagent" }
+otelInstBomAlpha = { group = "io.opentelemetry.instrumentation", name = "opentelemetry-instrumentation-bom-alpha", version.ref = "opentelemetryJavaagentAlpha" }
+
+## libraries that are included in the bom don't need a version
+opentelemetryTestingCommon = { group = "io.opentelemetry.javaagent", name = "opentelemetry-testing-common"}
+
+## agentForTesting is in the bom, but it's not in implementation configuration so needs a version
+agentForTesting = { group = "io.opentelemetry.javaagent", name = "opentelemetry-agent-for-testing", version.ref = "opentelemetryJavaagentAlpha"}
+
+junitJupiter = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
+junitJupiterEngine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit" }
+logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }

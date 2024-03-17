@@ -12,8 +12,7 @@ public final class CommonUtils {
         if (envVal != null) {
             return envVal;
         }
-        String propertyVal = System.getProperty(entryName);
-        return propertyVal;
+        return System.getProperty(entryName);
     }
 
     /**

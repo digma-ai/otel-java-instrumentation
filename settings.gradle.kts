@@ -44,5 +44,6 @@ include(":instrumentation:spring:spring-boot-autoconfigure")
 include(":instrumentation:grpc-16:library")
 include(":extension-version")
 include(":agent-extension")
+include(":testing:methods")
 
 // benchmark

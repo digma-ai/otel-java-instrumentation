@@ -1,5 +1,6 @@
 package com.digma.otel.javaagent.extension.instrumentation.methods;
 
+import com.digma.otel.javaagent.extension.instrumentation.matchers.ClassLoaderHasPackagesNamedMatcher;
 import com.google.auto.service.AutoService;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
@@ -19,13 +20,17 @@ import static net.bytebuddy.matcher.ElementMatchers.not;
 @AutoService(InstrumentationModule.class)
 public class DigmaMethodsInstrumentationModule extends InstrumentationModule {
 
-    private static final String TRACE_PACKAGES_CONFIG = "digma.otel.instrumentation.packages.include";
+    private static final String DIGMA_AUTO_INSTRUMENT_PACKAGES_SYSTEM_PROPERTY = "digma.autoinstrument.packages";
+    private static final String DIGMA_AUTO_INSTRUMENT_PACKAGES_ENV_VAR = "DIGMA_AUTOINSTRUMENT_PACKAGES";
 
     private final List<String> packageNames;
 
     public DigmaMethodsInstrumentationModule() {
         super("digma-methods");
-        String pNames = getEnvOrSystemProperty(TRACE_PACKAGES_CONFIG);
+        String pNames = getEnvOrSystemProperty(DIGMA_AUTO_INSTRUMENT_PACKAGES_SYSTEM_PROPERTY);
+        if (pNames == null){
+            pNames = getEnvOrSystemProperty(DIGMA_AUTO_INSTRUMENT_PACKAGES_ENV_VAR);
+        }
         if (pNames != null){
             packageNames = Arrays.asList(pNames.split(";"));
         }else{
@@ -40,8 +45,7 @@ public class DigmaMethodsInstrumentationModule extends InstrumentationModule {
 
     @Override
     public ElementMatcher.Junction<ClassLoader> classLoaderMatcher() {
-        //todo: match match class loaders that contains the packages
-        return not(isBootstrapClassLoader());
+        return not(isBootstrapClassLoader()).and(new ClassLoaderHasPackagesNamedMatcher(packageNames));
     }
 
     @Override

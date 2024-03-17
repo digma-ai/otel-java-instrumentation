@@ -1,6 +1,7 @@
 package com.digma.otel.javaagent.extension.instrumentation.methods;
 
 import com.digma.otel.javaagent.extension.instrumentation.common.DigmaTypeInstrumentation;
+import com.digma.otel.javaagent.extension.instrumentation.matchers.ClassLoaderHasPackagesNamedMatcher;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.api.annotation.support.async.AsyncOperationEndSupport;
@@ -13,41 +14,60 @@ import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
 
 import static com.digma.otel.javaagent.extension.instrumentation.methods.MethodSingletons.instrumenter;
 import static io.opentelemetry.javaagent.bootstrap.Java8BytecodeBridge.currentContext;
-import static net.bytebuddy.matcher.ElementMatchers.isMethod;
+import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasSuperMethod;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
 public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentation {
 
     private final String packageName;
 
     public MethodsInPackageTypeInstrumentation(String packageName) {
-
         this.packageName = packageName;
     }
 
     @Override
     public ElementMatcher<ClassLoader> classLoaderOptimization() {
-        //todo: match match class loaders that contains the package
-        // can copy ClassLoaderHasClassesNamedMatcher and change to check packages
-        return super.classLoaderOptimization();
+        return new ClassLoaderHasPackagesNamedMatcher(Collections.singletonList(packageName));
     }
 
     @Override
     public ElementMatcher<TypeDescription> digmaTypeMatcher() {
-        return ElementMatchers.nameStartsWith(packageName);
+        return ElementMatchers.nameStartsWith(packageName + ".");
     }
 
-    //todo: don't instrument methods that are already instrumented by otel
     @Override
     public void transform(TypeTransformer transformer) {
         transformer.applyAdviceToMethod(
-//                isMethod().and(not(isConstructor())),
-                isMethod(),
+                isMethod().and(not(
+                                isAnnotatedWith(namedOneOf(
+                                        "org.springframework.web.bind.annotation.RequestMapping",
+                                        "org.springframework.web.bind.annotation.GetMapping",
+                                        "org.springframework.web.bind.annotation.PostMapping",
+                                        "org.springframework.web.bind.annotation.DeleteMapping",
+                                        "org.springframework.web.bind.annotation.PutMapping",
+                                        "org.springframework.web.bind.annotation.PatchMapping"
+                                ))).and(not(
+                                        hasSuperMethod(
+                                                isAnnotatedWith(namedOneOf(
+                                                        "javax.ws.rs.Path",
+                                                        "javax.ws.rs.DELETE",
+                                                        "javax.ws.rs.GET",
+                                                        "javax.ws.rs.HEAD",
+                                                        "javax.ws.rs.OPTIONS",
+                                                        "javax.ws.rs.PATCH",
+                                                        "javax.ws.rs.POST",
+                                                        "javax.ws.rs.PUT"
+                                                )))
+                                )).and(
+                                        not(isAnnotatedWith(namedOneOf("io.opentelemetry.instrumentation.annotations.WithSpan"))))
+                                .and(not(isGetter())).and(not(isSetter()))
+                ),
                 MethodsInPackageTypeInstrumentation.class.getName() + "$MethodAdvice");
     }
-
 
 
     public static class MethodAdvice {
