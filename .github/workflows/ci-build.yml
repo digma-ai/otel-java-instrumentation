@@ -2,7 +2,7 @@ name: Build main and pull requests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "**" ]
 
   pull_request:
     branches: [ "main" ]
@@ -32,12 +32,14 @@ jobs:
         with:
           gradle-version: wrapper
 
-      - name: Gradle clean
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments:  --parallel  clean
-
       - name: Gradle build
         uses: gradle/gradle-build-action@v2
         with:
-          arguments:  --parallel  build
+          arguments: clean build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: digma-otel-agent-extension-0.8.5
+          path: ./agent-extension/build/libs/digma-otel-agent-extension*.jar
+          retention-days: 5
