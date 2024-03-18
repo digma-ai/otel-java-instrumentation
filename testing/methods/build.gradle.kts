@@ -13,6 +13,11 @@ val digmaExtension: Configuration by configurations.creating {
     isCanBeConsumed = false
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
 
 
 dependencies {
@@ -23,6 +28,7 @@ dependencies {
     testCompileOnly(project(":extension-version"))
     testCompileOnly(project(":agent-extension"))
 
+    testImplementation(libs.otelInstApi)
     testImplementation(libs.opentelemetryTestingCommon)
     testImplementation(libs.junitJupiter)
     testImplementation(libs.junitJupiterEngine)
@@ -52,6 +58,7 @@ tasks {
         dependsOn(":agent-extension:byteBuddyJava")
     }
 
+
     withType<Test>() {
 
         dependsOn(digmaExtension)
@@ -75,7 +82,6 @@ tasks {
             "-Dotel.javaagent.testing.transform-safe-logging.enabled=true",
             "-Dotel.javaagent.add-thread-details=false",
             "-Dotel.java.disabled.resource.providers=io.opentelemetry.sdk.extension.resources.HostResourceProvider,io.opentelemetry.sdk.extension.resources.OsResourceProvider,io.opentelemetry.sdk.extension.resources.ProcessResourceProvider,io.opentelemetry.sdk.extension.resources.ProcessRuntimeResourceProvider"
-
         )
     }
 }

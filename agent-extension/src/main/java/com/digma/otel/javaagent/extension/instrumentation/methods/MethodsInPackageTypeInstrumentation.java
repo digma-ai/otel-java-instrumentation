@@ -37,18 +37,35 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
 
     @Override
     public ElementMatcher<TypeDescription> digmaTypeMatcher() {
-        return ElementMatchers.nameStartsWith(packageName + ".");
+        return ElementMatchers.nameStartsWith(packageName + ".")
+                .and(not(isSynthetic()))
+                .and(not(isEnum()))
+                .and(not(nameContains("$")));
     }
 
     @Override
     public void transform(TypeTransformer transformer) {
         transformer.applyAdviceToMethod(
-                isMethod().and(not(methodsFilter())),
+                isMethod()
+                        .and(not(methodsFilterByAnnotation()))
+                        .and(not(isSynthetic()))
+                        .and(not(isBridge()))
+                        .and(not(isMain()))
+                        .and(not(isFinalizer()))
+                        .and(not(isHashCode()))
+                        .and(not(isEquals()))
+                        .and(not(isClone()))
+                        .and(not(isToString()))
+                        .and(not(isTypeInitializer()))
+                        .and(not(isSetter()))
+                        .and(not(isGetter()))
+                        .and(not(isNative()))
+                        .and(not(nameContains("$"))),
                 MethodsInPackageTypeInstrumentation.class.getName() + "$MethodAdvice");
     }
 
 
-    private ElementMatcher<? super MethodDescription> methodsFilter() {
+    private ElementMatcher<? super MethodDescription> methodsFilterByAnnotation() {
 
         return isAnnotatedWith(namedOneOf(
                 "org.springframework.web.bind.annotation.RequestMapping",
@@ -73,8 +90,6 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
                 //for some reason otel in WithSpanInstrumentation checks for application.io.opentelemetry.instrumentation.annotations.WithSpan
                 isAnnotatedWith(namedOneOf("io.opentelemetry.instrumentation.annotations.WithSpan",
                         "application.io.opentelemetry.instrumentation.annotations.WithSpan"))
-        ).or(isGetter()).or(isSetter()).or(
-                namedOneOf("toString", "equals", "hashCode","clone")
         );
 
     }
