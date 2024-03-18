@@ -268,3 +268,4 @@ signing {
 
     sign(publishing.publications["DigmaOtelAgentExtension"])
 }
+

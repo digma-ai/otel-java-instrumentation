@@ -1,6 +1,7 @@
 package com.digma.otel.javaagent.extension.instrumentation.methods;
 
 import com.digma.otel.javaagent.extension.instrumentation.matchers.ClassLoaderHasPackagesNamedMatcher;
+import com.digma.otel.javaagent.extension.version.DigmaExtensionVersion;
 import com.google.auto.service.AutoService;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
@@ -26,7 +27,7 @@ public class DigmaMethodsInstrumentationModule extends InstrumentationModule {
     private final List<String> packageNames;
 
     public DigmaMethodsInstrumentationModule() {
-        super("digma-methods");
+        super("digma-methods","digma-methods-"+ DigmaExtensionVersion.VERSION);
         String pNames = getEnvOrSystemProperty(DIGMA_AUTO_INSTRUMENT_PACKAGES_SYSTEM_PROPERTY);
         if (pNames == null){
             pNames = getEnvOrSystemProperty(DIGMA_AUTO_INSTRUMENT_PACKAGES_ENV_VAR);

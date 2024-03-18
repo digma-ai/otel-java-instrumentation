@@ -8,6 +8,7 @@ import io.opentelemetry.instrumentation.api.annotation.support.async.AsyncOperat
 import io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
 import net.bytebuddy.asm.Advice;
+import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -36,37 +37,61 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
 
     @Override
     public ElementMatcher<TypeDescription> digmaTypeMatcher() {
-        return ElementMatchers.nameStartsWith(packageName + ".");
+        return ElementMatchers.nameStartsWith(packageName + ".")
+                .and(not(isSynthetic()))
+                .and(not(isEnum()))
+                .and(not(nameContains("$")));
     }
 
     @Override
     public void transform(TypeTransformer transformer) {
         transformer.applyAdviceToMethod(
-                isMethod().and(not(
-                                isAnnotatedWith(namedOneOf(
-                                        "org.springframework.web.bind.annotation.RequestMapping",
-                                        "org.springframework.web.bind.annotation.GetMapping",
-                                        "org.springframework.web.bind.annotation.PostMapping",
-                                        "org.springframework.web.bind.annotation.DeleteMapping",
-                                        "org.springframework.web.bind.annotation.PutMapping",
-                                        "org.springframework.web.bind.annotation.PatchMapping"
-                                ))).and(not(
-                                        hasSuperMethod(
-                                                isAnnotatedWith(namedOneOf(
-                                                        "javax.ws.rs.Path",
-                                                        "javax.ws.rs.DELETE",
-                                                        "javax.ws.rs.GET",
-                                                        "javax.ws.rs.HEAD",
-                                                        "javax.ws.rs.OPTIONS",
-                                                        "javax.ws.rs.PATCH",
-                                                        "javax.ws.rs.POST",
-                                                        "javax.ws.rs.PUT"
-                                                )))
-                                )).and(
-                                        not(isAnnotatedWith(namedOneOf("io.opentelemetry.instrumentation.annotations.WithSpan"))))
-                                .and(not(isGetter())).and(not(isSetter()))
-                ),
+                isMethod()
+                        .and(not(methodsFilterByAnnotation()))
+                        .and(not(isSynthetic()))
+                        .and(not(isBridge()))
+                        .and(not(isMain()))
+                        .and(not(isFinalizer()))
+                        .and(not(isHashCode()))
+                        .and(not(isEquals()))
+                        .and(not(isClone()))
+                        .and(not(isToString()))
+                        .and(not(isTypeInitializer()))
+                        .and(not(isSetter()))
+                        .and(not(isGetter()))
+                        .and(not(isNative()))
+                        .and(not(nameContains("$"))),
                 MethodsInPackageTypeInstrumentation.class.getName() + "$MethodAdvice");
+    }
+
+
+    private ElementMatcher<? super MethodDescription> methodsFilterByAnnotation() {
+
+        return isAnnotatedWith(namedOneOf(
+                "org.springframework.web.bind.annotation.RequestMapping",
+                "org.springframework.web.bind.annotation.GetMapping",
+                "org.springframework.web.bind.annotation.PostMapping",
+                "org.springframework.web.bind.annotation.DeleteMapping",
+                "org.springframework.web.bind.annotation.PutMapping",
+                "org.springframework.web.bind.annotation.PatchMapping"
+        )).or(
+                hasSuperMethod(
+                        isAnnotatedWith(namedOneOf(
+                                "javax.ws.rs.Path",
+                                "javax.ws.rs.DELETE",
+                                "javax.ws.rs.GET",
+                                "javax.ws.rs.HEAD",
+                                "javax.ws.rs.OPTIONS",
+                                "javax.ws.rs.PATCH",
+                                "javax.ws.rs.POST",
+                                "javax.ws.rs.PUT"
+                        )))
+        ).or(
+                //for some reason otel in WithSpanInstrumentation checks for application.io.opentelemetry.instrumentation.annotations.WithSpan
+                isAnnotatedWith(namedOneOf("io.opentelemetry.instrumentation.annotations.WithSpan",
+                        "application.io.opentelemetry.instrumentation.annotations.WithSpan"))
+        );
+
     }
 
 

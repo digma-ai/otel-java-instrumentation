@@ -9,7 +9,7 @@ public class ConfigTracedCompletableFuture {
     public final CountDownLatch countDownLatch = new CountDownLatch(1);
     public Span span;
 
-    public CompletableFuture<String> getResult() {
+    public CompletableFuture<String> getResult(String result) {
         CompletableFuture<String> completableFuture = new CompletableFuture<>();
         span = Span.current();
         new Thread(
@@ -19,7 +19,7 @@ public class ConfigTracedCompletableFuture {
                     } catch (InterruptedException exception) {
                         // ignore
                     }
-                    completableFuture.complete("Hello!");
+                    completableFuture.complete(result);
                 })
                 .start();
         return completableFuture;
