@@ -8,6 +8,7 @@ import io.opentelemetry.instrumentation.api.annotation.support.async.AsyncOperat
 import io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
 import net.bytebuddy.asm.Advice;
+import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -42,31 +43,40 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
     @Override
     public void transform(TypeTransformer transformer) {
         transformer.applyAdviceToMethod(
-                isMethod().and(not(
-                                isAnnotatedWith(namedOneOf(
-                                        "org.springframework.web.bind.annotation.RequestMapping",
-                                        "org.springframework.web.bind.annotation.GetMapping",
-                                        "org.springframework.web.bind.annotation.PostMapping",
-                                        "org.springframework.web.bind.annotation.DeleteMapping",
-                                        "org.springframework.web.bind.annotation.PutMapping",
-                                        "org.springframework.web.bind.annotation.PatchMapping"
-                                ))).and(not(
-                                        hasSuperMethod(
-                                                isAnnotatedWith(namedOneOf(
-                                                        "javax.ws.rs.Path",
-                                                        "javax.ws.rs.DELETE",
-                                                        "javax.ws.rs.GET",
-                                                        "javax.ws.rs.HEAD",
-                                                        "javax.ws.rs.OPTIONS",
-                                                        "javax.ws.rs.PATCH",
-                                                        "javax.ws.rs.POST",
-                                                        "javax.ws.rs.PUT"
-                                                )))
-                                )).and(
-                                        not(isAnnotatedWith(namedOneOf("io.opentelemetry.instrumentation.annotations.WithSpan"))))
-                                .and(not(isGetter())).and(not(isSetter()))
-                ),
+                isMethod().and(not(methodsFilter())),
                 MethodsInPackageTypeInstrumentation.class.getName() + "$MethodAdvice");
+    }
+
+
+    private ElementMatcher<? super MethodDescription> methodsFilter() {
+
+        return isAnnotatedWith(namedOneOf(
+                "org.springframework.web.bind.annotation.RequestMapping",
+                "org.springframework.web.bind.annotation.GetMapping",
+                "org.springframework.web.bind.annotation.PostMapping",
+                "org.springframework.web.bind.annotation.DeleteMapping",
+                "org.springframework.web.bind.annotation.PutMapping",
+                "org.springframework.web.bind.annotation.PatchMapping"
+        )).or(
+                hasSuperMethod(
+                        isAnnotatedWith(namedOneOf(
+                                "javax.ws.rs.Path",
+                                "javax.ws.rs.DELETE",
+                                "javax.ws.rs.GET",
+                                "javax.ws.rs.HEAD",
+                                "javax.ws.rs.OPTIONS",
+                                "javax.ws.rs.PATCH",
+                                "javax.ws.rs.POST",
+                                "javax.ws.rs.PUT"
+                        )))
+        ).or(
+                //for some reason otel in WithSpanInstrumentation checks for application.io.opentelemetry.instrumentation.annotations.WithSpan
+                isAnnotatedWith(namedOneOf("io.opentelemetry.instrumentation.annotations.WithSpan",
+                        "application.io.opentelemetry.instrumentation.annotations.WithSpan"))
+        ).or(isGetter()).or(isSetter()).or(
+                namedOneOf("toString", "equals", "hashCode","clone")
+        );
+
     }
 
 
