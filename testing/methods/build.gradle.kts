@@ -52,10 +52,11 @@ tasks {
 
     //because this project depends on agent-extension for test compile and agent-extension has byteBuddyJava task
     // that produces an artifact then needs this dependency.
-    //not the best way to depend on task in other project because it create coupling between the projects but
+    //not the best way to depend on task in other project because it creates coupling between the projects but
     // probably good enough in this case.
     compileTestJava{
         dependsOn(":agent-extension:byteBuddyJava")
+        dependsOn(":agent-extension:jar")
     }
 
 

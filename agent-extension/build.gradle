@@ -132,6 +132,7 @@ dependencies {
     testImplementation("io.opentelemetry.proto:opentelemetry-proto:1.1.0-alpha")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${versions.junit}")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${versions.junit}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${versions.junit}")
     testRuntimeOnly("ch.qos.logback:logback-classic:1.5.3")
 
