@@ -19,7 +19,8 @@ import java.util.Collections;
 
 import static com.digma.otel.javaagent.extension.instrumentation.methods.MethodSingletons.instrumenter;
 import static io.opentelemetry.javaagent.bootstrap.Java8BytecodeBridge.currentContext;
-import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasSuperMethod;
+import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.hasSuperType;
+import static io.opentelemetry.javaagent.extension.matcher.AgentElementMatchers.*;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
 public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentation {
@@ -38,10 +39,62 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
     @Override
     public ElementMatcher<TypeDescription> digmaTypeMatcher() {
         return ElementMatchers.nameStartsWith(packageName + ".")
+                .and(not(typeFilterByAnnotation()))
                 .and(not(isSynthetic()))
                 .and(not(isEnum()))
+                .and(not(extendsClass(named("io.grpc.ServerBuilder"))))
+                .and(not(jaxrsTypes()))
+                .and(not(kafkaTypes()))
+                .and(not(implementsInterface(named("org.apache.camel.CamelContext"))))
+                .and(not(hibernate6Types()))
+                .and(not(hibernate4Types()))
                 .and(not(nameContains("$")));
     }
+
+
+
+    private ElementMatcher<? super TypeDescription> hibernate6Types(){
+        return implementsInterface(namedOneOf(
+                "org.hibernate.query.CommonQueryContract",
+                "org.hibernate.SessionFactory",
+                "org.hibernate.SessionBuilder",
+                "org.hibernate.SharedSessionContract",
+                "org.hibernate.Transaction"));
+    }
+
+    private ElementMatcher<? super TypeDescription> hibernate4Types(){
+        return implementsInterface(namedOneOf(
+                "org.hibernate.Criteria",
+                "org.hibernate.Query",
+                "org.hibernate.SessionFactory",
+                "org.hibernate.SessionBuilder",
+                "org.hibernate.SharedSessionContract",
+                "org.hibernate.Transaction"));
+    }
+
+    private ElementMatcher<? super TypeDescription> jaxrsTypes(){
+        return hasSuperType(
+                isAnnotatedWith(named("javax.ws.rs.Path"))
+                        .or(declaresMethod(isAnnotatedWith(named("javax.ws.rs.Path")))));
+    }
+
+    private ElementMatcher<? super TypeDescription> kafkaTypes(){
+        return declaresMethod(isAnnotatedWith(named("org.springframework.kafka.annotation.KafkaListener")))
+                .or(
+                        extendsClass(
+                                declaresMethod(isAnnotatedWith(named("org.springframework.kafka.annotation.KafkaListener")))));
+    }
+
+
+    private ElementMatcher<? super TypeDescription> typeFilterByAnnotation() {
+        return isAnnotatedWith(namedOneOf(
+                "org.junit.jupiter.api.Disabled",
+                "org.junit.Ignore")
+        );
+    }
+
+
+
 
     @Override
     public void transform(TypeTransformer transformer) {
@@ -90,9 +143,40 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
                 //for some reason otel in WithSpanInstrumentation checks for application.io.opentelemetry.instrumentation.annotations.WithSpan
                 isAnnotatedWith(namedOneOf("io.opentelemetry.instrumentation.annotations.WithSpan",
                         "application.io.opentelemetry.instrumentation.annotations.WithSpan"))
+        ).or(
+                isAnnotatedWith(namedOneOf(
+                        "org.junit.jupiter.api.Test",
+                        "org.junit.jupiter.api.Disabled",
+                        "org.junit.jupiter.api.BeforeEach",
+                        "org.junit.jupiter.api.BeforeEach",
+                        "org.junit.jupiter.api.BeforeAll",
+                        "org.junit.jupiter.api.AfterAll",
+                        "org.junit.jupiter.api.RepeatedTest",
+                        "org.junit.jupiter.params.ParameterizedTest",
+                        "org.junit.jupiter.api.TestFactory",
+                        "org.junit.jupiter.api.TestTemplate",
+                        "kotlin.test.Test",
+                        "kotlin.test.BeforeEach",
+                        "kotlin.test.BeforeEach",
+                        "kotlin.test.Ignore",
+                        "org.junit.Test",
+                        "org.junit.Ignore",
+                        "org.junit.Rule",
+                        "org.junit.ClassRule",
+                        "org.junit.BeforeClass",
+                        "org.junit.Before",
+                        "org.junit.AfterClass",
+                        "org.junit.After",
+                        "org.junit.runners.Parameterized.AfterParam",
+                        "org.junit.runners.Parameterized.BeforeParam",
+                        "org.junit.runners.Parameterized.Parameters"))
+        ).or(
+                isAnnotatedWith(namedOneOf("io.micrometer.tracing.annotation.NewSpan",
+                        "io.micrometer.observation.annotation.Observed"))
         );
 
     }
+
 
 
     public static class MethodAdvice {
