@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("common-java")
 }
 
 
@@ -56,13 +57,13 @@ tasks {
     // probably good enough in this case.
     compileTestJava{
         dependsOn(":agent-extension:byteBuddyJava")
-        dependsOn(":agent-extension:jar")
     }
 
 
     withType<Test>() {
 
         dependsOn(digmaExtension)
+        mustRunAfter(":agent-extension:test")
 
         useJUnitPlatform()
 
