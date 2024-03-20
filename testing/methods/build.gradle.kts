@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("common-java")
 }
 
 
