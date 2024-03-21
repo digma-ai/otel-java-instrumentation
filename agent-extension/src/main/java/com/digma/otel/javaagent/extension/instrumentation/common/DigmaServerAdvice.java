@@ -1,18 +1,14 @@
 package com.digma.otel.javaagent.extension.instrumentation.common;
 
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.context.Context;
 import io.opentelemetry.instrumentation.api.instrumenter.LocalRootSpan;
 import io.opentelemetry.instrumentation.api.internal.HttpRouteState;
+import io.opentelemetry.javaagent.bootstrap.Java8BytecodeBridge;
 import net.bytebuddy.asm.Advice;
 
 import java.lang.reflect.Method;
 
-import static io.opentelemetry.api.common.AttributeKey.stringKey;
-
 public class DigmaServerAdvice {
-
-    //Note when declaring static variables here like a logger the advice doesn't run, strange bytebuddy issue
 
     @Advice.OnMethodEnter(suppress = Throwable.class)
     public static void methodEnter(
@@ -35,46 +31,34 @@ public class DigmaServerAdvice {
         // taking local root span (servlet of tomcat or jetty) and set the code attributes on it
 
         //Find http route span and set it
-        HttpRouteState routeStateNew = HttpRouteState.fromContextOrNull(Context.current());
+        HttpRouteState routeStateNew = HttpRouteState.fromContextOrNull(Java8BytecodeBridge.currentContext());
         Span routeSpan = null;
 
         if (routeStateNew != null) {
-
             try {
                 routeSpan = routeStateNew.getSpan();
                 if (routeSpan != null) {
-
-                    routeSpan.setAttribute(stringKey("code.namespace"), targetClassName);
-                    routeSpan.setAttribute(stringKey("code.function"), method.getName());
+                    routeSpan.setAttribute("code.namespace", targetClassName);
+                    routeSpan.setAttribute("code.function", method.getName());
                 }
             } catch (Error e) {
-
-                //do nothing
+                //ignore
             }
         }
 
         //Fallback to previous behavior
         else {
-
             Span rootSpan = LocalRootSpan.current();
             if (rootSpan != null) {
-                // System.out.println("DBG: setting local root span ");
-
-                rootSpan.setAttribute(stringKey("code.namespace"), targetClassName);
-                rootSpan.setAttribute(stringKey("code.function"), method.getName());
+                rootSpan.setAttribute("code.namespace", targetClassName);
+                rootSpan.setAttribute("code.function", method.getName());
             }
         }
 
-        Span span = Span.fromContextOrNull(Context.current());
+        Span span = Java8BytecodeBridge.spanFromContext(Java8BytecodeBridge.currentContext());
         if (span != null) {
-
-            span.setAttribute(stringKey("code.namespace"), targetClassName);
-            span.setAttribute(stringKey("code.function"), method.getName());
+            span.setAttribute("code.namespace", targetClassName);
+            span.setAttribute("code.function", method.getName());
         }
-
-
     }
-
-
-
 }

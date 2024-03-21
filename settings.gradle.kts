@@ -30,20 +30,21 @@ dependencyResolutionManagement {
 
 rootProject.name = "digma-otel-java-instrumentation"
 
-// agent projects
 
-// misc
-//include(":dependencyManagement")
-
-// libs
 include(":libs:spring-boot-micrometer-tracing-autoconf")
 
-// instrumentations
+
 include(":instrumentation:common")
 include(":instrumentation:spring:spring-boot-autoconfigure")
 include(":instrumentation:grpc-16:library")
 include(":extension-version")
 include(":agent-extension")
 include(":testing:methods")
+include(":testing:java7")
 
-// benchmark
+
+includeBuild("test-materials/java-7-classes") {
+  dependencySubstitution {
+    substitute(module("org.digma.otel.test:java-7-classes")).using(project(":"))
+  }
+}
