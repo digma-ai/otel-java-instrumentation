@@ -1,6 +1,7 @@
 package com.digma.otel.javaagent.extension.instrumentation.common;
 
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.javaagent.bootstrap.Java8BytecodeBridge;
 import net.bytebuddy.asm.Advice;
 
 import java.lang.reflect.Method;
@@ -33,10 +34,10 @@ public class DigmaCurrentSpanAdvice {
             targetClassName = method.getDeclaringClass().getName();
         }
 
-        Span currentSpan = Span.current();
+        Span currentSpan = Java8BytecodeBridge.currentSpan();
 
-        currentSpan.setAttribute(stringKey("code.namespace"), targetClassName);
-        currentSpan.setAttribute(stringKey("code.function"), method.getName());
+        currentSpan.setAttribute("code.namespace", targetClassName);
+        currentSpan.setAttribute("code.function", method.getName());
     }
 
 }

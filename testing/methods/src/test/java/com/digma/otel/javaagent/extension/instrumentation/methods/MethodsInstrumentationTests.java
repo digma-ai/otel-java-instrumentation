@@ -22,6 +22,10 @@ import static io.opentelemetry.semconv.SemanticAttributes.CODE_NAMESPACE;
 
 class MethodsInstrumentationTests {
 
+    //Note: digma-junit instrumentation is disabled in jvm args. otherwise the
+    // tests will fail because there will be more spans than expected, plus
+    // the junit span will not be completed.
+
 
     @RegisterExtension
     static final InstrumentationExtension testing = AgentInstrumentationExtension.create();

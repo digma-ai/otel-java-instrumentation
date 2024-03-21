@@ -11,7 +11,8 @@ public abstract class DigmaTypeInstrumentation implements TypeInstrumentation {
 
     @Override
     public final ElementMatcher<TypeDescription> typeMatcher() {
-        return hasClassFileVersionAtLeast(ClassFileVersion.JAVA_V8).and(digmaTypeMatcher());
+        return hasClassFileVersionAtLeast(ClassFileVersion.JAVA_V7).and(digmaTypeMatcher());
+//        return hasClassFileVersionAtLeast(ClassFileVersion.JAVA_V8).and(digmaTypeMatcher());
     }
 
     public abstract ElementMatcher<TypeDescription> digmaTypeMatcher();
