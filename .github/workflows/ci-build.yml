@@ -57,3 +57,10 @@ jobs:
           name: methods-instrumentation-tests-report
           path: ./testing/methods/build/reports/tests/
           retention-days: 5
+
+      - name: Upload java 7 instrumentation tests report
+        uses: actions/upload-artifact@v3
+        with:
+          name: java7-instrumentation-tests-report
+          path: ./testing/java7/build/reports/tests/
+          retention-days: 5
