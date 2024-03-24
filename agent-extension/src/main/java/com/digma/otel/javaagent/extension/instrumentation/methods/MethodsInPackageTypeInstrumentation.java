@@ -100,6 +100,7 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
     public void transform(TypeTransformer transformer) {
         transformer.applyAdviceToMethod(
                 isMethod()
+                        .and(not(namedIgnoreCase("get")))
                         .and(not(methodsFilterByAnnotation()))
                         .and(not(isSynthetic()))
                         .and(not(isBridge()))
