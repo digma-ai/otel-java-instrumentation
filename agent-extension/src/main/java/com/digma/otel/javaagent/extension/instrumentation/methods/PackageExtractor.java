@@ -1,5 +1,6 @@
 package com.digma.otel.javaagent.extension.instrumentation.methods;
 
+import com.digma.otel.instrumentation.common.DigmaSemanticAttributes;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.context.Context;
@@ -27,6 +28,7 @@ public final class PackageExtractor<REQUEST, RESPONSE> implements AttributesExtr
         Class<?> cls = this.getter.codeClass(request);
         if (cls != null) {
             AttributesExtractorUtil.internalSet(attributes, AttributeKey.stringKey("digma.instrumentation.extended.package"), cls.getPackage().getName());
+            AttributesExtractorUtil.internalSet(attributes, AttributeKey.stringKey("digma.instrumentation.extended.enabled"), "true");
         }
     }
 
