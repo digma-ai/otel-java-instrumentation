@@ -29,6 +29,7 @@ public final class MethodSingletons {
                         .addAttributesExtractor(CodeAttributesExtractor.create(codeAttributesGetter))
                         .setInstrumentationVersion(DigmaExtensionVersion.VERSION)
                         .setErrorCauseExtractor(ErrorCauseExtractor.getDefault())
+                        .addAttributesExtractor(PackageExtractor.create(codeAttributesGetter))
                         .buildInstrumenter(SpanKindExtractor.alwaysInternal());
     }
 

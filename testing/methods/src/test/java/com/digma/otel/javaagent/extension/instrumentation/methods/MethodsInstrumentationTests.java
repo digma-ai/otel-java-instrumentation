@@ -4,6 +4,7 @@ package com.digma.otel.javaagent.extension.instrumentation.methods;
 import com.digma.otel.javaagent.extension.instrumentation.methods.test.*;
 import com.digma.otel.javaagent.extension.instrumentation.methods.test2.MyClassInOtherPackage;
 import com.digma.otel.javaagent.extension.version.DigmaExtensionVersion;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.instrumentation.testing.junit.AgentInstrumentationExtension;
 import io.opentelemetry.instrumentation.testing.junit.InstrumentationExtension;
@@ -24,6 +25,8 @@ class MethodsInstrumentationTests {
 
     @RegisterExtension
     static final InstrumentationExtension testing = AgentInstrumentationExtension.create();
+    static final AttributeKey<String> EXTENDED_PACKAGE = AttributeKey.stringKey("digma.instrumentation.extended.package");
+    static final AttributeKey<String> EXTENDED_ENABLED = AttributeKey.stringKey("digma.instrumentation.extended.enabled");
 
     @Test
     void methodTraced() {
@@ -45,7 +48,9 @@ class MethodsInstrumentationTests {
                                                 .hasKind(SpanKind.INTERNAL)
                                                 .hasAttributesSatisfyingExactly(
                                                         equalTo(CODE_NAMESPACE, ConfigTracedCallable.class.getName()),
-                                                        equalTo(CODE_FUNCTION, "call"))));
+                                                        equalTo(CODE_FUNCTION, "call"),
+                                                        equalTo(EXTENDED_PACKAGE, "com.digma.otel.javaagent.extension.instrumentation.methods.test"),
+                                                        equalTo(EXTENDED_ENABLED, "true"))));
 
         Assertions.assertThat(testing.spans()).size().isEqualTo(1);
         testing.spans().forEach(spanData -> Assertions.assertThat(spanData.getInstrumentationScopeInfo().getName()).isEqualTo("digma.io.opentelemetry.methods"));
@@ -78,7 +83,9 @@ class MethodsInstrumentationTests {
                                                 .hasKind(SpanKind.INTERNAL)
                                                 .hasAttributesSatisfyingExactly(
                                                         equalTo(CODE_NAMESPACE, ConfigTracedCompletableFuture.class.getName()),
-                                                        equalTo(CODE_FUNCTION, "getResult"))));
+                                                        equalTo(CODE_FUNCTION, "getResult"),
+                                                        equalTo(EXTENDED_PACKAGE, "com.digma.otel.javaagent.extension.instrumentation.methods.test"),
+                                                        equalTo(EXTENDED_ENABLED, "true"))));
 
         Assertions.assertThat(testing.spans()).size().isEqualTo(1);
         testing.spans().forEach(spanData -> Assertions.assertThat(spanData.getInstrumentationScopeInfo().getName()).isEqualTo("digma.io.opentelemetry.methods"));
@@ -103,14 +110,18 @@ class MethodsInstrumentationTests {
                                         .hasKind(SpanKind.INTERNAL)
                                         .hasAttributesSatisfyingExactly(
                                                 equalTo(CODE_NAMESPACE, AnonymousTestClass.class.getName()),
-                                                equalTo(CODE_FUNCTION, "methodWithAnonymousClass"))),
+                                                equalTo(CODE_FUNCTION, "methodWithAnonymousClass"),
+                                                equalTo(EXTENDED_PACKAGE, "com.digma.otel.javaagent.extension.instrumentation.methods.test"),
+                                                equalTo(EXTENDED_ENABLED, "true"))),
                 trace -> trace.hasSpansSatisfyingExactly(
                         span ->
                                 span.hasName("AnonymousTestClass.methodWithLambda")
                                         .hasKind(SpanKind.INTERNAL)
                                         .hasAttributesSatisfyingExactly(
                                                 equalTo(CODE_NAMESPACE, AnonymousTestClass.class.getName()),
-                                                equalTo(CODE_FUNCTION, "methodWithLambda"))));
+                                                equalTo(CODE_FUNCTION, "methodWithLambda"),
+                                                equalTo(EXTENDED_PACKAGE, "com.digma.otel.javaagent.extension.instrumentation.methods.test"),
+                                                equalTo(EXTENDED_ENABLED, "true"))));
 
 
         Assertions.assertThat(testing.spans()).size().isEqualTo(2);

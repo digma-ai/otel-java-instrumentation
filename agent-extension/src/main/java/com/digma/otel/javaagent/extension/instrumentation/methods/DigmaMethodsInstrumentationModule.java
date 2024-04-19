@@ -71,6 +71,7 @@ public class DigmaMethodsInstrumentationModule extends InstrumentationModule {
         list.add("io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethodAttributesGetter");
         list.add("io.opentelemetry.instrumentation.api.instrumenter.code.CodeSpanNameExtractor");
         list.add("io.opentelemetry.semconv.trace.attributes.SemanticAttributes");
+        list.add("com.digma.otel.javaagent.extension.instrumentation.methods.PackageExtractor");
         return list;
     }
 
