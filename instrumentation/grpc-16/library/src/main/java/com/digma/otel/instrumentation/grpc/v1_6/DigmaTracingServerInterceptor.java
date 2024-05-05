@@ -31,7 +31,8 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
      */
     private static final List<String> ClassesWhichHoldTheActualImpl = asList(
         "io.grpc.stub.ServerCalls$UnaryServerCallHandler",
-        "io.grpc.stub.ServerCalls$StreamingServerCallHandler"
+        "io.grpc.stub.ServerCalls$StreamingServerCallHandler",
+        "io.grpc.ServerInterceptors$InterceptCallHandler"
     );
 
     private final ConcurrentMap<String, ClassAndMethod> mapMethodFullName2ServiceImpl =
