@@ -20,8 +20,9 @@ tasks {
 
     withType<Test>() {
         jvmArgs(
-            "-Dotel.instrumentation.digma-junit.enabled=true", //disable digma junit because it interferes with the test
-            "-Ddigma.autoinstrument.packages=org.digma.otel.test.simple"
+            "-Ddigma.autoinstrument.packages=org.digma.otel.test.simple",
+            //todo: maybe should be false ?
+            "-Dotel.instrumentation.digma-junit.enabled=true" //disable digma junit because it interferes with the test
         )
     }
 }

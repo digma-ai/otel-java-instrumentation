@@ -22,7 +22,7 @@ class Java7CompatibilityTests {
     after the code is injected the jvm verifies the class byte code and if the injected code is not
     compatible with the java version that compiled the class, a verify error will be thrown by the jvm
     and the instrumentation will fail.
-    usually the problem will happen when using otel classes that java 8 byte code, for example
+    usually the problem will happen when using otel classes that are java 8 byte code, for example
     Context.current() or Span.currentSpan(), these are static methods on interface that were added in java 8.
     Otel has a bridge class called Java8BytecodeBridge that has the same methods and is java 7 compatible.
     AttributeKey.stringKey() is also not compatible with java 7 but it's not necessary , we can use
@@ -43,6 +43,10 @@ class Java7CompatibilityTests {
     version of the instrumented class.
      */
 
+    //todo: create an instrumentation advice that inject java 8 bytecode and add a test method that should fail.
+    // this is a test that the test really works
+
+    //todo: add assertions that instrumentation was triggered
 
     @RegisterExtension
     static final InstrumentationExtension testing = AgentInstrumentationExtension.create();
