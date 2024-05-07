@@ -85,4 +85,9 @@ class Java7CompatibilityTests {
         new Junit5DemoTests().test();
     }
 
+//    @Test
+//    void grpcTest() {
+//        new GrpcDemo().build();
+//    }
+
 }

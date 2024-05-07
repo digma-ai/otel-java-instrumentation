@@ -5,6 +5,7 @@ import io.grpc.*;
 import java.io.File;
 import java.util.concurrent.Executor;
 
+@SuppressWarnings("ReturnOfNull")
 public class GrpcDemo extends ServerBuilder {
 
     @Override

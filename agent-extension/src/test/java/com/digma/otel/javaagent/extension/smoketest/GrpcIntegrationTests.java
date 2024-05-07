@@ -77,6 +77,7 @@ public class GrpcIntegrationTests extends AllJdksParameterizedTest{
         Assertions.assertEquals(1, countSpansByName(traces, "opentelemetry.proto.collector.trace.v1.TraceService/Export"));
         Assertions.assertEquals(1, countSpansByName(traces, "TestService.withSpan"));
 
+        Assertions.assertEquals(1, countSpansByAttributeValue(traces, "code.function", "withSpan"));
         Assertions.assertEquals(1, countSpansByAttributeValue(traces, "code.function", "export"));
         Assertions.assertEquals(2, countSpansByAttributeValue(traces, "code.namespace", "io.opentelemetry.smoketest.grpc.TestService"));
 
