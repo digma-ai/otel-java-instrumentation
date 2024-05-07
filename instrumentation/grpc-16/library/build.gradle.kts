@@ -29,6 +29,7 @@ dependencies {
     runtimeOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:${OPENTELEMETRY_VERSION}")
     runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:${OPENTELEMETRY_VERSION}")
     runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
+    compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api:${OPENTELEMETRY_ALPHA_VERSION}")
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:${OPENTELEMETRY_ALPHA_VERSION}")
     compileOnly("io.grpc:grpc-core:$grpcVersion")
 

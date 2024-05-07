@@ -48,6 +48,10 @@ class Java7CompatibilityTests {
 
     //todo: add assertions that instrumentation was triggered
 
+    //todo: currently our advices are matched only for java 8 and above so this test is not really necessary.
+    // its too risky to match java 7 because we need to make sure that all our advices are tested.
+    // see DigmaTypeInstrumentation
+
     @RegisterExtension
     static final InstrumentationExtension testing = AgentInstrumentationExtension.create();
 
