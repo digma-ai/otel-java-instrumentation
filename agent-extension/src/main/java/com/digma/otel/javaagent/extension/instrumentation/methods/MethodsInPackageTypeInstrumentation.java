@@ -117,27 +117,6 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
                         .and(not(nameContains("$"))),
                 MethodsInPackageTypeInstrumentation.class.getName() + "$MethodAdvice");
     }
-//    @Override
-//    public void transform(TypeTransformer transformer) {
-//        transformer.applyAdviceToMethod(
-//                isMethod()
-//                        .and(not(namedIgnoreCase("get")))
-//                        .and(not(methodsFilterByAnnotation()))
-//                        .and(not(isSynthetic()))
-//                        .and(not(isBridge()))
-//                        .and(not(isMain()))
-//                        .and(not(isFinalizer()))
-//                        .and(not(isHashCode()))
-//                        .and(not(isEquals()))
-//                        .and(not(isClone()))
-//                        .and(not(isToString()))
-//                        .and(not(isTypeInitializer()))
-//                        .and(not(isSetter()))
-//                        .and(not(isGetter()))
-//                        .and(not(isNative()))
-//                        .and(not(nameContains("$"))),
-//                MethodsInPackageTypeInstrumentation.class.getName() + "$MethodAdvice");
-//    }
 
 
     private ElementMatcher<? super MethodDescription> methodsFilterByAnnotation() {
