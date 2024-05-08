@@ -2,7 +2,6 @@ package com.digma.otel.javaagent.extension.instrumentation.junit;
 
 import com.digma.otel.instrumentation.common.DigmaSemanticAttributes;
 import com.digma.otel.instrumentation.common.DigmaSemanticConventions;
-import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.api.instrumenter.Instrumenter;
@@ -58,7 +57,7 @@ public class JunitTestAdvice {
                 testingResultValue = DigmaSemanticConventions.TestingResultValues.ERROR;
             }
         }
-        Span.current().setAttribute(DigmaSemanticAttributes.TESTING_RESULT, testingResultValue);
+        Java8BytecodeBridge.currentSpan().setAttribute(DigmaSemanticAttributes.TESTING_RESULT, testingResultValue);
 
         if (scope == null) {
             return;

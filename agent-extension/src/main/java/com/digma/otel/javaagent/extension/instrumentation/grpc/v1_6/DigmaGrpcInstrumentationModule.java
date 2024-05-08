@@ -4,6 +4,7 @@ import com.google.auto.service.AutoService;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,4 +35,12 @@ public class DigmaGrpcInstrumentationModule extends InstrumentationModule {
         return Collections.singletonList(new DigmaGrpcServerBuilderInstrumentation());
     }
 
+    @Override
+    public List<String> getAdditionalHelperClassNames() {
+        List<String> classNames = new ArrayList<>();
+        classNames.add("io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod");
+        classNames.add("io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesGetter");
+        classNames.add("io.opentelemetry.instrumentation.api.instrumenter.util.AutoValue_ClassAndMethod");
+        return classNames;
+    }
 }

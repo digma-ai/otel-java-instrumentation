@@ -31,8 +31,8 @@ public class DigmaGrpcServerBuilderInstrumentation extends DigmaTypeInstrumentat
     @Override
     public void transform(TypeTransformer transformer) {
         transformer.applyAdviceToMethod(
-            isMethod().and(isPublic()).and(named("build")).and(takesArguments(0)),
-            DigmaGrpcServerBuilderInstrumentation.class.getName() + "$DigmaBuildAdvice");
+                isMethod().and(isPublic()).and(named("build")).and(takesArguments(0)),
+                DigmaGrpcServerBuilderInstrumentation.class.getName() + "$DigmaBuildAdvice");
     }
 
     @SuppressWarnings("unused")
@@ -40,8 +40,7 @@ public class DigmaGrpcServerBuilderInstrumentation extends DigmaTypeInstrumentat
 
         @Advice.OnMethodEnter(suppress = Throwable.class)
         public static void onEnter(
-            @Advice.This ServerBuilder<?> serverBuilder) {
-
+                @Advice.This ServerBuilder<?> serverBuilder) {
             serverBuilder.intercept(DigmaTracingServerInterceptor.create());
         }
     }

@@ -8,14 +8,17 @@ import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod;
+import io.opentelemetry.javaagent.bootstrap.Java8BytecodeBridge;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
-import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static java.util.Arrays.asList;
 
 public final class DigmaTracingServerInterceptor implements ServerInterceptor {
@@ -25,18 +28,24 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
     private static final String UNKNOWN_METHOD_NAME = "<UnparseableMethodName>";
 
     /**
-     * ClassesWhichHoldTheActualImpl.
-     * there are 2 private classes (named UnaryServerCallHandler and UnaryServerCallHandler)
-     * under {@link io.grpc.stub.ServerCalls} which are expected to hold the GRPC MethodHandlers.
+     * grpc call handlers that host the actual MethodHandlers.
+     * there are 2 classes (named UnaryServerCallHandler and UnaryServerCallHandler)
+     * under {@code io.grpc.stub.ServerCalls} which are expected to hold the GRPC MethodHandlers.
      */
-    private static final List<String> ClassesWhichHoldTheActualImpl = asList(
-        "io.grpc.stub.ServerCalls$UnaryServerCallHandler",
-        "io.grpc.stub.ServerCalls$StreamingServerCallHandler",
-        "io.grpc.ServerInterceptors$InterceptCallHandler"
+    private static final List<String> actualCallHandlersNames = asList(
+            "io.grpc.stub.ServerCalls$UnaryServerCallHandler",
+            "io.grpc.stub.ServerCalls$StreamingServerCallHandler"
     );
 
-    private final ConcurrentMap<String, ClassAndMethod> mapMethodFullName2ServiceImpl =
-        new ConcurrentHashMap<>(32);
+
+    private final Map<String, ClassAndMethod> classAndMethodCache =
+            Collections.synchronizedMap(new LinkedHashMap<String, ClassAndMethod>() {
+                @Override
+                protected boolean removeEldestEntry(Map.Entry<String, ClassAndMethod> eldest) {
+                    return size() > 1000;
+                }
+            });
+
 
     private DigmaTracingServerInterceptor() {
         super();
@@ -48,26 +57,30 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
 
     @Override
     public <REQUEST, RESPONSE> ServerCall.Listener<REQUEST> interceptCall(
-        ServerCall<REQUEST, RESPONSE> call,
-        Metadata headers,
-        ServerCallHandler<REQUEST, RESPONSE> next
+            ServerCall<REQUEST, RESPONSE> call,
+            Metadata headers,
+            ServerCallHandler<REQUEST, RESPONSE> next
     ) {
+
+        //todo: the interceptor is added twice in the advice and will be invoked twice for each call,
+        // otel have a solution for that with CallDepth but we can't use the same CallDepth because we will
+        // interfere with otel advice.
+        // its solvable with ThreadLocal here to only execute the code once.
 
         MethodDescriptor<REQUEST, RESPONSE> methodDescriptor = call.getMethodDescriptor();
         String fullMethodName = methodDescriptor.getFullMethodName();
-        ClassAndMethod classAndMethod = mapMethodFullName2ServiceImpl.get(fullMethodName);
+        ClassAndMethod classAndMethod = classAndMethodCache.get(fullMethodName);
         if (classAndMethod == null) {
-            Class<?> classOfServiceImpl = extractClassOfServiceImpl(next);
+            Class<?> classOfServiceImpl = extractServiceClassName(next);
             String methodName = extractJavaMethodName(fullMethodName);
             classAndMethod = ClassAndMethod.create(classOfServiceImpl, methodName);
-            mapMethodFullName2ServiceImpl.putIfAbsent(fullMethodName, classAndMethod);
+            classAndMethodCache.putIfAbsent(fullMethodName, classAndMethod);
         }
 
-        Span currentSpan = Span.current();
-        //System.out.println("DBG: ServerCall.Listener");
+        Span currentSpan = Java8BytecodeBridge.currentSpan();
 
-        currentSpan.setAttribute(stringKey("code.namespace"), classAndMethod.declaringClass().getName());
-        currentSpan.setAttribute(stringKey("code.function"), classAndMethod.methodName());
+        currentSpan.setAttribute("code.namespace", classAndMethod.declaringClass().getName());
+        currentSpan.setAttribute("code.function", classAndMethod.methodName());
 
         return next.startCall(call, headers);
     }
@@ -95,77 +108,110 @@ public final class DigmaTracingServerInterceptor implements ServerInterceptor {
         return javaMethodName;
     }
 
-    /**
-     * extractClassOfServiceImpl.
-     * first makes sure its one of the holder classes.
-     * second, makes sure that "method" field references MethodHandles,
-     * which is private class of generated Service class,
-     * for example: {@link io.grpc.health.v1.HealthGrpc.MethodHandlers}.
-     */
-    private static <REQUEST, RESPONSE> Class<?> extractClassOfServiceImpl(ServerCallHandler<REQUEST, RESPONSE> next) {
-        Class<? extends ServerCallHandler> classOfNext = next.getClass();
-        String classNameOfNext = classOfNext.getName();
-        logger.info("extractClassOfServiceImpl entered, classNameOfNext=" + classNameOfNext);
-        if (!ClassesWhichHoldTheActualImpl.contains(classNameOfNext)) {
-            logger.severe(String.format("Cannot parse service impl class since holder class '%s' is not one of the expected ones. maybe this interceptor is not the last one?", classNameOfNext));
-            return DigmaUnparseableClassSinceHolderNotExpected.class;
+
+
+    private <REQUEST, RESPONSE> Class<?> extractServiceClassName(ServerCallHandler<REQUEST, RESPONSE> next) {
+
+        logger.fine("extracting service class name, call handler is " + next.getClass().getName());
+        ServerCallHandler<REQUEST, RESPONSE> serverCallHandler = tryFindActualCallHandler(next);
+        String callHandlerClassName = serverCallHandler.getClass().getName();
+        if (!actualCallHandlersNames.contains(callHandlerClassName)) {
+            logger.warning(String.format("Cannot parse service class, call handler class '%s' is not supported.", callHandlerClassName));
+            return DigmaUnparseableClassSinceCallHandlerNotSupported.class;
         }
 
-        Field fieldOfMethod = declaredField(classOfNext, "method", true);
-        // get reference (usually MethodHandlers)
-        Object potentialMethodHandlers = valueOfField(next, fieldOfMethod);
-        Class<?> classOfMh = potentialMethodHandlers.getClass();
-        String classNameOfMh = classOfMh.getName();
+        logger.fine("found actual call handler " + serverCallHandler.getClass().getName());
 
-        // MethodHandlers are
-        if (!classNameOfMh.endsWith("MethodHandlers")) {
-            logger.severe(String.format("Cannot parse service impl class since potential class '%s' is none standard MethodHandlers", classNameOfMh));
+        Object methodHandler = getFieldValue(serverCallHandler,"method");
+        if (methodHandler == null){
+            logger.warning(String.format("Cannot parse service class, can not find method handler in '%s'", serverCallHandler.getClass()));
+            return DigmaUnparseableClassSinceNoMethodHandler.class;
+        }
+
+        Object serviceObject = getFieldValue(methodHandler,"serviceImpl");
+        if (serviceObject == null){
+            logger.warning(String.format("Cannot parse service object from '%s'", methodHandler.getClass()));
             return DigmaUnparseableClassSinceNoneStandardMethodHandlers.class;
         }
 
-        // taking the serviceImpl
-        Field fieldOfServiceImpl = declaredField(classOfMh, "serviceImpl", true);
-        Object serviceImplObject = valueOfField(potentialMethodHandlers, fieldOfServiceImpl);
-        Class<?> classOfServiceImpl = serviceImplObject.getClass();
-        return classOfServiceImpl;
+        return serviceObject.getClass();
     }
 
-    private static Field declaredField(Class<?> clazz, String fieldName, boolean toSetAccessible) {
-        Field field = null;
+
+
+    @Nonnull
+    private <REQUEST, RESPONSE> ServerCallHandler<REQUEST, RESPONSE> tryFindActualCallHandler(ServerCallHandler<REQUEST, RESPONSE> next) {
+
+        //InterceptCallHandler is a handler that calls an interceptor.
+        //try to skip all InterceptCallHandlers. InterceptCallHandler has a field named 'callHandler' that points to the
+        // next callHandler which may be another InterceptCallHandler or an actual call handler
+
         try {
-            field = clazz.getDeclaredField(fieldName);
-            // declared exceptions
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-            // undeclared exceptions
+            String className = next.getClass().getName();
+            while (className.equals("io.grpc.ServerInterceptors$InterceptCallHandler")) {
+
+                @SuppressWarnings("unchecked")
+                ServerCallHandler<REQUEST, RESPONSE> serverCallHandler = (ServerCallHandler<REQUEST, RESPONSE>) getFieldValue(next,"callHandler");
+                if (serverCallHandler == null){
+                    return next;
+                }
+
+                next = serverCallHandler;
+                className = next.getClass().getName();
+            }
         } catch (Throwable e) {
-            throw new RuntimeException(e);
+            logger.warning("Failed to find actual call handler for class: " + next.getClass().getName() + "," + e.getMessage());
         }
-        if (toSetAccessible) {
+
+        return next;
+    }
+
+
+
+
+
+    @Nullable
+    private Object getFieldValue(Object object, String fieldName) {
+        try {
+
+            Field field = getDeclaredField(object.getClass(),fieldName);
+            if (field == null){
+                return null;
+            }
+
+            return field.get(object);
+
+        }catch (Throwable e) {
+            logger.warning("Cannot find field value" + fieldName + " in class " + object.getClass().getName() + "," + e.getMessage());
+            return null;
+        }
+    }
+
+
+
+
+    @Nullable
+    private static Field getDeclaredField(Class<?> clazz, String fieldName) {
+        try {
+            Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
-        }
-        return field;
-    }
-
-    private static Object valueOfField(Object objectContainingField, Field field) {
-        Object theValue = null;
-        try {
-            theValue = field.get(objectContainingField);
-            // declared exceptions
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-            // undeclared exceptions
+            return field;
         } catch (Throwable e) {
-            throw new RuntimeException(e);
+            logger.warning("Cannot find field " + fieldName + " in class " + clazz.getName());
+            return null;
         }
-        return theValue;
     }
 
-    // used when could not parse the class
+
+
+
     static class DigmaUnparseableClassSinceNoneStandardMethodHandlers {
     }
 
-    static class DigmaUnparseableClassSinceHolderNotExpected {
+    static class DigmaUnparseableClassSinceCallHandlerNotSupported {
+    }
+
+    static class DigmaUnparseableClassSinceNoMethodHandler {
     }
 
 }

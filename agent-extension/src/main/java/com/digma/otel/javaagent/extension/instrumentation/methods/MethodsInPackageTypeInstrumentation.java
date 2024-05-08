@@ -172,7 +172,9 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
                         "org.junit.runners.Parameterized.BeforeParam",
                         "org.junit.runners.Parameterized.Parameters"))
         ).or(
-                isAnnotatedWith(namedOneOf("io.micrometer.tracing.annotation.NewSpan",
+                isAnnotatedWith(namedOneOf(
+                        "io.micrometer.tracing.annotation.NewSpan",
+                        "io.micrometer.tracing.annotation.ContinueSpan",
                         "io.micrometer.observation.annotation.Observed"))
         );
 
