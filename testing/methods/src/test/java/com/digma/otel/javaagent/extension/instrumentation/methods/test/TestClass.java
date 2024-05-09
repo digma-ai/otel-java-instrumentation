@@ -1,10 +1,9 @@
 package com.digma.otel.javaagent.extension.instrumentation.methods.test;
 
-public class MyClassWIthSpan {
+public class TestClass {
 
-//    @WithSpan
-    public void myTestWithSpan(){
 
+    public String testMethod(){
+        return "Hello!";
     }
-
 }

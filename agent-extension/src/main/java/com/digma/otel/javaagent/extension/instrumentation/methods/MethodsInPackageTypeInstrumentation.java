@@ -7,14 +7,27 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.api.annotation.support.async.AsyncOperationEndSupport;
 import io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.asm.Advice;
+import net.bytebuddy.asm.MemberAttributeExtension;
+import net.bytebuddy.description.annotation.AnnotationDescription;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.ClassFileLocator;
+import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
+import net.bytebuddy.implementation.LoadedTypeInitializer;
+import net.bytebuddy.implementation.SuperMethodCall;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
+import net.bytebuddy.utility.JavaModule;
 
+import javax.annotation.Nonnull;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.security.ProtectionDomain;
 import java.util.Collections;
 
 import static com.digma.otel.javaagent.extension.instrumentation.methods.MethodSingletons.instrumenter;
@@ -94,28 +107,73 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
     }
 
 
-
-
     @Override
-    public void transform(TypeTransformer transformer) {
-        transformer.applyAdviceToMethod(
-                isMethod()
-                        .and(not(namedIgnoreCase("get")))
-                        .and(not(methodsFilterByAnnotation()))
-                        .and(not(isSynthetic()))
-                        .and(not(isBridge()))
-                        .and(not(isMain()))
-                        .and(not(isFinalizer()))
-                        .and(not(isHashCode()))
-                        .and(not(isEquals()))
-                        .and(not(isClone()))
-                        .and(not(isToString()))
-                        .and(not(isTypeInitializer()))
-                        .and(not(isSetter()))
-                        .and(not(isGetter()))
-                        .and(not(isNative()))
-                        .and(not(nameContains("$"))),
-                MethodsInPackageTypeInstrumentation.class.getName() + "$MethodAdvice");
+    public void transform(TypeTransformer transformer) {}
+    public void transform_(TypeTransformer transformer) {
+
+        System.out.println("MethodsInPackageTypeInstrumentation: in transform ");
+
+        ElementMatcher<? super MethodDescription> methodMatcher = isMethod()
+
+                .and(not(namedIgnoreCase("get")))
+                .and(not(methodsFilterByAnnotation()))
+                .and(not(isSynthetic()))
+                .and(not(isBridge()))
+                .and(not(isMain()))
+                .and(not(isFinalizer()))
+                .and(not(isHashCode()))
+                .and(not(isEquals()))
+                .and(not(isClone()))
+                .and(not(isToString()))
+                .and(not(isTypeInitializer()))
+                .and(not(isSetter()))
+                .and(not(isGetter()))
+                .and(not(isNative()))
+                .and(not(nameContains("$")));
+
+        transformer.applyTransformer(new AgentBuilder.Transformer() {
+
+            @Nonnull
+            @Override
+            public DynamicType.Builder<?> transform(@Nonnull DynamicType.Builder<?> builder, @Nonnull TypeDescription typeDescription, ClassLoader classLoader, JavaModule module, ProtectionDomain protectionDomain) {
+//                return builder.method(methodMatcher);
+                try {
+
+                    System.out.println("MethodsInPackageTypeInstrumentation: in bytebuddy transform ,typeDescription:" + typeDescription+",class loader:"+classLoader);
+
+                    String withSpan = "io_opentelemetry_instrumentation_annotations_WithSpan".replaceAll("_",".");
+//                    String withSpan = "application_io_opentelemetry_instrumentation_annotations_WithSpan".replaceAll("_",".");
+                    AnnotationDescription annotationDescription = AnnotationDescription.Latent.Builder.ofType((Class<? extends Annotation>) Class.forName(withSpan,false,classLoader)).build();
+
+//                    return new AgentBuilder.Default().type(ElementMatchers.ofType(typeDescription.getComponentType()))
+
+                    return new ByteBuddy()
+                            .redefine(typeDescription, ClassFileLocator.ForClassLoader.of(classLoader))
+//                            .name(typeDescription.getCanonicalName() + "$renamed")
+                            .visit(new MemberAttributeExtension.ForMethod().annotateMethod(annotationDescription)
+                                    .on(methodMatcher));
+//                    new ByteBuddy()
+//                            .redefine(typeDescription, ClassFileLocator.ForClassLoader.of(classLoader))
+////                            .name(typeDescription.getCanonicalName() + "$renamed")
+//                            .visit(new MemberAttributeExtension.ForMethod().annotateMethod(annotationDescription)
+//                                    .on(methodMatcher)).make().load(classLoader, ClassLoadingStrategy.Default.CHILD_FIRST).getLoaded();
+
+//                    return builder;
+//                    return builder
+//                            .method(methodMatcher)
+//                            .intercept(SuperMethodCall.INSTANCE)
+//                            .annotateMethod(annotationDescription);
+//                            .visit(new MemberAttributeExtension.ForMethod()
+//                                    .annotateMethod(annotationDescription)
+//                                            .on(methodMatcher));
+                } catch (Throwable e) {
+                    System.out.println("MethodsInPackageTypeInstrumentation: got exception "+e);
+                    e.printStackTrace();
+                    return builder;
+                }
+            }
+        });
+
     }
 
 

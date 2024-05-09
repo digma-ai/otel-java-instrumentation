@@ -79,7 +79,8 @@ tasks {
         logger.lifecycle("running test with digma extension ${digmaExtension.files.first().absolutePath}")
 
         jvmArgs(
-            "-Dotel.javaagent.debug=true",
+            "-javaagent:/home/shalom/workspace/digma/digma-agent/digma-agent/build/libs/digma-agent-1.0.0-SNAPSHOT.jar",
+//            "-Dotel.javaagent.debug=true",
             "-javaagent:${agentForTesting.files.first().absolutePath}",
             "-Dotel.javaagent.extensions=${digmaExtension.files.first().absolutePath}",
             "-Dotel.javaagent.testing.javaagent-jar-path=${agentForTesting.files.first().absolutePath}",

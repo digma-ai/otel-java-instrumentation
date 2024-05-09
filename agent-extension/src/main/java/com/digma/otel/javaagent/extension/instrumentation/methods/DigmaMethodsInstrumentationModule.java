@@ -18,7 +18,7 @@ import static net.bytebuddy.matcher.ElementMatchers.isBootstrapClassLoader;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
 
-@AutoService(InstrumentationModule.class)
+//@AutoService(InstrumentationModule.class)
 public class DigmaMethodsInstrumentationModule extends InstrumentationModule {
 
     private static final String DIGMA_AUTO_INSTRUMENT_PACKAGES_SYSTEM_PROPERTY = "digma.autoinstrument.packages";
@@ -41,7 +41,9 @@ public class DigmaMethodsInstrumentationModule extends InstrumentationModule {
 
     @Override
     public int order() {
-        return 121;
+//        return 121;
+//        return -10000;
+        return -Integer.MIN_VALUE;
     }
 
     @Override
