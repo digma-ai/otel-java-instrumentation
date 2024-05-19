@@ -42,6 +42,7 @@ public class MethodsInPackageTypeInstrumentation extends DigmaTypeInstrumentatio
                 .and(not(typeFilterByAnnotation()))
                 .and(not(isSynthetic()))
                 .and(not(isEnum()))
+                .and(not(isRecord()))
                 .and(not(extendsClass(named("io.grpc.ServerBuilder"))))
                 .and(not(jaxrsTypes()))
                 .and(not(kafkaTypes()))
