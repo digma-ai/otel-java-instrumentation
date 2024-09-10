@@ -12,6 +12,7 @@ plugins {
     into a single jar.
     See https://imperceptiblethoughts.com/shadow/ for more details about Shadow plugin.
      */
+    //todo: who does the relocation ?
     id "com.github.johnrengelman.shadow" version "8.1.1"
 
     id "io.opentelemetry.instrumentation.muzzle-generation" version "2.2.0-alpha"
@@ -85,6 +86,10 @@ dependencies {
     // these serve as a test of the instrumentation boms
     implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:${versions.opentelemetryJavaagent}"))
     implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:${versions.opentelemetryJavaagentAlpha}"))
+
+    //todo: can probably not package these classes , only use for compile, they are relocated in the extension to the same
+    // package as in otel agent
+    implementation("io.opentelemetry.instrumentation:opentelemetry-jdbc:${versions.opentelemetryJavaagentAlpha}")
 
     /*
     Interfaces and SPIs that we implement. We use `compileOnly` dependency because during
