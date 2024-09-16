@@ -48,7 +48,7 @@ jobs:
       - name: Gradle clean
         uses: gradle/gradle-build-action@v2
         with:
-          arguments:  --parallel  clean
+          arguments: clean build
 
       # make sure that "gradlew publish" runs in NO parallel mode, since it might create multiple repositories on the OSS server
 
