@@ -52,18 +52,18 @@ jobs:
 
       # make sure that "gradlew publish" runs in NO parallel mode, since it might create multiple repositories on the OSS server
 
-      - name: Publish to OSSRH (using Gradle)
-        uses: gradle/gradle-build-action@v2
-        env:
-          EV_ossrhUsername: asher-digma
-          EV_ossrhPassword: ${{ secrets.DIGMA_ASHER_OSSRH_PASSWORD }}
-        with:
-          arguments: |
-            --no-parallel
-            publish
-            -Psigning.secretKeyRingFile=${{ github.workspace }}/xtra/security/secr-key-ring-file-gpg.bin
-            -Psigning.password=${{ secrets.DIGMA_GPG_SIGNING_PASSWORD }}
-            -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
+#      - name: Publish to OSSRH (using Gradle)
+#        uses: gradle/gradle-build-action@v2
+#        env:
+#          EV_ossrhUsername: asher-digma
+#          EV_ossrhPassword: ${{ secrets.DIGMA_ASHER_OSSRH_PASSWORD }}
+#        with:
+#          arguments: |
+#            --no-parallel
+#            publish
+#            -Psigning.secretKeyRingFile=${{ github.workspace }}/xtra/security/secr-key-ring-file-gpg.bin
+#            -Psigning.password=${{ secrets.DIGMA_GPG_SIGNING_PASSWORD }}
+#            -Psigning.keyId=${{ secrets.DIGMA_GPG_SIGNING_KEYID }}
 
       # artifacts are now published into OSSRH , you can browse https://s01.oss.sonatype.org/#stagingRepositories and search for Staging Repositories
       - name: Copy and Rename digma-otel-agent-extension
