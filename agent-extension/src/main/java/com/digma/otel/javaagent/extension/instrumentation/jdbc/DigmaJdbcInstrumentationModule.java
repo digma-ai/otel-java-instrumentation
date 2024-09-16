@@ -29,6 +29,6 @@ public class DigmaJdbcInstrumentationModule extends InstrumentationModule {
 
     @Override
     public int order() {
-        return 1000;
+        return Integer.MAX_VALUE-1;
     }
 }
