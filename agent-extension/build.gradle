@@ -33,6 +33,10 @@ shadowJar {
     // archiveClassifier = '' <==> skips the file extension of "-all"
     archiveClassifier = ''
 
+
+    //should be the same relocation as in digma-agent
+    relocate("net.ttddyy.dsproxy", "org.digma.net.ttddyy.dsproxy")
+
 //    dependencies {
 //
 //        //just another safety not to include any otel dependencies in the shaded jar
@@ -86,6 +90,8 @@ dependencies {
     implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:${versions.opentelemetryJavaagent}"))
     implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:${versions.opentelemetryJavaagentAlpha}"))
 
+    implementation("io.opentelemetry.instrumentation:opentelemetry-jdbc:${versions.opentelemetryJavaagentAlpha}")
+
     /*
     Interfaces and SPIs that we implement. We use `compileOnly` dependency because during
     runtime all necessary classes are provided by javaagent itself.
@@ -122,6 +128,10 @@ dependencies {
     implementation project(':instrumentation:common') // <==> io.github.digma-ai:digma-otel-instr-common
     implementation project(':instrumentation:grpc-16:library') // <==> io.github.digma-ai:digma-otel-instr-grpc
 
+    //datasource-proxy is packaged in digma-agent and in otel extension, fortunately
+    // both are loaded by the system class loader so there is no duplicate classed
+    //the shadowing must be the same
+    implementation("net.ttddyy:datasource-proxy:1.10")
 
     //All dependencies below are only for tests
     testImplementation("org.testcontainers:testcontainers:1.19.7")
