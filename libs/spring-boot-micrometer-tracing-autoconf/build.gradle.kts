@@ -28,7 +28,7 @@ base.archivesName.set(vArtifactId)
 
 val springBootVersion = "3.1.6"
 val micrometerTracingVersion = "1.1.7"
-val otelVersion = "1.26.0"
+val otelVersion = "1.44.1"
 val junitJupiterVersion = "5.9.3"
 
 dependencies {

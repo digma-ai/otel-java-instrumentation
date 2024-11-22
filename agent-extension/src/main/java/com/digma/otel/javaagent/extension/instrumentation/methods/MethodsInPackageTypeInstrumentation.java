@@ -5,7 +5,7 @@ import com.digma.otel.javaagent.extension.instrumentation.matchers.ClassLoaderHa
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.api.annotation.support.async.AsyncOperationEndSupport;
-import io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod;
+import io.opentelemetry.instrumentation.api.incubator.semconv.util.ClassAndMethod;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeTransformer;
 import net.bytebuddy.asm.Advice;
 import net.bytebuddy.description.method.MethodDescription;

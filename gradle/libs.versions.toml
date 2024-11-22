@@ -1,7 +1,8 @@
 [versions]
-opentelemetrySdk = "1.36.0"
-opentelemetryJavaagent = "2.2.0"
-opentelemetryJavaagentAlpha = "2.2.0-alpha"
+opentelemetrySdk = "1.44.1"
+opentelemetrySdkAlpha = "1.44.1-alpha"
+opentelemetryJavaagent = "2.10.0"
+opentelemetryJavaagentAlpha = "2.10.0-alpha"
 junit = "5.10.2"
 logback = "1.5.3"
 
@@ -12,7 +13,9 @@ logback = "1.5.3"
 [libraries]
 otelInstBom = { group = "io.opentelemetry.instrumentation", name = "opentelemetry-instrumentation-bom", version.ref = "opentelemetryJavaagent" }
 otelInstBomAlpha = { group = "io.opentelemetry.instrumentation", name = "opentelemetry-instrumentation-bom-alpha", version.ref = "opentelemetryJavaagentAlpha" }
-otelInstApi = { group = "io.opentelemetry.instrumentation", name = "opentelemetry-instrumentation-annotations", version.ref = "opentelemetrySdk" }
+otelSdkBom = { group = "io.opentelemetry", name = "opentelemetry-bom", version.ref = "opentelemetrySdk" }
+otelSdkBomAlpha = { group = "io.opentelemetry", name = "opentelemetry-bom-alpha", version.ref = "opentelemetrySdkAlpha" }
+otelAnnotations = { group = "io.opentelemetry.instrumentation", name = "opentelemetry-instrumentation-annotations", version.ref = "opentelemetrySdk" }
 
 ## libraries that are included in the bom don't need a version
 opentelemetryTestingCommon = { group = "io.opentelemetry.javaagent", name = "opentelemetry-testing-common" }

@@ -55,11 +55,12 @@ base.archivesName.set(vArtifactId)
 ext {
     versions = [
             // this line is managed by .github/scripts/update-sdk-version.sh
-            opentelemetrySdk           : "1.36.0",
+            opentelemetrySdk           : "1.44.1",
+            opentelemetrySdkAlpha      : "1.44.1-alpha",
 
             // these lines are managed by .github/scripts/update-version.sh
-            opentelemetryJavaagent     : "2.2.0",
-            opentelemetryJavaagentAlpha: "2.2.0-alpha",
+            opentelemetryJavaagent     : "2.10.0",
+            opentelemetryJavaagentAlpha: "2.10.0-alpha",
 
             junit                      : "5.10.2",
 
@@ -84,13 +85,12 @@ configurations {
 }
 
 dependencies {
-    implementation(platform("io.opentelemetry:opentelemetry-bom:${versions.opentelemetrySdk}"))
+    implementation(platform(libs.otelSdkBom))
+    implementation(platform(libs.otelSdkBomAlpha))
+    implementation(platform(libs.otelInstBom))
+    implementation(platform(libs.otelInstBomAlpha))
 
-    // these serve as a test of the instrumentation boms
-    implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:${versions.opentelemetryJavaagent}"))
-    implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:${versions.opentelemetryJavaagentAlpha}"))
-
-    implementation("io.opentelemetry.instrumentation:opentelemetry-jdbc:${versions.opentelemetryJavaagentAlpha}")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-jdbc")
 
     /*
     Interfaces and SPIs that we implement. We use `compileOnly` dependency because during
@@ -100,7 +100,6 @@ dependencies {
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api")
     compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api")
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations-support")
-    compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv")
 
     //Provides @AutoService annotation that makes registration of our SPI implementations much easier
     compileOnly deps.autoservice

@@ -1,6 +1,6 @@
 package com.digma.otel.javaagent.extension.instrumentation.junit;
 
-import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesGetter;
+import io.opentelemetry.instrumentation.api.incubator.semconv.code.CodeAttributesGetter;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
@@ -20,13 +20,13 @@ enum MethodCodeAttributesGetter implements CodeAttributesGetter<Method> {
 
   @Nullable
   @Override
-  public Class<?> codeClass(Method method) {
+  public Class<?> getCodeClass(Method method) {
     return method.getDeclaringClass();
   }
 
   @Nullable
   @Override
-  public String methodName(Method method) {
+  public String getMethodName(Method method) {
     return method.getName();
   }
 }

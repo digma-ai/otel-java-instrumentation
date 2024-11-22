@@ -9,5 +9,5 @@ description = "Digma OpenTelemetry instrumentations for Java"
 
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.ALL
-    version = "8.6"
+    version = "8.11"
 }

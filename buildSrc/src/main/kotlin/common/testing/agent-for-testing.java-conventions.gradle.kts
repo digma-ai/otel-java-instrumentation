@@ -36,7 +36,7 @@ dependencies {
     testCompileOnly(project(":extension-version"))
     testCompileOnly(project(":agent-extension"))
 
-    testImplementation(libs.otelInstApi)
+    testImplementation(libs.otelAnnotations)
     testImplementation(libs.opentelemetryTestingCommon)
     testImplementation(libs.junitJupiter)
     testImplementation(libs.junitJupiterEngine)
