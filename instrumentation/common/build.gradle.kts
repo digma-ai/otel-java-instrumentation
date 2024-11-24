@@ -4,6 +4,7 @@ plugins {
     signing
 }
 
+
 val vArtifactId = "digma-otel-instr-common"
 project.description = "Digma, OpenTelemetry instrumentation - common library"
 
@@ -17,13 +18,18 @@ java {
 
 base.archivesName.set(vArtifactId)
 
-val OPENTELEMETRY_VERSION = "1.21.0"
-val OPENTELEMETRY_ALPHA_VERSION = "1.21.0-alpha"
+
 val junitJupiterVersion = "5.10.2"
 
+
+
 dependencies {
-    api("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
-    api("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
+    implementation(platform(libs.otelSdkBom))
+    implementation(platform(libs.otelSdkBomAlpha))
+    implementation(platform(libs.otelInstBom))
+    implementation(platform(libs.otelInstBomAlpha))
+
+    api("io.opentelemetry:opentelemetry-api")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")

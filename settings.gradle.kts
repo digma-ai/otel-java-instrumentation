@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-  id("org.gradle.toolchains.foojay-resolver-convention") version("0.7.0")
+  id("org.gradle.toolchains.foojay-resolver-convention") version("0.8.0")
 }
 
 dependencyResolutionManagement {
@@ -27,7 +27,7 @@ include(":instrumentation:spring:spring-boot-autoconfigure")
 include(":instrumentation:grpc-16:library")
 include(":extension-version")
 include(":agent-extension")
-include(":testing:methods")
+//include(":testing:methods")
 include(":testing:java7")
 
 

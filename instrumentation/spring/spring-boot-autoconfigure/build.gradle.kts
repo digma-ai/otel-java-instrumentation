@@ -17,18 +17,22 @@ java {
 base.archivesName.set(vArtifactId)
 project.description = "Digma, Auto-configures OpenTelemetry instrumentation for SpringBoot"
 
-val OPENTELEMETRY_VERSION = "1.21.0"
-val OPENTELEMETRY_ALPHA_VERSION = "1.21.0-alpha"
 val springBootVersion = "2.7.5"
 val junitJupiterVersion = "5.10.1"
 
 dependencies {
+
+    implementation(platform(libs.otelSdkBom))
+    implementation(platform(libs.otelSdkBomAlpha))
+    implementation(platform(libs.otelInstBom))
+    implementation(platform(libs.otelInstBomAlpha))
+
     implementation(project(":instrumentation:common"))
 
-    api("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
-    api("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:${OPENTELEMETRY_VERSION}")
-    api("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
-    api("io.opentelemetry.instrumentation:opentelemetry-spring-boot:${OPENTELEMETRY_ALPHA_VERSION}")
+    api("io.opentelemetry:opentelemetry-api")
+    api("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi")
+    api("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api")
+    api("io.opentelemetry.instrumentation:opentelemetry-spring-boot:1.21.0-alpha")
 
     runtimeOnly("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
     api("org.springframework.boot:spring-boot-starter-aop:$springBootVersion")

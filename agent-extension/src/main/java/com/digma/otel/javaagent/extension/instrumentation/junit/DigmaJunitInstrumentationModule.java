@@ -1,12 +1,12 @@
 package com.digma.otel.javaagent.extension.instrumentation.junit;
 
 import com.google.auto.service.AutoService;
-import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesExtractor;
-import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesGetter;
-import io.opentelemetry.instrumentation.api.instrumenter.util.SpanNames;
+import io.opentelemetry.instrumentation.api.incubator.semconv.code.CodeAttributesExtractor;
+import io.opentelemetry.instrumentation.api.incubator.semconv.code.CodeAttributesGetter;
+import io.opentelemetry.instrumentation.api.incubator.semconv.util.SpanNames;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
+import io.opentelemetry.semconv.SemanticAttributes;
 import net.bytebuddy.matcher.ElementMatcher;
 
 import java.util.ArrayList;

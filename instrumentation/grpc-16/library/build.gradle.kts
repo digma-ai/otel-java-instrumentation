@@ -17,20 +17,23 @@ java {
 
 base.archivesName.set(vArtifactId)
 
-val OPENTELEMETRY_VERSION = "1.21.0"
-val OPENTELEMETRY_ALPHA_VERSION = "1.21.0-alpha"
 val junitJupiterVersion = "5.9.1"
 val grpcVersion = "1.6.0"
 
 dependencies {
+
+    implementation(platform(libs.otelSdkBom))
+    implementation(platform(libs.otelSdkBomAlpha))
+    implementation(platform(libs.otelInstBom))
+    implementation(platform(libs.otelInstBomAlpha))
+
     implementation(project(":instrumentation:common"))
 
-    runtimeOnly("io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_VERSION}")
-    runtimeOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:${OPENTELEMETRY_VERSION}")
-    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:${OPENTELEMETRY_VERSION}")
-    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
-    compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api:${OPENTELEMETRY_ALPHA_VERSION}")
-    compileOnly("io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:${OPENTELEMETRY_ALPHA_VERSION}")
+    runtimeOnly("io.opentelemetry:opentelemetry-api")
+    runtimeOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi")
+    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api")
+    compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api")
+    compileOnly("io.opentelemetry.instrumentation:opentelemetry-grpc-1.6")
     compileOnly("io.grpc:grpc-core:$grpcVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")

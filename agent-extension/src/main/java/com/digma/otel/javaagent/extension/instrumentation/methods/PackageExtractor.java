@@ -1,18 +1,15 @@
 package com.digma.otel.javaagent.extension.instrumentation.methods;
 
-import com.digma.otel.instrumentation.common.DigmaSemanticAttributes;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.instrumentation.api.incubator.semconv.code.CodeAttributesGetter;
 import io.opentelemetry.instrumentation.api.instrumenter.AttributesExtractor;
-import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesGetter;
 import io.opentelemetry.instrumentation.api.internal.AttributesExtractorUtil;
-
 
 import javax.annotation.Nullable;
 
-public final class PackageExtractor<REQUEST, RESPONSE> implements AttributesExtractor<REQUEST, RESPONSE>
-{
+public final class PackageExtractor<REQUEST, RESPONSE> implements AttributesExtractor<REQUEST, RESPONSE> {
     private final CodeAttributesGetter<REQUEST> getter;
 
     private PackageExtractor(CodeAttributesGetter<REQUEST> getter) {
@@ -25,7 +22,7 @@ public final class PackageExtractor<REQUEST, RESPONSE> implements AttributesExtr
 
     @Override
     public void onStart(AttributesBuilder attributes, Context context, REQUEST request) {
-        Class<?> cls = this.getter.codeClass(request);
+        Class<?> cls = this.getter.getCodeClass(request);
         if (cls != null) {
             AttributesExtractorUtil.internalSet(attributes, AttributeKey.stringKey("digma.instrumentation.extended.package"), cls.getPackage().getName());
             AttributesExtractorUtil.internalSet(attributes, AttributeKey.stringKey("digma.instrumentation.extended.enabled"), "true");

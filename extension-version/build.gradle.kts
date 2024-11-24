@@ -1,6 +1,9 @@
 plugins {
-    `java-library`
+    id("java-library")
+    id("edu.sc.seis.version-class") version "1.3.0"
 }
+
+
 
 java {
     toolchain {
@@ -8,17 +11,11 @@ java {
     }
 
     sourceSets["main"].java {
-        srcDir("$buildDir/generated/java")
+        srcDir(layout.buildDirectory.dir("generated-src/version/java"))
     }
-}
 
-tasks.register<Copy>("generateJavaWithVersion") {
-    from("src/template/java")
-    into("$buildDir/generated/java")
-    expand("version_val" to version)
 }
 
 tasks.compileJava {
     options.release.set(8)
-    dependsOn("generateJavaWithVersion")
 }

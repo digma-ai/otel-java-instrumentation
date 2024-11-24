@@ -1,8 +1,7 @@
 package com.digma.otel.javaagent.extension.instrumentation.methods;
 
+import com.digma.otel.extension.extension.version.BuildVersion;
 import com.digma.otel.javaagent.extension.instrumentation.matchers.ClassLoaderHasPackagesNamedMatcher;
-import com.digma.otel.javaagent.extension.version.DigmaExtensionVersion;
-import com.google.auto.service.AutoService;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -17,8 +16,9 @@ import static com.digma.otel.instrumentation.common.CommonUtils.getEnvOrSystemPr
 import static net.bytebuddy.matcher.ElementMatchers.isBootstrapClassLoader;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
-
-@AutoService(InstrumentationModule.class)
+// todo: method instrumentation is not used anymore. we use digma-agent to inject @WithSpan annotation to methods
+//  to enable it uncomment @AutoService and enable com.digma.otel.javaagent.extension.instrumentation.methods.MethodsInstrumentationTests
+//@AutoService(InstrumentationModule.class)
 public class DigmaMethodsInstrumentationModule extends InstrumentationModule {
 
     private static final String DIGMA_AUTO_INSTRUMENT_PACKAGES_SYSTEM_PROPERTY = "digma.autoinstrument.packages";
@@ -27,7 +27,7 @@ public class DigmaMethodsInstrumentationModule extends InstrumentationModule {
     private final List<String> packageNames;
 
     public DigmaMethodsInstrumentationModule() {
-        super("digma-methods","digma-methods-"+ DigmaExtensionVersion.VERSION);
+        super("digma-methods","digma-methods-"+ BuildVersion.getVersion());
         String pNames = getEnvOrSystemProperty(DIGMA_AUTO_INSTRUMENT_PACKAGES_SYSTEM_PROPERTY);
         if (pNames == null){
             pNames = getEnvOrSystemProperty(DIGMA_AUTO_INSTRUMENT_PACKAGES_ENV_VAR);
