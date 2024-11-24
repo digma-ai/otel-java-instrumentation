@@ -1,10 +1,10 @@
 package com.digma.otel.javaagent.extension.instrumentation.extendedobservability;
 
-import com.digma.otel.javaagent.extension.version.DigmaExtensionVersion;
 import com.google.auto.service.AutoService;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 import net.bytebuddy.matcher.ElementMatcher;
+import org.digma.otel.extension.extension.version.BuildVersion;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +18,7 @@ public class DigmaExtendedObservabilityInstrumentationModule extends Instrumenta
     public static final String DIGMA_MARKER_ANNOTATION_NAME = "org.digma.instrumentation.ExtendedObservability";
 
     public DigmaExtendedObservabilityInstrumentationModule() {
-        super("digma-extended","digma-extended-"+ DigmaExtensionVersion.VERSION);
+        super("digma-extended","digma-extended-"+ BuildVersion.getVersion());
     }
 
     @Override
