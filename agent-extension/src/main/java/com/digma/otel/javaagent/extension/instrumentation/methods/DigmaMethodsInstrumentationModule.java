@@ -17,6 +17,7 @@ import static net.bytebuddy.matcher.ElementMatchers.isBootstrapClassLoader;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
 // todo: method instrumentation is not used anymore. we use digma-agent to inject @WithSpan annotation to methods
+//  to enable it uncomment @AutoService and enable com.digma.otel.javaagent.extension.instrumentation.methods.MethodsInstrumentationTests
 //@AutoService(InstrumentationModule.class)
 public class DigmaMethodsInstrumentationModule extends InstrumentationModule {
 

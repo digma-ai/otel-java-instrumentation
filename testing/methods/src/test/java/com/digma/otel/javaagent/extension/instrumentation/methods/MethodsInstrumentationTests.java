@@ -10,6 +10,7 @@ import io.opentelemetry.instrumentation.testing.junit.InstrumentationExtension;
 import io.opentelemetry.sdk.common.InstrumentationScopeInfo;
 import org.assertj.core.api.Assertions;
 import org.digma.otel.extension.extension.version.BuildVersion;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -20,6 +21,9 @@ import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.equal
 import static io.opentelemetry.semconv.SemanticAttributes.CODE_FUNCTION;
 import static io.opentelemetry.semconv.SemanticAttributes.CODE_NAMESPACE;
 
+//we don't use method instrumentation anymore. see comment in
+//com.digma.otel.javaagent.extension.instrumentation.methods.DigmaMethodsInstrumentationModule
+@Disabled
 class MethodsInstrumentationTests {
 
     //Note: digma-junit instrumentation is disabled in jvm args. otherwise the
