@@ -9,7 +9,6 @@ https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/0ca120
 
 plugins {
     id("java")
-    id("semantic-version")
     id("com.gradleup.shadow") version ("8.3.5")
     id("io.opentelemetry.instrumentation.muzzle-generation") version ("2.10.0-alpha")
     id("io.opentelemetry.instrumentation.muzzle-check") version ("2.10.0-alpha")
