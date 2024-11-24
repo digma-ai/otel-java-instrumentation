@@ -5,7 +5,7 @@ plugins {
 description = "Digma OpenTelemetry instrumentations for Java"
 
 allprojects{
-    group = "org.digma.otel.extension"
+    group = "com.digma.otel.extension"
     version = common.semanticversion.getSemanticVersion(project)
 }
 

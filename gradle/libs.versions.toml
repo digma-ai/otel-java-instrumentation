@@ -16,6 +16,8 @@ otelInstBomAlpha = { group = "io.opentelemetry.instrumentation", name = "opentel
 otelSdkBom = { group = "io.opentelemetry", name = "opentelemetry-bom", version.ref = "opentelemetrySdk" }
 otelSdkBomAlpha = { group = "io.opentelemetry", name = "opentelemetry-bom-alpha", version.ref = "opentelemetrySdkAlpha" }
 otelAnnotations = { group = "io.opentelemetry.instrumentation", name = "opentelemetry-instrumentation-annotations", version.ref = "opentelemetrySdk" }
+otelJavaAgent = { group = "io.opentelemetry.javaagent", name = "opentelemetry-javaagent", version.ref = "opentelemetryJavaagent" }
+
 
 ## libraries that are included in the bom don't need a version
 opentelemetryTestingCommon = { group = "io.opentelemetry.javaagent", name = "opentelemetry-testing-common" }

@@ -1,10 +1,10 @@
 package com.digma.otel.javaagent.extension.instrumentation.extendedobservability;
 
+import com.digma.otel.extension.extension.version.BuildVersion;
 import com.google.auto.service.AutoService;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 import net.bytebuddy.matcher.ElementMatcher;
-import org.digma.otel.extension.extension.version.BuildVersion;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.digma.otel.javaagent.extension.instrumentation.methods;
 
+import com.digma.otel.extension.extension.version.BuildVersion;
 import com.digma.otel.javaagent.extension.instrumentation.matchers.ClassLoaderHasPackagesNamedMatcher;
 import io.opentelemetry.javaagent.extension.instrumentation.InstrumentationModule;
 import io.opentelemetry.javaagent.extension.instrumentation.TypeInstrumentation;
 import net.bytebuddy.matcher.ElementMatcher;
-import org.digma.otel.extension.extension.version.BuildVersion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
