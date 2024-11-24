@@ -38,7 +38,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: digma-agent
+          name: digma-otel-agent-extension
           path: ./agent-extension/build/libs/digma-otel-agent-extension*.jar
           retention-days: 30
 
@@ -49,12 +49,12 @@ jobs:
           path: ./agent-extension/build/reports/tests/
           retention-days: 5
 
-      - name: Upload methods instrumentation tests report
-        uses: actions/upload-artifact@v4
-        with:
-          name: methods-instrumentation-tests-report
-          path: ./testing/methods/build/reports/tests/
-          retention-days: 5
+#      - name: Upload methods instrumentation tests report
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: methods-instrumentation-tests-report
+#          path: ./testing/methods/build/reports/tests/
+#          retention-days: 5
 
       - name: Upload java 7 instrumentation tests report
         uses: actions/upload-artifact@v4
