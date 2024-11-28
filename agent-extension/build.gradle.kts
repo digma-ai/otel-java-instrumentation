@@ -51,6 +51,7 @@ dependencies {
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api")
     compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api")
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations-support")
+    implementation(libs.otelSemconv)
 
     //Provides @AutoService annotation that makes registration of our SPI implementations much easier
     compileOnly("com.google.auto.service:auto-service:1.1.1")
@@ -145,6 +146,7 @@ tasks {
         } else {
             archiveVersion.set(version.toString())
         }
+
 
         //should be the same relocation as in digma-agent
         relocate("net.ttddyy.dsproxy", "org.digma.net.ttddyy.dsproxy")

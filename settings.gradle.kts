@@ -19,11 +19,9 @@ dependencyResolutionManagement {
 rootProject.name = "digma-otel-java-instrumentation"
 
 
-include(":libs:spring-boot-micrometer-tracing-autoconf")
-
-
+//include(":libs:spring-boot-micrometer-tracing-autoconf")
 include(":instrumentation:common")
-include(":instrumentation:spring:spring-boot-autoconfigure")
+//include(":instrumentation:spring:spring-boot-autoconfigure")
 include(":instrumentation:grpc-16:library")
 include(":extension-version")
 include(":agent-extension")

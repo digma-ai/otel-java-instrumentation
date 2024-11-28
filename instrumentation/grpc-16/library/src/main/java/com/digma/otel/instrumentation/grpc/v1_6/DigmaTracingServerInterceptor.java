@@ -7,7 +7,7 @@ import io.grpc.ServerCall;
 import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.instrumentation.api.incubator.semconv.util.ClassAndMethod;
+import io.opentelemetry.instrumentation.api.instrumenter.util.ClassAndMethod;
 import io.opentelemetry.javaagent.bootstrap.Java8BytecodeBridge;
 
 import javax.annotation.Nonnull;

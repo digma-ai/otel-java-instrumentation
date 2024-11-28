@@ -3,7 +3,7 @@ package com.digma.otel.javaagent.extension.instrumentation.methods;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.context.Context;
-import io.opentelemetry.instrumentation.api.incubator.semconv.code.CodeAttributesGetter;
+import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesGetter;
 import io.opentelemetry.instrumentation.api.instrumenter.AttributesExtractor;
 import io.opentelemetry.instrumentation.api.internal.AttributesExtractorUtil;
 
