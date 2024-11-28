@@ -3,6 +3,7 @@ opentelemetrySdk = "1.44.1"
 opentelemetrySdkAlpha = "1.44.1-alpha"
 opentelemetryJavaagent = "2.10.0"
 opentelemetryJavaagentAlpha = "2.10.0-alpha"
+opentelemetrySemconv = "1.33.6-alpha"
 junit = "5.10.2"
 logback = "1.5.3"
 
@@ -17,7 +18,7 @@ otelSdkBom = { group = "io.opentelemetry", name = "opentelemetry-bom", version.r
 otelSdkBomAlpha = { group = "io.opentelemetry", name = "opentelemetry-bom-alpha", version.ref = "opentelemetrySdkAlpha" }
 otelAnnotations = { group = "io.opentelemetry.instrumentation", name = "opentelemetry-instrumentation-annotations", version.ref = "opentelemetrySdk" }
 otelJavaAgent = { group = "io.opentelemetry.javaagent", name = "opentelemetry-javaagent", version.ref = "opentelemetryJavaagent" }
-
+otelSemconv = { group = "io.opentelemetry.instrumentation", name = "opentelemetry-instrumentation-api-semconv", version.ref = "opentelemetrySemconv" }
 
 ## libraries that are included in the bom don't need a version
 opentelemetryTestingCommon = { group = "io.opentelemetry.javaagent", name = "opentelemetry-testing-common" }

@@ -51,8 +51,7 @@ dependencies {
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api")
     compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api")
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations-support")
-    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:1.33.6-alpha")
-    compileOnly("io.opentelemetry.semconv:opentelemetry-semconv-incubating:1.28.0-alpha")
+    implementation(libs.otelSemconv)
 
     //Provides @AutoService annotation that makes registration of our SPI implementations much easier
     compileOnly("com.google.auto.service:auto-service:1.1.1")

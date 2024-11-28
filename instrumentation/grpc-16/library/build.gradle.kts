@@ -35,7 +35,7 @@ dependencies {
     compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api")
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-grpc-1.6")
     compileOnly("io.grpc:grpc-core:$grpcVersion")
-    compileOnly("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:1.33.6-alpha")
+    compileOnly(libs.otelSemconv)
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
