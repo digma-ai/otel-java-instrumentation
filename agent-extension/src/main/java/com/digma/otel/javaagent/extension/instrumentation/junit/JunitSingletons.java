@@ -3,8 +3,8 @@ package com.digma.otel.javaagent.extension.instrumentation.junit;
 import com.digma.otel.instrumentation.common.DigmaSemanticAttributes;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.SpanKind;
-import io.opentelemetry.instrumentation.api.incubator.semconv.code.CodeAttributesExtractor;
-import io.opentelemetry.instrumentation.api.incubator.semconv.util.SpanNames;
+import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesExtractor;
+import io.opentelemetry.instrumentation.api.instrumenter.util.SpanNames;
 import io.opentelemetry.instrumentation.api.instrumenter.AttributesExtractor;
 import io.opentelemetry.instrumentation.api.instrumenter.Instrumenter;
 

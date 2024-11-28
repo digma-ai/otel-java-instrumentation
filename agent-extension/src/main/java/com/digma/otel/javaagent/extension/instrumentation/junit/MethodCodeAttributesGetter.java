@@ -1,6 +1,6 @@
 package com.digma.otel.javaagent.extension.instrumentation.junit;
 
-import io.opentelemetry.instrumentation.api.incubator.semconv.code.CodeAttributesGetter;
+import io.opentelemetry.instrumentation.api.instrumenter.code.CodeAttributesGetter;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
