@@ -147,11 +147,6 @@ tasks {
             archiveVersion.set(version.toString())
         }
 
-//        dependencies {
-////            exclude(dependency("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-incubator:2.10.0-alpha"))
-////            exclude(dependency("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:2.10.0-alpha"))
-//            exclude(dependency("io.opentelemetry.*:.*:.*"))
-//        }
 
         //should be the same relocation as in digma-agent
         relocate("net.ttddyy.dsproxy", "org.digma.net.ttddyy.dsproxy")
